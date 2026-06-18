@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار حفظ سورة البقرة — الصفحة ٣</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Amiri','Scheherazade New','Traditional Arabic',serif; background:#f0f4f0; color:#2d4a2d; min-height:100vh; direction:rtl; }
+  .top-bar { background:#f0f4f0; padding:12px 20px; display:flex; align-items:center; }
+  .back-btn { background:none; border:none; color:#4a7c4a; font-size:18px; cursor:pointer; text-decoration:none; font-family:inherit; }
+  .info-card { margin:0 16px 16px; background:#fff; border:1.5px solid #c8d9c0; border-radius:18px; padding:22px 20px 18px; text-align:center; position:relative; }
+  .info-card::before,.info-card::after { content:'✦'; color:#c4a84a; font-size:20px; position:absolute; top:16px; }
+  .info-card::before { right:18px; } .info-card::after { left:18px; }
+  .surah-title { font-size:28px; font-weight:700; color:#2d4a2d; margin-bottom:4px; }
+  .ayat-range { font-size:15px; color:#4a7c4a; margin-bottom:4px; }
+  .page-info { font-size:14px; color:#7a9a7a; margin-bottom:14px; }
+  .stats-row { display:flex; gap:10px; justify-content:center; }
+  .stat-badge { background:#4a7c4a; color:#fff; border-radius:12px; padding:8px 18px; font-size:14px; text-align:center; min-width:80px; line-height:1.4; }
+  .level-card { margin:0 16px 16px; background:#fff; border:1.5px solid #c8d9c0; border-radius:18px; padding:24px 20px 20px; text-align:center; }
+  .level-title { font-size:22px; color:#2d4a2d; margin-bottom:6px; }
+  .level-sub { font-size:14px; color:#7a9a7a; margin-bottom:20px; }
+  .levels-grid { display:flex; gap:10px; justify-content:center; margin-bottom:20px; }
+  .level-btn { flex:1; max-width:100px; background:#f4f8f2; border:1.5px solid #c8d9c0; border-radius:14px; padding:16px 8px; cursor:pointer; transition:all .2s; font-family:inherit; color:#2d4a2d; }
+  .level-btn:hover,.level-btn.active { background:#e0edd8; border-color:#4a7c4a; }
+  .level-icon { font-size:28px; display:block; margin-bottom:6px; }
+  .level-name { font-weight:700; font-size:15px; display:block; margin-bottom:6px; }
+  .level-desc { font-size:12px; color:#6a8a6a; line-height:1.5; }
+  .start-btn { width:100%; max-width:260px; background:#9db89d; color:#fff; border:none; border-radius:14px; padding:14px 20px; font-size:17px; font-family:inherit; cursor:pointer; transition:background .2s; }
+  .start-btn.ready { background:#4a7c4a; } .start-btn.ready:hover { background:#3a6a3a; }
+  .quiz-area { margin:0 16px 16px; background:#fff; border:1.5px solid #c8d9c0; border-radius:18px; padding:24px 20px; display:none; }
+  .q-number { font-size:13px; color:#7a9a7a; margin-bottom:10px; text-align:center; }
+  .q-text { font-size:19px; line-height:2; color:#2d4a2d; text-align:center; margin-bottom:20px; background:#f8fbf6; border-radius:12px; padding:16px; }
+  .choices { display:flex; flex-direction:column; gap:10px; }
+  .choice-btn { background:#f4f8f2; border:1.5px solid #c8d9c0; border-radius:12px; padding:14px 18px; font-size:17px; font-family:inherit; color:#2d4a2d; cursor:pointer; text-align:right; transition:all .15s; line-height:1.8; }
+  .choice-btn:hover:not(:disabled) { background:#e0edd8; border-color:#4a7c4a; }
+  .choice-btn.correct { background:#d4edda; border-color:#4a7c4a; color:#1a5c1a; }
+  .choice-btn.wrong { background:#f8d7da; border-color:#c0392b; color:#7a1a1a; }
+  .answer-input { width:100%; border:1.5px solid #c8d9c0; border-radius:12px; padding:14px 16px; font-size:18px; font-family:inherit; color:#2d4a2d; background:#f8fbf6; outline:none; resize:vertical; min-height:70px; text-align:right; direction:rtl; }
+  .answer-input:focus { border-color:#4a7c4a; }
+  .submit-btn { margin-top:14px; width:100%; background:#4a7c4a; color:#fff; border:none; border-radius:12px; padding:13px; font-size:17px; font-family:inherit; cursor:pointer; }
+  .submit-btn:hover { background:#3a6a3a; }
+  .feedback { margin-top:14px; padding:14px; border-radius:12px; font-size:16px; line-height:1.9; display:none; text-align:center; }
+  .feedback.correct { background:#d4edda; color:#1a5c1a; }
+  .feedback.wrong { background:#f8d7da; color:#7a1a1a; }
+  .skip-btn { margin-top:12px; width:100%; background:#f4f8f2; color:#4a7c4a; border:1.5px solid #c8d9c0; border-radius:12px; padding:14px 18px; font-size:17px; font-family:inherit; cursor:pointer; display:none; text-align:center; }
+  .skip-btn:hover { background:#e0edd8; }
+  .next-btn { margin-top:12px; width:100%; background:#4a7c4a; color:#fff; border:none; border-radius:12px; padding:13px; font-size:17px; font-family:inherit; cursor:pointer; display:none; }
+  .next-btn:hover { background:#3a6a3a; }
+  .result-area { margin:0 16px 16px; background:#fff; border:1.5px solid #c8d9c0; border-radius:18px; padding:30px 20px; text-align:center; display:none; }
+  .result-icon { font-size:52px; margin-bottom:12px; }
+  .result-title { font-size:24px; font-weight:700; color:#2d4a2d; margin-bottom:8px; }
+  .result-score { font-size:18px; color:#4a7c4a; margin-bottom:20px; }
+  .result-msg { font-size:16px; color:#6a8a6a; margin-bottom:24px; }
+  .retry-btn { background:#4a7c4a; color:#fff; border:none; border-radius:12px; padding:13px 30px; font-size:17px; font-family:inherit; cursor:pointer; margin:5px; }
+  .home-link { display:inline-block; background:#f4f8f2; color:#4a7c4a; border:1.5px solid #c8d9c0; border-radius:12px; padding:12px 28px; font-size:17px; font-family:inherit; text-decoration:none; margin:5px; }
+  .progress-bar-wrap { background:#e0edd8; border-radius:8px; height:8px; margin-bottom:18px; overflow:hidden; }
+  .progress-bar-fill { height:100%; background:#4a7c4a; border-radius:8px; transition:width .3s; }
+  .translate-bar { position:fixed; bottom:20px; left:16px; background:#4a7c4a; color:#fff; border-radius:50px; padding:10px 16px; font-size:14px; cursor:pointer; display:flex; align-items:center; gap:6px; z-index:100; box-shadow:0 4px 12px rgba(0,0,0,.15); }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html" class="back-btn">← الرجوع</a>
+</div>
+
+<div class="info-card">
+  <div class="surah-title">سورة البقرة</div>
+  <div class="ayat-range">الآيات ٦ إلى ١٦</div>
+  <div class="page-info">اختبار الحفظ | وجه ٢ — صفحة ٣</div>
+  <div class="stats-row">
+    <div class="stat-badge" id="qnum-badge">السؤال ١ /<br><span id="total-q">١٥</span></div>
+    <div class="stat-badge" id="wrong-badge">٠ ✗<br>خطأ</div>
+    <div class="stat-badge" id="correct-badge">٠ ✓<br>صحيح</div>
+  </div>
+</div>
+
+<div class="level-card" id="level-card">
+  <div class="level-title">اختر مستوى الاختبار</div>
+  <div class="level-sub">كل مستوى له طريقة مختلفة في الاختبار</div>
+  <div class="levels-grid">
+    <button class="level-btn" onclick="selectLevel('easy')" id="btn-easy">
+      <span class="level-icon">🌱</span>
+      <span class="level-name">سهل</span>
+      <span class="level-desc">اختيار من متعدد — اختر الكلمة الصحيحة من ٤ خيارات</span>
+    </button>
+    <button class="level-btn" onclick="selectLevel('medium')" id="btn-medium">
+      <span class="level-icon">🌿</span>
+      <span class="level-name">متوسط</span>
+      <span class="level-desc">إكمال فراغ — اكتب الكلمة أو الجزء الناقص من الآية</span>
+    </button>
+    <button class="level-btn" onclick="selectLevel('hard')" id="btn-hard">
+      <span class="level-icon">🌳</span>
+      <span class="level-name">صعب</span>
+      <span class="level-desc">اكتب الآية كاملة من الذاكرة بدون أي مساعدة</span>
+    </button>
+  </div>
+  <button class="start-btn" id="start-btn" onclick="startQuiz()">ابدأ الاختبار ←</button>
+</div>
+
+<div class="quiz-area" id="quiz-area">
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+  <div class="q-number" id="q-number">السؤال ١</div>
+  <div class="q-text" id="q-text"></div>
+  <div id="answer-zone"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="skip-btn" id="skip-btn" onclick="skipQuestion()">⏭ تخطي — أظهر الإجابة</button>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">التالي ←</button>
+</div>
+
+<div class="result-area" id="result-area">
+  <div class="result-icon" id="result-icon">🌟</div>
+  <div class="result-title" id="result-title">أحسنت!</div>
+  <div class="result-score" id="result-score"></div>
+  <div class="result-msg" id="result-msg"></div>
+  <button class="retry-btn" onclick="retryQuiz()">أعد الاختبار</button>
+  <a href="index.html" class="home-link">← الرئيسية</a>
+</div>
+
+<div class="translate-bar">🌐 ترجمة</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  أسئلة السهل — ١٥ سؤال MCQ (الآيات ٦–١٦)
+// ══════════════════════════════════════════════
+const EASY_Q=[
+  {q:"«إِنَّ الَّذِينَ كَفَرُوا سَوَاءٌ عَلَيْهِمْ أَأَنذَرْتَهُمْ أَمْ لَمْ تُنذِرْهُمْ لَا _____»",choices:["يُؤْمِنُونَ","يَهْتَدُونَ","يَتُوبُونَ","يَرْجِعُونَ"],answer:0},
+  {q:"«خَتَمَ اللَّهُ عَلَىٰ قُلُوبِهِمْ وَعَلَىٰ سَمْعِهِمْ وَعَلَىٰ أَبْصَارِهِمْ _____»",choices:["غِشَاوَةٌ","حِجَابٌ","غَمَامٌ","سِتَارٌ"],answer:0},
+  {q:"«يُخَادِعُونَ اللَّهَ وَالَّذِينَ آمَنُوا وَمَا يَخْدَعُونَ _____»",choices:["إِلَّا أَنفُسَهُمْ","إِلَّا الْمُؤْمِنِينَ","إِلَّا الْكَافِرِينَ","إِلَّا غَيْرَهُمْ"],answer:0},
+  {q:"«فِي قُلُوبِهِم مَّرَضٌ فَزَادَهُمُ اللَّهُ _____»",choices:["مَرَضًا","ضَلَالًا","كُفْرًا","خَسَارًا"],answer:0},
+  {q:"«وَإِذَا قِيلَ لَهُمْ لَا تُفْسِدُوا فِي الْأَرْضِ قَالُوا إِنَّمَا نَحْنُ _____»",choices:["مُصْلِحُونَ","مُؤْمِنُونَ","مُسْلِمُونَ","صَادِقُونَ"],answer:0},
+  {q:"«أَلَا إِنَّهُمْ هُمُ الْمُفْسِدُونَ وَلَٰكِن لَّا _____»",choices:["يَشْعُرُونَ","يَعْلَمُونَ","يَفْقَهُونَ","يُدْرِكُونَ"],answer:0},
+  {q:"«وَإِذَا قِيلَ لَهُمْ آمِنُوا كَمَا آمَنَ النَّاسُ قَالُوا أَنُؤْمِنُ كَمَا آمَنَ _____»",choices:["السُّفَهَاءُ","الْجُهَلَاءُ","الضُّعَفَاءُ","الْفُقَرَاءُ"],answer:0},
+  {q:"«وَإِذَا لَقُوا الَّذِينَ آمَنُوا قَالُوا آمَنَّا وَإِذَا خَلَوْا إِلَىٰ شَيَاطِينِهِمْ قَالُوا _____»",choices:["إِنَّا مَعَكُمْ","إِنَّا مِنْكُمْ","إِنَّا لَكُمْ","إِنَّا مِثْلُكُمْ"],answer:0},
+  {q:"«اللَّهُ يَسْتَهْزِئُ بِهِمْ وَيَمُدُّهُمْ فِي _____»",choices:["طُغْيَانِهِمْ","ضَلَالِهِمْ","كُفْرِهِمْ","فِسْقِهِمْ"],answer:0},
+  {q:"«أُولَٰئِكَ الَّذِينَ اشْتَرَوُا الضَّلَالَةَ بِالْهُدَىٰ فَمَا رَبِحَت تِّجَارَتُهُمْ وَمَا كَانُوا _____»",choices:["مُهْتَدِينَ","مُؤْمِنِينَ","صَادِقِينَ","رَاشِدِينَ"],answer:0}
+];
+
+// ══════════════════════════════════════════════
+//  أسئلة المتوسط — ١٠ أسئلة فراغ
+// ══════════════════════════════════════════════
+const MEDIUM_Q = [
+  { q:"«إِنَّ الَّذِينَ كَفَرُوا سَوَاءٌ عَلَيْهِمْ أَأَنذَرْتَهُمْ أَمْ لَمْ تُنذِرْهُمْ لَا _____»", answer:"يُؤْمِنُونَ" },
+  { q:"«خَتَمَ اللَّهُ عَلَىٰ قُلُوبِهِمْ وَعَلَىٰ سَمْعِهِمْ وَعَلَىٰ أَبْصَارِهِمْ _____»", answer:"غِشَاوَةٌ" },
+  { q:"«فِي قُلُوبِهِم مَّرَضٌ فَزَادَهُمُ اللَّهُ _____»", answer:"مَرَضًا" },
+  { q:"«وَمَا يَخْدَعُونَ إِلَّا _____»", answer:"أَنفُسَهُمْ" },
+  { q:"«إِنَّمَا نَحْنُ _____» — قالها المنافقون حين نُهوا عن الإفساد", answer:"مُصْلِحُونَ" },
+  { q:"«أَلَا إِنَّهُمْ هُمُ الْمُفْسِدُونَ وَلَٰكِن لَّا _____»", answer:"يَشْعُرُونَ" },
+  { q:"«أَنُؤْمِنُ كَمَا آمَنَ _____»", answer:"السُّفَهَاءُ" },
+  { q:"«وَإِذَا خَلَوْا إِلَىٰ شَيَاطِينِهِمْ قَالُوا إِنَّا _____»", answer:"مَعَكُمْ" },
+  { q:"«اللَّهُ يَسْتَهْزِئُ بِهِمْ وَيَمُدُّهُمْ فِي طُغْيَانِهِمْ _____»", answer:"يَعْمَهُونَ" },
+  { q:"«فَمَا رَبِحَت تِّجَارَتُهُمْ وَمَا كَانُوا _____»", answer:"مُهْتَدِينَ" }
+];
+
+// ══════════════════════════════════════════════
+//  أسئلة الصعب — ٥ أسئلة كتابة الآية
+// ══════════════════════════════════════════════
+const HARD_Q = [
+  { q:"اكتب الآية السادسة من سورة البقرة كاملة", answer:"إِنَّ الَّذِينَ كَفَرُوا سَوَاءٌ عَلَيْهِمْ أَأَنذَرْتَهُمْ أَمْ لَمْ تُنذِرْهُمْ لَا يُؤْمِنُونَ" },
+  { q:"اكتب الآية السابعة من سورة البقرة كاملة", answer:"خَتَمَ اللَّهُ عَلَىٰ قُلُوبِهِمْ وَعَلَىٰ سَمْعِهِمْ وَعَلَىٰ أَبْصَارِهِمْ غِشَاوَةٌ وَلَهُمْ عَذَابٌ عَظِيمٌ" },
+  { q:"اكتب الآية التاسعة من سورة البقرة كاملة", answer:"يُخَادِعُونَ اللَّهَ وَالَّذِينَ آمَنُوا وَمَا يَخْدَعُونَ إِلَّا أَنفُسَهُمْ وَمَا يَشْعُرُونَ" },
+  { q:"اكتب الآية الحادية عشرة من سورة البقرة كاملة", answer:"وَإِذَا قِيلَ لَهُمْ لَا تُفْسِدُوا فِي الْأَرْضِ قَالُوا إِنَّمَا نَحْنُ مُصْلِحُونَ" },
+  { q:"اكتب الآية السادسة عشرة من سورة البقرة كاملة", answer:"أُولَٰئِكَ الَّذِينَ اشْتَرَوُا الضَّلَالَةَ بِالْهُدَىٰ فَمَا رَبِحَت تِّجَارَتُهُمْ وَمَا كَانُوا مُهْتَدِينَ" }
+];
+
+// ══════════════════════════════════════════════
+//  State & Logic
+// ══════════════════════════════════════════════
+let currentLevel=null, questions=[], qIndex=0, correctCount=0, wrongCount=0;
+
+function toArabicNum(n){ return n.toString().replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]); }
+
+function selectLevel(lvl){
+  currentLevel=lvl;
+  document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+lvl).classList.add('active');
+  document.getElementById('start-btn').classList.add('ready');
+  const totals={easy:'١٥',medium:'١٠',hard:'٥'};
+  document.getElementById('total-q').textContent=totals[lvl];
+}
+
+function updateBadges(){
+  document.getElementById('qnum-badge').innerHTML=`السؤال ${toArabicNum(qIndex+1)} /<br>${toArabicNum(questions.length)}`;
+  document.getElementById('wrong-badge').innerHTML=`${toArabicNum(wrongCount)} ✗<br>خطأ`;
+  document.getElementById('correct-badge').innerHTML=`${toArabicNum(correctCount)} ✓<br>صحيح`;
+}
+
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr; }
+
+function startQuiz(){
+  if(!currentLevel)return;
+  if(currentLevel==='easy') questions=shuffle([...EASY_Q]);
+  if(currentLevel==='medium') questions=shuffle([...MEDIUM_Q]);
+  if(currentLevel==='hard') questions=[...HARD_Q];
+  qIndex=correctCount=wrongCount=0;
+  document.getElementById('level-card').style.display='none';
+  document.getElementById('quiz-area').style.display='block';
+  showQuestion();
+}
+
+function showQuestion(){
+  const q=questions[qIndex];
+  updateBadges();
+  document.getElementById('progress-fill').style.width=((qIndex)/questions.length*100)+'%';
+  document.getElementById('q-number').textContent=`السؤال ${toArabicNum(qIndex+1)} من ${toArabicNum(questions.length)}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('feedback').style.display='none';
+  document.getElementById('next-btn').style.display='none';
+  document.getElementById('skip-btn').style.display='block';
+  const zone=document.getElementById('answer-zone');
+  zone.innerHTML='';
+
+  if(currentLevel==='easy'){
+    const div=document.createElement('div'); div.className='choices';
+    shuffle(q.choices.map((c,i)=>({text:c,idx:i}))).forEach(opt=>{
+      const btn=document.createElement('button'); btn.className='choice-btn';
+      btn.textContent=opt.text; btn.onclick=()=>checkMCQ(opt.idx,q.answer,btn);
+      div.appendChild(btn);
+    });
+    zone.appendChild(div);
+  } else {
+    const ta=document.createElement('textarea'); ta.className='answer-input'; ta.id='user-input';
+    ta.placeholder=currentLevel==='medium'?'اكتب الكلمة الناقصة...':'اكتب الآية كاملة...';
+    zone.appendChild(ta);
+    const sub=document.createElement('button'); sub.className='submit-btn'; sub.textContent='تحقق ✓';
+    sub.onclick=()=>checkText(q); zone.appendChild(sub);
+  }
+}
+
+function normalize(str){ return str.replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآا]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/\s+/g,' ').trim(); }
+
+function checkMCQ(chosen,correct,btn){
+  document.querySelectorAll('.choice-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('feedback');
+  if(chosen===correct){ btn.classList.add('correct'); correctCount++; fb.className='feedback correct'; fb.textContent='✓ أحسنت!'; }
+  else {
+    btn.classList.add('wrong'); wrongCount++;
+    document.querySelectorAll('.choice-btn').forEach(b=>{ if(b.textContent===questions[qIndex].choices[correct]) b.classList.add('correct'); });
+    fb.className='feedback wrong'; fb.textContent=`✗ الإجابة الصحيحة: ${questions[qIndex].choices[correct]}`;
+  }
+  fb.style.display='block'; updateBadges(); document.getElementById('next-btn').style.display='block'; document.getElementById('skip-btn').style.display='none';
+}
+
+function checkText(q){
+  const input=document.getElementById('user-input'); const userVal=input.value.trim(); if(!userVal)return;
+  input.disabled=true; document.querySelector('.submit-btn').disabled=true;
+  const fb=document.getElementById('feedback');
+  if(normalize(userVal)===normalize(q.answer)){ correctCount++; fb.className='feedback correct'; fb.innerHTML='✓ أحسنت! إجابة صحيحة تماماً'; }
+  else { wrongCount++; fb.className='feedback wrong'; fb.innerHTML=`✗ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2">${q.answer}</span>`; }
+  fb.style.display='block'; updateBadges(); document.getElementById('next-btn').style.display='block'; document.getElementById('skip-btn').style.display='none';
+}
+
+function skipQuestion(){
+  const q=questions[qIndex];
+  const fb=document.getElementById('feedback');
+  // أظهر الإجابة الصحيحة
+  if(currentLevel==='easy'){
+    document.querySelectorAll('.choice-btn').forEach(b=>{
+      b.disabled=true;
+      if(b.textContent===q.choices[q.answer]) b.classList.add('correct');
+    });
+    fb.className='feedback wrong';
+    fb.innerHTML=`⬅ الإجابة الصحيحة: ${q.choices[q.answer]}`;
+  } else {
+    if(document.getElementById('user-input')) document.getElementById('user-input').disabled=true;
+    const sub=document.querySelector('.submit-btn');
+    if(sub) sub.disabled=true;
+    fb.className='feedback wrong';
+    fb.innerHTML=`⬅ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2">${q.answer}</span>`;
+  }
+  wrongCount++;
+  fb.style.display='block';
+  updateBadges();
+  document.getElementById('skip-btn').style.display='none';
+  document.getElementById('next-btn').style.display='block'; document.getElementById('skip-btn').style.display='none';
+}
+function nextQuestion(){ qIndex++; if(qIndex>=questions.length) showResult(); else showQuestion(); }
+
+function showResult(){
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('result-area').style.display='block';
+  const pct=Math.round((correctCount/questions.length)*100);
+  document.getElementById('result-score').textContent=`${toArabicNum(correctCount)} / ${toArabicNum(questions.length)} — ${toArabicNum(pct)}%`;
+  let icon,title,msg;
+  if(pct===100){icon='🌟';title='ممتاز! حفظ مثالي';msg='ما شاء الله! أتقنت الصفحة بالكامل';}
+  else if(pct>=80){icon='✨';title='أحسنت!';msg='نتيجة رائعة، استمر في المراجعة';}
+  else if(pct>=60){icon='📖';title='جيد';msg='راجع الصفحة مرة أخرى وأعد الاختبار';}
+  else{icon='🌱';title='تحتاج مراجعة';msg='لا تيأس، المراجعة المستمرة هي المفتاح';}
+  document.getElementById('result-icon').textContent=icon;
+  document.getElementById('result-title').textContent=title;
+  document.getElementById('result-msg').textContent=msg;
+  document.getElementById('progress-fill').style.width='100%';
+  updateBadges();
+}
+
+function retryQuiz(){
+  document.getElementById('result-area').style.display='none';
+  document.getElementById('level-card').style.display='block';
+  currentLevel=null;
+  document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('start-btn').classList.remove('ready');
+  document.getElementById('total-q').textContent='١٠';
+  document.getElementById('wrong-badge').innerHTML='٠ ✗<br>خطأ';
+  document.getElementById('correct-badge').innerHTML='٠ ✓<br>صحيح';
+  document.getElementById('qnum-badge').innerHTML='السؤال ١ /<br>١٠';
+  document.getElementById('progress-fill').style.width='0%';
+}
+</script>
+</body>
+</html>
