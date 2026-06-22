@@ -497,19 +497,19 @@ const EASY_Q = [
   {q:"«وَلَا تَعْثَوْا فِي الْأَرْضِ _____»",choices:["مُفْسِدِينَ","ظَالِمِينَ","كَافِرِينَ"],answer:0},
   {q:"«لَن نَّصْبِرَ عَلَىٰ طَعَامٍ _____»",choices:["وَاحِدٍ","قَلِيلٍ","يَسِيرٍ"],answer:0},
   {q:"«وَبَاءُوا بِـ_____»",choices:["غَضَبٍ مِّنَ اللَّهِ","لَعْنَةٍ مِّنَ اللَّهِ","سَخَطٍ مِّنَ اللَّهِ"],answer:0},
-  {q:"«كَانُوا يَكْفُرُونَ بِـَٔايَٰتِ اللَّهِ وَيَقْتُلُونَ _____»",choices:["النَّبِيِّينَ بِغَيْرِ الْحَقِّ","الرُّسُلَ بِغَيْرِ الْحَقِّ","الْمُؤْمِنِينَ بِغَيْرِ الْحَقِّ"],answer:0},
+  {q:"«كَانُوا يَكْفُرُونَ بِـَٔايَٰتِ اللَّهِ وَيَقْتُلُونَ _____»",choices:["النَّبِيِّينَ بِغَيْرِ الْحَقِّ","الرُّسُلَ بِغَيْرِ الْحَقِّ","الْمُؤْمِنِينَ"],answer:0},
   {q:"«ذَٰلِكَ بِمَا عَصَوا وَّكَانُوا _____»",choices:["يَعْتَدُونَ","يَظْلِمُونَ","يَكْفُرُونَ"],answer:0}
 ];
 
 const MEDIUM_Q = [
-  {q:"«وَإِذْ قُلْنَا ادْخُلُوا هَٰذِهِ الْقَرْيَةَ فَكُلُوا مِنْهَا حَيْثُ شِئْتُمْ _____»", answer:"رَغَدًا"},
+  {q:"«فَكُلُوا مِنْهَا حَيْثُ شِئْتُمْ _____»", answer:"رَغَدًا"},
   {q:"«وَقُولُوا حِطَّةٌ نَّغْفِرْ لَكُمْ _____»", answer:"خَطَايَاكُمْ"},
   {q:"«وَسَنَزِيدُ _____»", answer:"الْمُحْسِنِينَ"},
   {q:"«فَأَنزَلْنَا عَلَى الَّذِينَ ظَلَمُوا رِجْزًا مِّنَ السَّمَآءِ بِمَا كَانُوا _____»", answer:"يَفْسُقُونَ"},
   {q:"«فَانفَجَرَتْ مِنْهُ اثْنَتَا عَشْرَةَ _____»", answer:"عَيْنًا"},
   {q:"«كُلُوا وَاشْرَبُوا مِن رِّزْقِ اللَّهِ وَلَا تَعْثَوْا فِي الْأَرْضِ _____»", answer:"مُفْسِدِينَ"},
   {q:"«أَتَسْتَبْدِلُونَ الَّذِي هُوَ أَدْنَىٰ _____»", answer:"بِالَّذِي هُوَ خَيْرٌ"},
-  {q:"«وَضُرِبَتْ عَلَيْهِمُ الذِّلَّةُ وَالْمَسْكَنَةُ وَبَاءُوا بِغَضَبٍ مِّنَ اللَّهِ ذَٰلِكَ بِأَنَّهُمْ كَانُوا يَكْفُرُونَ بِـَٔايَٰتِ اللَّهِ وَيَقْتُلُونَ _____»", answer:"النَّبِيِّينَ بِغَيْرِ الْحَقِّ"},
+  {q:"«وَبَاءُوا بِغَضَبٍ مِّنَ اللَّهِ ذَٰلِكَ بِأَنَّهُمْ كَانُوا يَكْفُرُونَ بِـَٔايَٰتِ اللَّهِ وَيَقْتُلُونَ _____»", answer:"النَّبِيِّينَ بِغَيْرِ الْحَقِّ"},
   {q:"«ذَٰلِكَ بِمَا عَصَوا وَّكَانُوا _____»", answer:"يَعْتَدُونَ"},
   {q:"«وَإِذِ اسْتَسْقَىٰ مُوسَىٰ لِقَوْمِهِ فَقُلْنَا اضْرِب بِّعَصَاكَ _____»", answer:"الْحَجَرَ"}
 ];
@@ -606,174 +606,153 @@ function showQuestion() {
     });
     zone.appendChild(div);
   } else {
+    // ── Hard level: voice OR text choice
     if (currentLevel === 'hard') {
-      // اختيار طريقة الإجابة: صوت أو كتابة
+      const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+      const SpeechAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      // Mode selector
       const modeWrap = document.createElement('div');
-      modeWrap.style.cssText = 'display:flex; gap:10px; margin-bottom:12px;';
-      modeWrap.id = 'mode-selector';
-      [['🎤 تسجيل صوتي','voice'],['⌨️ كتابة','text']].forEach(([label,mode]) => {
-        const btn = document.createElement('button');
-        btn.textContent = label; btn.dataset.mode = mode;
-        btn.style.cssText = 'flex:1;padding:11px;border-radius:11px;font-size:15px;font-family:inherit;cursor:pointer;border:1.5px solid var(--border);background:var(--surface2);color:var(--text);transition:all .2s;';
-        btn.onclick = () => {
-          document.querySelectorAll('#mode-selector button').forEach(b=>{b.style.background='var(--surface2)';b.style.borderColor='var(--border)';b.style.color='var(--text)';});
-          btn.style.background='var(--accent)';btn.style.color='#fff';btn.style.borderColor='var(--accent)';
-          const vz=document.getElementById('voice-zone'); if(vz) vz.style.display=mode==='voice'?'block':'none';
-          const tz=document.getElementById('text-zone');  if(tz) tz.style.display=mode==='text'?'block':'none';
+      modeWrap.style.cssText = 'display:flex;gap:10px;margin-bottom:12px;';
+      ['🎤 تسجيل صوتي|voice','⌨️ كتابة|text'].forEach(item => {
+        const [label, mode] = item.split('|');
+        const mb = document.createElement('button');
+        mb.textContent = label;
+        mb.style.cssText = 'flex:1;padding:11px;border-radius:11px;font-size:15px;font-family:inherit;cursor:pointer;border:1.5px solid var(--border);background:var(--surface2);color:var(--text);transition:all .2s;';
+        mb.onclick = () => {
+          modeWrap.querySelectorAll('button').forEach(b => { b.style.background='var(--surface2)'; b.style.color='var(--text)'; b.style.borderColor='var(--border)'; });
+          mb.style.background='var(--accent)'; mb.style.color='#fff'; mb.style.borderColor='var(--accent)';
+          vZone.style.display = mode==='voice' ? 'block' : 'none';
+          tZone.style.display = mode==='text'  ? 'block' : 'none';
         };
-        modeWrap.appendChild(btn);
+        modeWrap.appendChild(mb);
       });
       zone.appendChild(modeWrap);
 
-      // منطقة التسجيل الصوتي
-      const voiceZone = document.createElement('div');
-      voiceZone.id = 'voice-zone'; voiceZone.style.display = 'none';
-      const recordBtn = document.createElement('button');
-      recordBtn.id = 'record-btn';
-      recordBtn.textContent = '🎤 اضغط للتسجيل';
-      recordBtn.style.cssText = 'width:100%;padding:16px;border-radius:14px;font-size:17px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:10px;';
-      const transcriptBox = document.createElement('div');
-      transcriptBox.id = 'transcript-box';
-      transcriptBox.style.cssText = 'min-height:60px;background:var(--surface3);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:17px;line-height:1.9;color:var(--text);text-align:right;direction:rtl;margin-bottom:10px;display:none;';
-      const voiceSubmit = document.createElement('button');
-      voiceSubmit.className = 'submit-btn'; voiceSubmit.textContent = 'تحقق ✓'; voiceSubmit.style.display = 'none';
-      voiceSubmit.onclick = () => {
-        const txt = transcriptBox.textContent.trim(); if(!txt) return;
-        voiceSubmit.disabled=true; recordBtn.disabled=true;
-        checkTextVal(q, txt);
+      // ── Voice zone
+      const vZone = document.createElement('div');
+      vZone.style.display = 'none';
+
+      const recBtn = document.createElement('button');
+      recBtn.textContent = '🎤 اضغط للتسجيل';
+      recBtn.style.cssText = 'width:100%;padding:14px;border-radius:12px;font-size:16px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:8px;';
+
+      const clrBtn = document.createElement('button');
+      clrBtn.textContent = '🗑️ مسح التسجيل';
+      clrBtn.style.cssText = 'width:100%;padding:9px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid var(--wrong-border);background:var(--wrong-bg);color:var(--wrong-text);margin-bottom:8px;display:none;';
+
+      const txBox = document.createElement('div');
+      txBox.style.cssText = 'background:var(--surface3);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:17px;line-height:1.9;color:var(--text);direction:rtl;text-align:right;margin-bottom:10px;display:none;min-height:60px;';
+
+      const vSub = document.createElement('button');
+      vSub.className = 'submit-btn'; vSub.textContent = 'تحقق ✓'; vSub.style.display = 'none';
+      vSub.onclick = () => { const t=txBox.textContent.trim(); if(!t) return; vSub.disabled=true; recBtn.disabled=true; checkTextVal(q,t); };
+
+      // Clear button logic
+      clrBtn.onclick = () => {
+        if (rec && recognizing) { manualStop=true; recognizing=false; try{rec.stop();}catch(e){} }
+        fullTx=''; savedTx=''; txBox.textContent=''; txBox.style.display='none';
+        vSub.style.display='none'; clrBtn.style.display='none';
+        recBtn.disabled=false; recBtn.textContent='🎤 اضغط للتسجيل';
+        recBtn.style.background='var(--surface2)'; recBtn.style.color='var(--text)'; recBtn.style.borderColor='var(--border)';
       };
-      let recognizing = false;
-      const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
-      const SpeechRec = (window.SpeechRecognition || window.webkitSpeechRecognition);
-      if (SpeechRec && isSecure) {
-        const rec = new SpeechRec();
-        rec.lang='ar-SA'; rec.continuous=true; rec.interimResults=true;
-        let manualStop = false;
-        let fullTranscript = '';
-        let savedTranscript = '';  // النص المحفوظ قبل إعادة التسجيل
 
-        // إزالة التكرار عند نقطة الوصل بين جلستين
-        function removeOverlap(existing, newText) {
-          if (!existing) return newText;
-          const norm = s => s.replace(/[ً-ٰٟ]/g,'').replace(/\s+/g,' ').trim();
-          const existWords = norm(existing).split(' ');
-          const newWords   = norm(newText).split(' ');
-          // نجرب حذف أول 1 أو 2 أو 3 كلمات لو موجودين في آخر النص السابق
-          for (let overlap = Math.min(3, existWords.length, newWords.length); overlap >= 1; overlap--) {
-            const tail  = existWords.slice(-overlap).join(' ');
-            const head  = newWords.slice(0, overlap).join(' ');
-            if (tail === head) {
-              // احذف الكلمات المكررة من بداية النص الجديد
-              const rawNewWords = newText.trim().split(/\s+/);
-              return rawNewWords.slice(overlap).join(' ');
-            }
-          }
-          return newText;
+      let rec=null, recognizing=false, manualStop=false, fullTx='', savedTx='';
+
+      function removeOverlap(existing, newText) {
+        if (!existing) return newText;
+        const nm = s => s.replace(/[ً-ٰٟ]/g,'').replace(/\s+/g,' ').trim();
+        const ew = nm(existing).split(' '), nw = nm(newText).split(' ');
+        for (let ov=Math.min(3,ew.length,nw.length); ov>=1; ov--) {
+          if (ew.slice(-ov).join(' ') === nw.slice(0,ov).join(' '))
+            return newText.trim().split(/\s+/).slice(ov).join(' ');
         }
+        return newText;
+      }
 
-        rec.onstart = ()=>{ recognizing=true; manualStop=false; recordBtn.textContent='⏹ أوقف التسجيل'; recordBtn.style.background='#e74c3c'; recordBtn.style.color='#fff'; recordBtn.style.borderColor='#e74c3c'; };
-        rec.onresult = (e)=>{
-          let t='';
-          for(let i=0;i<e.results.length;i++) t+=e.results[i][0].transcript+' ';
-          const deduped = removeOverlap(savedTranscript, t.trim());
-          fullTranscript = (savedTranscript + ' ' + deduped).trim();
-          transcriptBox.textContent=fullTranscript; transcriptBox.style.display='block'; voiceSubmit.style.display='block';
+      if (SpeechAPI && isSecure) {
+        rec = new SpeechAPI();
+        rec.lang='ar-SA'; rec.continuous=true; rec.interimResults=true;
+        rec.onstart = () => { recognizing=true; manualStop=false; recBtn.textContent='⏹ أوقف التسجيل'; recBtn.style.background='#e74c3c'; recBtn.style.color='#fff'; recBtn.style.borderColor='#e74c3c'; };
+        rec.onresult = e => {
+          let t=''; for(let i=0;i<e.results.length;i++) t+=e.results[i][0].transcript+' ';
+          fullTx = (savedTx+' '+removeOverlap(savedTx,t.trim())).trim();
+          txBox.textContent=fullTx; txBox.style.display='block'; vSub.style.display='block'; clrBtn.style.display='block';
         };
-        rec.onerror = (e)=>{
-          if(e.error==='no-speech' && !manualStop){ try{rec.start();}catch(ex){} return; }
-          recognizing=false;
+        rec.onerror = e => { if(e.error==='no-speech'&&!manualStop){try{rec.start();}catch(ex){}} else recognizing=false; };
+        rec.onend = () => {
+          if(recognizing&&!manualStop){try{rec.start();}catch(ex){recognizing=false;} return;}
+          recognizing=false; recBtn.textContent=fullTx?'🎤 أعد التسجيل':'🎤 اضغط للتسجيل';
+          recBtn.style.background='var(--surface2)'; recBtn.style.color='var(--text)'; recBtn.style.borderColor='var(--border)';
         };
-        rec.onend = ()=>{
-          if(recognizing && !manualStop){ try{rec.start();}catch(ex){ recognizing=false; } return; }
-          recognizing=false;
-          recordBtn.textContent= fullTranscript ? '🎤 أعد التسجيل' : '🎤 اضغط للتسجيل';
-          recordBtn.style.background='var(--surface2)'; recordBtn.style.color='var(--text)'; recordBtn.style.borderColor='var(--border)';
-        };
-        recordBtn.onclick = ()=>{
-          if(recognizing){ manualStop=true; recognizing=false; savedTranscript=fullTranscript; rec.stop(); return; }
-          transcriptBox.textContent=''; transcriptBox.style.display='none'; voiceSubmit.style.display='none';
-          recordBtn.textContent='⏳ جاري الاتصال بالميكروفون...'; recordBtn.disabled=true;
-          navigator.mediaDevices && navigator.mediaDevices.getUserMedia({audio:true})
-            .then(stream=>{ stream.getTracks().forEach(t=>t.stop()); recordBtn.disabled=false; recordBtn.textContent='🎤 اضغط للتسجيل'; rec.start(); })
+        recBtn.onclick = () => {
+          if(recognizing){manualStop=true;recognizing=false;savedTx=fullTx;try{rec.stop();}catch(e){}return;}
+          recBtn.textContent='⏳ جاري الاتصال...'; recBtn.disabled=true;
+          navigator.mediaDevices.getUserMedia({audio:true})
+            .then(s=>{s.getTracks().forEach(t=>t.stop());recBtn.disabled=false;recBtn.textContent='🎤 اضغط للتسجيل';rec.start();})
             .catch(err=>{
-              recordBtn.disabled=false;
-              if(err.name==='NotAllowedError'){ recordBtn.textContent='🚫 تم رفض إذن الميكروفون — افتحي الملف مباشرة في المتصفح'; }
-              else if(err.name==='NotFoundError'){ recordBtn.textContent='⚠️ لم يُعثر على ميكروفون'; }
-              else { recordBtn.textContent='⚠️ خطأ: '+err.message; }
-              transcriptBox.textContent='💡 لتفعيل التسجيل الصوتي: حمّلي الملف وافتحيه مباشرة في متصفح كروم';
-              transcriptBox.style.display='block';
+              recBtn.disabled=false;
+              recBtn.textContent = err.name==='NotAllowedError' ? '🚫 تم رفض الإذن' : '⚠️ '+err.message;
+              txBox.textContent='💡 افتحي الملف مباشرة في كروم لتفعيل التسجيل';
+              txBox.style.display='block'; txBox.style.color='var(--text-soft)'; txBox.style.fontSize='14px';
             });
         };
       } else {
-        recordBtn.textContent = isSecure ? '⚠️ المتصفح لا يدعم التسجيل الصوتي' : '🔒 التسجيل الصوتي يعمل فقط على الموقع (GitHub Pages)';
-        recordBtn.disabled = true;
-        recordBtn.style.opacity = '0.65';
-        transcriptBox.textContent = isSecure
-          ? 'جرّبي متصفحاً آخر مثل كروم'
-          : '💡 افتحي الصفحة من الموقع الرسمي لتفعيل هذه الميزة: quran-darbi.github.io/Quran-test-';
-        transcriptBox.style.display = 'block';
-        transcriptBox.style.color = 'var(--text-soft)';
-        transcriptBox.style.fontSize = '14px';
+        recBtn.textContent = isSecure ? '⚠️ المتصفح لا يدعم التسجيل' : '🔒 يعمل فقط على الموقع الرسمي';
+        recBtn.disabled=true; recBtn.style.opacity='0.65';
+        txBox.textContent='💡 quran-darbi.github.io/Quran-test-';
+        txBox.style.display='block'; txBox.style.color='var(--text-soft)'; txBox.style.fontSize='14px';
       }
-      // زر مسح التسجيل
-      const clearBtn = document.createElement('button');
-      clearBtn.textContent = '🗑️ مسح التسجيل';
-      clearBtn.style.cssText = 'width:100%;padding:10px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid var(--wrong-border);background:var(--wrong-bg);color:var(--wrong-text);margin-bottom:8px;display:none;';
-      clearBtn.onclick = ()=>{
-        if(recognizing){ manualStop=true; recognizing=false; try{rec.stop();}catch(e){} }
-        fullTranscript=''; savedTranscript='';
-        transcriptBox.textContent=''; transcriptBox.style.display='none';
-        voiceSubmit.style.display='none'; clearBtn.style.display='none';
-        recordBtn.disabled=false; recordBtn.textContent='🎤 اضغط للتسجيل';
-        recordBtn.style.background='var(--surface2)'; recordBtn.style.color='var(--text)'; recordBtn.style.borderColor='var(--border)';
-      };
 
-      voiceZone.appendChild(recordBtn); voiceZone.appendChild(clearBtn); voiceZone.appendChild(transcriptBox); voiceZone.appendChild(voiceSubmit);
-      
-      // أظهر زر المسح لما يظهر نص
-      const origOnresult = rec.onresult;
-      rec.onresult = (e)=>{ origOnresult(e); clearBtn.style.display = fullTranscript ? 'block' : 'none'; };
-      zone.appendChild(voiceZone);
-    }
+      vZone.appendChild(recBtn); vZone.appendChild(clrBtn); vZone.appendChild(txBox); vZone.appendChild(vSub);
+      zone.appendChild(vZone);
 
-    // منطقة الكتابة
-    const textZoneWrap = document.createElement('div');
-    textZoneWrap.id = 'text-zone';
-    textZoneWrap.style.display = currentLevel==='hard' ? 'none' : 'block';
-    const ta = document.createElement('textarea');
-    ta.className='answer-input';
-    ta.placeholder=currentLevel==='medium'?'اكتب الكلمة الناقصة...':'اكتب الآية كاملة...';
-    ta.id='user-input';
-    textZoneWrap.appendChild(ta);
-    zone.appendChild(textZoneWrap);
+      // ── Text zone (always present for hard)
+      const tZone = document.createElement('div');
+      tZone.style.display = 'none';
+      const ta = document.createElement('textarea');
+      ta.className='answer-input'; ta.placeholder='اكتب الآية كاملة...'; ta.id='user-input';
+      tZone.appendChild(ta);
 
-    if (currentLevel === 'hard') {
       const hintBox = document.createElement('div');
-      hintBox.id = 'hint-box';
-      hintBox.style.cssText = 'display:none; background:var(--hint-bg); border:1.5px dashed var(--hint-border); border-radius:10px; padding:10px 14px; margin-top:10px; font-size:18px; color:var(--accent-dark); text-align:center;';
-      zone.appendChild(hintBox);
-
+      hintBox.style.cssText='display:none;background:var(--hint-bg);border:1.5px dashed var(--hint-border);border-radius:10px;padding:10px 14px;margin-top:10px;font-size:18px;color:var(--accent-dark);text-align:center;';
+      tZone.appendChild(hintBox);
       const hintBtn = document.createElement('button');
-      hintBtn.id = 'hint-btn';
-      hintBtn.textContent = '💡 مساعدة (أول ٣ كلمات)';
-      hintBtn.style.cssText = 'width:100%; background:var(--hint-btn-bg); color:var(--hint-btn-text); border:1.5px solid var(--hint-btn-border); border-radius:10px; padding:10px; font-size:15px; font-family:inherit; cursor:pointer; margin-top:10px;';
-      hintBtn.onclick = () => {
-        const words = q.answer.split(' ').slice(0, 3).join(' ');
-        hintBox.textContent = words + ' ...';
-        hintBox.style.display = 'block';
-        hintBtn.disabled = true;
-        hintBtn.style.opacity = '0.5';
-        hintBtn.style.cursor = 'default';
-      };
-      zone.appendChild(hintBtn);
-    }
+      hintBtn.id='hint-btn'; hintBtn.textContent='💡 مساعدة (أول ٣ كلمات)';
+      hintBtn.style.cssText='width:100%;background:var(--hint-btn-bg);color:var(--hint-btn-text);border:1.5px solid var(--hint-btn-border);border-radius:10px;padding:10px;font-size:15px;font-family:inherit;cursor:pointer;margin-top:10px;';
+      hintBtn.onclick=()=>{hintBox.textContent=q.answer.split(' ').slice(0,3).join(' ')+' ...';hintBox.style.display='block';hintBtn.disabled=true;hintBtn.style.opacity='0.5';};
+      tZone.appendChild(hintBtn);
+      const tSub = document.createElement('button');
+      tSub.className='submit-btn'; tSub.textContent='تحقق ✓';
+      tSub.onclick=()=>checkText(q);
+      tZone.appendChild(tSub);
+      zone.appendChild(tZone);
 
-    const sub = document.createElement('button');
-    sub.className = 'submit-btn';
-    sub.textContent = 'تحقق ✓';
-    sub.onclick = () => checkText(q);
-    zone.appendChild(sub);
+    } else {
+      // Medium level: plain textarea + submit
+      const ta = document.createElement('textarea');
+      ta.className='answer-input'; ta.placeholder='اكتب الكلمة الناقصة...'; ta.id='user-input';
+      zone.appendChild(ta);
+      const sub = document.createElement('button');
+      sub.className='submit-btn'; sub.textContent='تحقق ✓';
+      sub.onclick=()=>checkText(q);
+      zone.appendChild(sub);
+    }
   }
+}
+
+function checkTextVal(q, userVal) {
+  const fb = document.getElementById('feedback');
+  if (normalize(userVal) === normalize(q.answer)) {
+    correctCount++; statuses[qIndex]='correct';
+    fb.className='feedback correct'; fb.innerHTML='✓ أحسنت! إجابة صحيحة';
+  } else {
+    wrongCount++; statuses[qIndex]='wrong'; wrongIndices.push(qIndex);
+    fb.className='feedback wrong'; fb.innerHTML='✗ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2">'+q.answer+'</span>';
+  }
+  fb.style.display='block'; updateBadges(); renderDotProgress(); saveResumeState();
+  document.getElementById('next-btn').style.display='block';
+  document.getElementById('skip-btn').style.display='none';
 }
 
 function normalize(str) {
@@ -806,22 +785,6 @@ function checkMCQ(chosen, correct, btn) {
   fb.style.display = 'block';
   updateBadges();
   renderDotProgress(); saveResumeState(); document.getElementById('next-btn').style.display = 'block'; document.getElementById('skip-btn').style.display = 'none';
-}
-
-function checkTextVal(q, userVal) {
-  const input = document.getElementById('user-input');
-  if (input) input.disabled = true;
-  const sub = document.querySelector('.submit-btn'); if(sub) sub.disabled=true;
-  const fb = document.getElementById('feedback');
-  if (normalize(userVal) === normalize(q.answer)) {
-    correctCount++; statuses[qIndex]='correct';
-    fb.className='feedback correct'; fb.innerHTML='✓ أحسنت! إجابة صحيحة تماماً';
-  } else {
-    wrongCount++; statuses[qIndex]='wrong'; wrongIndices.push(qIndex);
-    fb.className='feedback wrong'; fb.innerHTML=`✗ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2">${q.answer}</span>`;
-  }
-  fb.style.display='block'; updateBadges(); renderDotProgress(); saveResumeState();
-  document.getElementById('next-btn').style.display='block'; document.getElementById('skip-btn').style.display='none';
 }
 
 function checkText(q) {
