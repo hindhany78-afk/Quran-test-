@@ -692,11 +692,12 @@ function showQuestion() {
           fullTx=(savedTx ? savedTx+' '+t.trim() : t.trim()).trim();
           txBox.textContent=fullTx; txBox.style.display='block'; vSub.style.display='block'; clrBtn.style.display='block';
         };
-        rec.onerror = e => { if(e.error==='no-speech'&&!manualStop){try{rec.start();}catch(ex){}}else recognizing=false; };
+        rec.onerror = e => { if(e.error!=='no-speech') recognizing=false; };
         rec.onend = () => {
-          if(recognizing&&!manualStop){savedTx=fullTx;try{rec.start();}catch(ex){recognizing=false;}return;}
-          recognizing=false; recBtn.textContent=fullTx?'🎤 أعد التسجيل':'🎤 اضغط للتسجيل';
+          recognizing=false;
+          recBtn.textContent=fullTx?'🎤 أكمل التسجيل':'🎤 اضغط للتسجيل';
           recBtn.style.background='var(--surface2)'; recBtn.style.color='var(--text)'; recBtn.style.borderColor='var(--border)';
+          if(fullTx) savedTx=fullTx;
         };
         recBtn.onclick = () => {
           if(recognizing){manualStop=true;recognizing=false;savedTx=fullTx;try{rec.stop();}catch(e){}return;}
