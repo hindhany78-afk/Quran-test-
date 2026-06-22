@@ -715,7 +715,24 @@ function showQuestion() {
         transcriptBox.style.color = 'var(--text-soft)';
         transcriptBox.style.fontSize = '14px';
       }
-      voiceZone.appendChild(recordBtn); voiceZone.appendChild(transcriptBox); voiceZone.appendChild(voiceSubmit);
+      // زر مسح التسجيل
+      const clearBtn = document.createElement('button');
+      clearBtn.textContent = '🗑️ مسح التسجيل';
+      clearBtn.style.cssText = 'width:100%;padding:10px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid var(--wrong-border);background:var(--wrong-bg);color:var(--wrong-text);margin-bottom:8px;display:none;';
+      clearBtn.onclick = ()=>{
+        if(recognizing){ manualStop=true; recognizing=false; try{rec.stop();}catch(e){} }
+        fullTranscript=''; savedTranscript='';
+        transcriptBox.textContent=''; transcriptBox.style.display='none';
+        voiceSubmit.style.display='none'; clearBtn.style.display='none';
+        recordBtn.disabled=false; recordBtn.textContent='🎤 اضغط للتسجيل';
+        recordBtn.style.background='var(--surface2)'; recordBtn.style.color='var(--text)'; recordBtn.style.borderColor='var(--border)';
+      };
+
+      voiceZone.appendChild(recordBtn); voiceZone.appendChild(clearBtn); voiceZone.appendChild(transcriptBox); voiceZone.appendChild(voiceSubmit);
+      
+      // أظهر زر المسح لما يظهر نص
+      const origOnresult = rec.onresult;
+      rec.onresult = (e)=>{ origOnresult(e); clearBtn.style.display = fullTranscript ? 'block' : 'none'; };
       zone.appendChild(voiceZone);
     }
 
