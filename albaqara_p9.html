@@ -608,7 +608,6 @@ function showQuestion() {
   } else {
     if (currentLevel === 'hard') {
 
-      // أزرار الوضع
       const modeRow = document.createElement('div');
       modeRow.style.cssText = 'display:flex;gap:10px;margin-bottom:12px;';
       const bVoice = document.createElement('button');
@@ -637,7 +636,6 @@ function showQuestion() {
         bVoice.style.background='var(--surface2)'; bVoice.style.color='var(--text)'; bVoice.style.borderColor='var(--border)';
       };
 
-      // عناصر التسجيل
       const recBtn = document.createElement('button');
       recBtn.style.cssText = 'width:100%;padding:14px;border-radius:12px;font-size:16px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:8px;';
       recBtn.textContent = '🎤 اضغط للتسجيل';
@@ -658,91 +656,61 @@ function showQuestion() {
       const isSecure = location.protocol==='https:'||location.hostname==='localhost';
       const SpeechAPI = window.SpeechRecognition||window.webkitSpeechRecognition;
 
-      // النص المحفوظ من جلسات سابقة (بعد الضغط على إيقاف مؤقت)
-      let savedText = '';
-      // النص المتراكم في الجلسة الحالية
-      let currentText = '';
-      let recognizing = false;
-      let rec = null;
-
-      function getFullText(){ return savedText ? (savedText+' '+currentText).trim() : currentText; }
+      let savedText='', recognizing=false, manualStop=false;
 
       function setBtn(state){
-        if(state==='rec')  { recBtn.textContent='⏸ إيقاف مؤقت';    recBtn.style.background='#e74c3c'; recBtn.style.color='#fff'; recBtn.style.borderColor='#e74c3c'; }
-        if(state==='pause'){ recBtn.textContent='▶️ استمر في التسجيل'; recBtn.style.background='#e67e22'; recBtn.style.color='#fff'; recBtn.style.borderColor='#e67e22'; }
-        if(state==='idle') { recBtn.textContent='🎤 اضغط للتسجيل'; recBtn.style.background='var(--surface2)'; recBtn.style.color='var(--text)'; recBtn.style.borderColor='var(--border)'; }
+        if(state==='rec')  { recBtn.textContent='⏸ إيقاف مؤقت';      recBtn.style.background='#e74c3c';recBtn.style.color='#fff';recBtn.style.borderColor='#e74c3c'; }
+        if(state==='pause'){ recBtn.textContent='▶️ استمر في التسجيل'; recBtn.style.background='#e67e22';recBtn.style.color='#fff';recBtn.style.borderColor='#e67e22'; }
+        if(state==='idle') { recBtn.textContent='🎤 اضغط للتسجيل';    recBtn.style.background='var(--surface2)';recBtn.style.color='var(--text)';recBtn.style.borderColor='var(--border)'; }
       }
 
-      clrBtn.onclick = () => {
-        if(recognizing){try{rec.stop();}catch(e){} recognizing=false;}
-        savedText=''; currentText='';
+      clrBtn.onclick=()=>{
+        manualStop=true; recognizing=false; savedText='';
         txBox.textContent=''; txBox.style.display='none'; vSub.style.display='none'; clrBtn.style.display='none';
         setBtn('idle');
       };
 
       if(SpeechAPI && isSecure){
 
-        rec = new SpeechAPI();
-        rec.lang='ar-SA'; rec.continuous=true; rec.interimResults=true;
+        function startRec(){
+          const r = new SpeechAPI();
+          // continuous=false: كل جملة نتيجة واحدة نظيفة بدون تكرار
+          r.lang='ar-SA'; r.continuous=false; r.interimResults=true;
 
-        rec.onstart = () => { recognizing=true; currentText=''; setBtn('rec'); txBox.style.display='block'; txBox.textContent=savedText||'🎤 ...'; };
+          r.onstart=()=>{ recognizing=true; setBtn('rec'); txBox.style.display='block'; if(!txBox.textContent) txBox.textContent='🎤 ...'; };
 
-        rec.onresult = e => {
-          // الحل الصحيح: استخدم e.resultIndex لمعالجة النتائج الجديدة فقط
-          for(let i=e.resultIndex; i<e.results.length; i++){
-            if(e.results[i].isFinal){
-              currentText = (currentText+' '+e.results[i][0].transcript).trim();
-            }
-          }
-          // أضف النتيجة المؤقتة الأخيرة للعرض فقط
-          let display = currentText;
-          const last = e.results[e.results.length-1];
-          if(!last.isFinal) display = (currentText+' '+last[0].transcript).trim();
+          r.onresult=e=>{
+            const t = e.results[0][0].transcript;
+            const full = savedText ? (savedText+' '+t).trim() : t;
+            txBox.textContent=full; txBox.style.display='block'; vSub.style.display='block'; clrBtn.style.display='block';
+          };
 
-          txBox.textContent = getFullText().replace(currentText, display) || display;
-          const full = savedText ? (savedText+' '+display).trim() : display;
-          txBox.textContent = full;
-          txBox.style.display='block'; vSub.style.display='block'; clrBtn.style.display='block';
-        };
+          r.onerror=e=>{ if(e.error!=='no-speech'&&e.error!=='aborted'){ recognizing=false; setBtn(savedText?'pause':'idle'); } };
 
-        rec.onerror = e => { if(e.error!=='no-speech'&&e.error!=='aborted') recognizing=false; };
-
-        rec.onend = () => {
-          recognizing=false;
-          // onend بيحصل بعد إيقاف مؤقت أو وقفة - مش بنحفظ savedText هنا
-          setBtn(getFullText()?'pause':'idle');
-        };
-
-        recBtn.onclick = () => {
-          if(recognizing){
-            // إيقاف مؤقت - احفظ النص
+          r.onend=()=>{
             recognizing=false;
-            savedText = getFullText();
-            currentText='';
-            try{rec.stop();}catch(e){}
+            // احفظ آخر نتيجة نهائية
+            const last = txBox.textContent.trim();
+            if(last && last!=='🎤 ...') savedText=last;
+            if(!manualStop){
+              // إعادة تشغيل تلقائية لالتقاط الجملة التالية
+              try{ startRec(); }catch(e){ setBtn(savedText?'pause':'idle'); }
+            } else {
+              setBtn(savedText?'pause':'idle');
+            }
+          };
+
+          try{ r.start(); }catch(e){ setBtn(savedText?'pause':'idle'); }
+        }
+
+        recBtn.onclick=()=>{
+          if(recognizing){
+            manualStop=true; recognizing=false;
             setBtn('pause');
             return;
           }
-          // بدء أو استمرار - مباشرة بدون تأخير
-          rec = new SpeechAPI();
-          rec.lang='ar-SA'; rec.continuous=true; rec.interimResults=true;
-          rec.onstart  = ()=>{ recognizing=true; currentText=''; setBtn('rec'); txBox.style.display='block'; txBox.textContent=savedText||'🎤 ...'; };
-          rec.onresult = e=>{
-            for(let i=e.resultIndex;i<e.results.length;i++){
-              if(e.results[i].isFinal) currentText=(currentText+' '+e.results[i][0].transcript).trim();
-            }
-            let display=currentText;
-            const last=e.results[e.results.length-1];
-            if(!last.isFinal) display=(currentText+' '+last[0].transcript).trim();
-            const full=savedText?(savedText+' '+display).trim():display;
-            txBox.textContent=full; txBox.style.display='block'; vSub.style.display='block'; clrBtn.style.display='block';
-          };
-          rec.onerror = e=>{
-            if(e.error==='not-allowed'||e.error==='permission-denied'){recBtn.textContent='🚫 تم رفض إذن الميكروفون'; recognizing=false;}
-            else if(e.error!=='no-speech'&&e.error!=='aborted') recognizing=false;
-          };
-          rec.onend = ()=>{ recognizing=false; setBtn(getFullText()?'pause':'idle'); };
-          try { rec.start(); } catch(e) { recBtn.textContent='⚠️ تعذر بدء التسجيل'; }
+          manualStop=false;
+          startRec();
         };
 
       } else {
@@ -769,7 +737,6 @@ function showQuestion() {
       zone.appendChild(hBtn);
 
     } else {
-      // المتوسط
       const ta=document.createElement('textarea');
       ta.className='answer-input'; ta.placeholder='اكتب الكلمة الناقصة...'; ta.id='user-input';
       zone.appendChild(ta);
