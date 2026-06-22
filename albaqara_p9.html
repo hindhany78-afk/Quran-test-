@@ -13,831 +13,1020 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>اختبار حفظ سورة البقرة — الصفحة ٩</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap');
-
-      :root {
-    --bg:            linear-gradient(160deg, #F4F7F0 0%, #EDF2E6 50%, #F2F5EE 100%);
-    --card:          #FAFCF7;
-    --parchment:     #F0F5E8;
-    --accent:        #4A6741;
-    --accent2:       #C9A84C;
-    --teal:          #5C7A52;
-    --text:          #1E2D1A;
-    --text-soft:     #5A6B4E;
-    --border:        #C8D9B0;
-    --shadow:        rgba(74,103,65,0.10);
-    --green-ok:      #DFF0D8;
-    --green-ok-text: #2D5A1B;
-    --red-no:        #FAE8DC;
-    --red-no-text:   #7B3020;
+  :root {
+    --bg: #f0f4f0;
+    --text: #2d4a2d;
+    --card: #fff;
+    --border: #c8d9c0;
+    --gold: #c4a84a;
+    --text-soft: #7a9a7a;
+    --accent: #4a7c4a;
+    --surface2: #f4f8f2;
+    --surface-hover: #e0edd8;
+    --correct-bg: #d4edda;
+    --correct-text: #1a5c1a;
+    --wrong-bg: #f8d7da;
+    --wrong-text: #7a1a1a;
+    --wrong-border: #c0392b;
+    --surface3: #f8fbf6;
+    --text-faint: #6a8a6a;
+    --accent-light: #9db89d;
+    --accent-dark: #3a6a3a;
+    --hint-bg: #f0f5ec;
+    --hint-border: #9bbf8a;
+    --hint-btn-bg: #fff7e6;
+    --hint-btn-text: #9a7b1f;
+    --hint-btn-border: #e8d28a;
   }
+  html[data-theme="dark"] {
+    --bg: #1c2420;
+    --text: #d9ecd9;
+    --card: #232f29;
+    --border: #3a4d40;
+    --gold: #d9b96a;
+    --text-soft: #8fae8f;
+    --accent: #5fae5f;
+    --surface2: #2a3830;
+    --surface-hover: #324438;
+    --correct-bg: #234a30;
+    --correct-text: #8fe0a0;
+    --wrong-bg: #4a2328;
+    --wrong-text: #e89a9a;
+    --wrong-border: #c0392b;
+    --surface3: #1f2a24;
+    --text-faint: #9bb89b;
+    --accent-light: #4a6a4a;
+    --accent-dark: #7fcf7f;
+    --hint-bg: #2a3424;
+    --hint-border: #5a7a4a;
+    --hint-btn-bg: #3a3324;
+    --hint-btn-text: #d9b96a;
+    --hint-btn-border: #5a4a2a;
+  }
+  body { transition: background-color .3s, color .3s; }
+  .info-card, .level-card, .quiz-area, .result-area { transition: background-color .3s, border-color .3s; }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Amiri', serif;
+    font-family: 'Amiri', 'Scheherazade New', 'Traditional Arabic', serif;
     background: var(--bg);
-    background-image:
-      radial-gradient(ellipse at top right, rgba(196,150,90,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse at bottom left, rgba(74,124,126,0.07) 0%, transparent 60%);
+    color: var(--text);
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-
-  header {
-    text-align: center;
-    margin-bottom: 24px;
-    padding: 22px 32px;
-    background: var(--card);
-    border: 2px solid var(--border);
-    border-radius: 6px;
-    width: 100%;
-    max-width: 700px;
-    box-shadow: 0 3px 18px var(--shadow);
-    position: relative;
-  }
-
-  header::before, header::after {
-    content: '✦';
-    color: var(--accent2);
-    font-size: 1.2rem;
-    position: absolute;
-    top: 12px;
-  }
-  header::before { right: 16px; }
-  header::after  { left: 16px; }
-
-  .surah-name {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.9rem;
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  .subtitle {
-    font-size: 1rem;
-    color: var(--text-soft);
-    margin-top: 5px;
-  }
-
-  .score-bar {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-top: 12px;
-  }
-
-  .score-item {
-    background: var(--teal);
-    color: #FFFDF8;
-    padding: 4px 18px;
-    border-radius: 20px;
-    font-size: 0.92rem;
-  }
-
-  .quiz-container { width: 100%; max-width: 700px; }
-
-  .question-card {
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    padding: 26px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 14px var(--shadow);
-    display: none;
-    animation: fadeIn 0.35s ease;
-  }
-  .question-card.active { display: block; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .question-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 10px;
-  }
-
-  .q-number {
-    background: var(--accent);
-    color: #FFFDF8;
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.95rem;
-    font-weight: 700;
-  }
-
-  .q-type {
-    font-size: 0.82rem;
-    color: var(--teal);
-    background: #DFF0D8;
-    padding: 3px 12px;
-    border-radius: 12px;
-    border: 1px solid #B0D0D0;
-  }
-
-  .question-text {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.5rem;
-    color: var(--text);
-    line-height: 2.2;
-    text-align: center;
-    margin-bottom: 20px;
-    background: var(--parchment);
-    padding: 16px;
-    border-radius: 6px;
-    border-right: 4px solid var(--accent2);
-  }
-
-  .blank {
-    display: inline-block;
-    min-width: 90px;
-    border-bottom: 2px solid var(--accent2);
-    color: transparent;
-    background: rgba(196,150,90,0.1);
-    border-radius: 2px;
-    padding: 0 6px;
-    vertical-align: bottom;
-  }
-
-  .options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-
-  .option-btn {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.2rem;
-    background: var(--parchment);
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    padding: 11px 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--text);
-    text-align: center;
-    line-height: 1.8;
-  }
-
-  .option-btn:hover:not(:disabled) {
-    background: var(--teal);
-    color: #FFFDF8;
-    border-color: var(--teal);
-  }
-
-  .option-btn.correct {
-    background: #DFF0D8;
-    color: #2D5A1B;
-    border-color: #8CC47A;
-  }
-
-  .option-btn.wrong {
-    background: #FAE8DC;
-    color: #7B3020;
-    border-color: #E4AA9A;
-  }
-
-  .option-btn:disabled { cursor: default; }
-
-  .text-input-wrap { margin-bottom: 14px; }
-
-  .text-input {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.4rem;
-    width: 100%;
-    padding: 11px 16px;
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    background: var(--parchment);
-    color: var(--text);
-    text-align: right;
     direction: rtl;
-    outline: none;
-    transition: border-color 0.2s;
   }
 
-  .text-input:focus { border-color: var(--teal); }
-  .text-input.correct { border-color: #8CC47A; background: #DFF0D8; color: #2D5A1B; }
-  .text-input.wrong   { border-color: #E4A09A; background: var(--red-no);  color: var(--red-no-text); }
-
-  .feedback {
-    text-align: center;
-    font-size: 0.98rem;
-    margin-top: 8px;
-    min-height: 22px;
-    font-weight: 700;
-  }
-  .feedback.correct { color: #2D5A1B; }
-  .feedback.wrong   { color: #7B3020; }
-
-  .submit-btn {
-    font-family: 'Amiri', serif;
-    font-size: 1rem;
-    background: var(--teal);
-    color: #FFFDF8;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 30px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: block;
-    margin: 10px auto 0;
-  }
-  .submit-btn:hover { background: var(--accent); }
-
-  .nav-buttons {
+  .top-bar {
+    background: var(--bg);
+    padding: 12px 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-top: 16px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
+    gap: 10px;
   }
-
-  .nav-btn {
-    font-family: 'Amiri', serif;
-    font-size: 0.92rem;
-    background: none;
-    color: var(--text-soft);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 7px 18px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .nav-btn:hover:not(:disabled) { background: var(--parchment); color: var(--accent); }
-  .nav-btn:disabled { opacity: 0.3; cursor: default; }
-
-  .progress-dots { display: flex; gap: 6px; }
-
-  .dot {
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background: var(--border);
-    opacity: 0.5;
-    transition: all 0.3s;
-  }
-  .dot.active        { opacity: 1; background: var(--accent2); transform: scale(1.3); }
-  .dot.done-correct  { background: #5BA87A; opacity: 1; }
-  .dot.done-wrong    { background: #C97070; opacity: 1; }
-
-  .results-card {
-    display: none;
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    padding: 36px;
-    text-align: center;
-    width: 100%;
-    max-width: 700px;
-    box-shadow: 0 4px 20px var(--shadow);
-    animation: fadeIn 0.5s ease;
-  }
-  .results-card.show { display: block; }
-
-  .result-circle {
-    width: 110px; height: 110px;
-    border-radius: 50%;
-    background: var(--accent);
-    border: 4px solid var(--accent2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-  }
-  .result-score { font-size: 2rem; color: #FFFDF8; font-weight: 700; }
-  .result-label { font-size: 0.78rem; color: #F5DFC0; }
-
-  .result-title {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.8rem;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-  .result-message { color: var(--text-soft); font-size: 1rem; margin-bottom: 24px; }
-
-  .retry-btn {
-    font-family: 'Amiri', serif;
-    background: var(--teal);
-    color: #FFFDF8;
-    border: none;
-    border-radius: 6px;
-    padding: 12px 34px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .retry-btn:hover { background: var(--accent); }
-
-
   .back-btn {
     background: none;
     border: none;
-    cursor: pointer;
-    font-size: 1.3rem;
-    color: var(--text-soft);
-    padding: 4px 8px;
-    border-radius: 6px;
-    transition: all 0.2s;
-    display: none;
-    align-items: center;
-    gap: 6px;
-    font-family: 'Amiri', serif;
-  }
-  .back-btn:hover { background: var(--parchment); color: var(--accent); }
-  .back-btn.visible { display: flex; }
-
-  .level-screen {
-    width: 100%;
-    max-width: 700px;
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    padding: 30px 28px;
-    box-shadow: 0 3px 18px var(--shadow);
-    animation: fadeIn 0.4s ease;
-    text-align: center;
-  }
-
-  .level-title {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.6rem;
     color: var(--accent);
-    margin-bottom: 6px;
-  }
-
-  .level-subtitle {
-    font-size: 0.92rem;
-    color: var(--text-soft);
-    margin-bottom: 26px;
-  }
-
-  .level-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 10px;
-  }
-
-  .level-card {
-    background: var(--parchment);
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    padding: 20px 12px;
+    font-size: 18px;
     cursor: pointer;
-    transition: all 0.22s;
-    text-align: center;
-  }
-
-  .level-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px var(--shadow); }
-
-  .level-card.selected {
-    border-color: var(--teal);
-    background: #DFF0D8;
-    box-shadow: 0 0 0 3px rgba(74,103,65,0.18);
-  }
-
-  .level-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
-
-  .level-name {
-    font-family: 'Amiri', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--accent);
-    display: block;
-    margin-bottom: 6px;
-  }
-
-  .level-desc {
-    font-size: 0.82rem;
-    color: var(--text-soft);
-    line-height: 1.5;
-  }
-
-  .start-btn {
-    font-family: 'Amiri', serif;
-    background: var(--teal);
-    color: #FFFDF8;
-    border: none;
-    border-radius: 6px;
-    padding: 13px 44px;
-    font-size: 1.05rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: block;
-    margin: 22px auto 0;
-    opacity: 0.35;
-    pointer-events: none;
-  }
-  .start-btn.ready { opacity: 1; pointer-events: all; }
-  .start-btn.ready:hover { background: var(--accent); }
-
-  .ayah-ref {
-    font-size: 0.83rem;
-    color: var(--text-soft);
-    text-align: right;
-    direction: rtl;
-    margin-bottom: 5px;
-  }
-
-
-  /* Translate Button */
-  .translate-btn {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: var(--accent);
-    color: #FAFCF7;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 16px;
-    font-family: 'Amiri', serif;
-    font-size: 0.9rem;
-    cursor: pointer;
-    box-shadow: 0 4px 14px var(--shadow);
-    transition: all 0.2s;
+    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 6px;
-    z-index: 999;
+    font-family: inherit;
   }
-  .translate-btn:hover { background: var(--accent2); transform: translateY(-2px); }
 
-  .translate-menu {
-    position: fixed;
-    bottom: 64px;
-    left: 20px;
-    background: #FAFCF7;
+  .info-card {
+    margin: 0 16px 16px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 20px 18px;
+    text-align: center;
+    position: relative;
+  }
+  .info-card::before,
+  .info-card::after {
+    content: '✦';
+    color: var(--gold);
+    font-size: 20px;
+    position: absolute;
+    top: 16px;
+  }
+  .info-card::before { right: 18px; }
+  .info-card::after  { left: 18px; }
+
+  .surah-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .ayat-range {
+    font-size: 15px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .page-info {
+    font-size: 14px;
+    color: var(--text-soft);
+    margin-bottom: 14px;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  .stat-badge {
+    background: var(--accent);
+    color: var(--card);
+    border-radius: 12px;
+    padding: 8px 18px;
+    font-size: 14px;
+    text-align: center;
+    min-width: 80px;
+    line-height: 1.4;
+  }
+
+  .level-card {
+    margin: 0 16px 16px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    padding: 24px 20px 20px;
+    text-align: center;
+  }
+  .level-title { font-size: 22px; color: var(--text); margin-bottom: 6px; }
+  .level-sub   { font-size: 14px; color: var(--text-soft); margin-bottom: 20px; }
+
+  .levels-grid {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .level-btn {
+    flex: 1;
+    max-width: 100px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 8px;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: inherit;
+    color: var(--text);
+  }
+  .level-btn:hover, .level-btn.active {
+    background: var(--surface-hover);
+    border-color: var(--accent);
+  }
+  .level-icon  { font-size: 28px; display: block; margin-bottom: 6px; }
+  .level-name  { font-weight: 700; font-size: 15px; display: block; margin-bottom: 6px; }
+  .level-desc  { font-size: 12px; color: var(--text-faint); line-height: 1.5; }
+
+  .start-btn {
+    width: 100%;
+    max-width: 260px;
+    background: var(--accent-light);
+    color: var(--card);
+    border: none;
+    border-radius: 14px;
+    padding: 14px 20px;
+    font-size: 17px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .start-btn.ready { background: var(--accent); }
+  .start-btn:hover.ready { background: var(--accent-dark); }
+
+  .quiz-area {
+    margin: 0 16px 16px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    padding: 24px 20px;
+    display: none;
+  }
+
+  .q-number {
+    font-size: 13px;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .q-text {
+    font-size: 20px;
+    line-height: 2;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 20px;
+    background: var(--surface3);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .blank { color: var(--accent); font-weight: bold; }
+
+  .choices { display: flex; flex-direction: column; gap: 10px; }
+  .choice-btn {
+    background: var(--surface2);
     border: 1.5px solid var(--border);
     border-radius: 12px;
-    box-shadow: 0 4px 20px var(--shadow);
-    overflow: hidden;
-    display: none;
-    z-index: 999;
-    min-width: 160px;
-  }
-  .translate-menu.open { display: block; }
-
-  .translate-option {
-    display: block;
-    padding: 10px 18px;
-    font-family: 'Amiri', serif;
-    font-size: 0.95rem;
+    padding: 14px 18px;
+    font-size: 17px;
+    font-family: inherit;
     color: var(--text);
-    text-decoration: none;
-    transition: background 0.15s;
-    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    text-align: right;
+    transition: all .15s;
+    line-height: 1.8;
   }
-  .translate-option:last-child { border-bottom: none; }
-  .translate-option:hover { background: var(--parchment); color: var(--accent); }
+  .choice-btn:hover:not(:disabled) { background: var(--surface-hover); border-color: var(--accent); }
+  .choice-btn.correct { background: var(--correct-bg); border-color: var(--accent); color: var(--correct-text); }
+  .choice-btn.wrong   { background: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-text); }
+
+  .answer-input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--surface3);
+    outline: none;
+    resize: vertical;
+    min-height: 70px;
+    text-align: right;
+    direction: rtl;
+  }
+  .answer-input:focus { border-color: var(--accent); }
+
+  .submit-btn {
+    margin-top: 14px;
+    width: 100%;
+    background: var(--accent);
+    color: var(--card);
+    border: none;
+    border-radius: 12px;
+    padding: 13px;
+    font-size: 17px;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .submit-btn:hover { background: var(--accent-dark); }
+
+  .feedback {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 1.9;
+    display: none;
+    text-align: center;
+  }
+  .feedback.correct { background: var(--correct-bg); color: var(--correct-text); }
+  .feedback.wrong   { background: var(--wrong-bg); color: var(--wrong-text); }
+
+  .next-btn {
+    margin-top: 12px;
+    width: 100%;
+    background: var(--accent);
+    color: var(--card);
+    border: none;
+    border-radius: 12px;
+    padding: 13px;
+    font-size: 17px;
+    font-family: inherit;
+    cursor: pointer;
+    display: none;
+  }
+  .next-btn:hover { background: var(--accent-dark); }
+
+  .result-area {
+    margin: 0 16px 16px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    padding: 30px 20px;
+    text-align: center;
+    display: none;
+  }
+  .result-icon { font-size: 52px; margin-bottom: 12px; }
+  .result-title { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .result-score { font-size: 18px; color: var(--accent); margin-bottom: 20px; }
+  .result-msg   { font-size: 16px; color: var(--text-faint); margin-bottom: 24px; }
+  .retry-btn {
+    background: var(--accent);
+    color: var(--card);
+    border: none;
+    border-radius: 12px;
+    padding: 13px 30px;
+    font-size: 17px;
+    font-family: inherit;
+    cursor: pointer;
+    margin: 5px;
+  }
+  .retry-btn:hover { background: var(--accent-dark); }
+  .home-link {
+    display: inline-block;
+    background: var(--surface2);
+    color: var(--accent);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-size: 17px;
+    font-family: inherit;
+    text-decoration: none;
+    margin: 5px;
+  }
+
+  .progress-bar-wrap {
+    background: var(--surface-hover);
+    border-radius: 8px;
+    height: 8px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 8px;
+    transition: width .3s;
+  }
+
+  .translate-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 16px;
+    background: var(--accent);
+    color: var(--card);
+    border-radius: 50px;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  }
+  .skip-btn { margin-top:12px; width:100%; background:var(--surface2); color:var(--accent); border:1.5px solid var(--border); border-radius:12px; padding:14px 18px; font-size:17px; font-family:inherit; cursor:pointer; display:none; text-align:center; }
+  .skip-btn:hover { background:var(--surface-hover); }
+
+  .q-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--border); transition: all .2s; }
+  .q-dot.current { width:15px; height:15px; box-shadow:0 0 0 3px var(--surface-hover); background:var(--accent); }
+  .q-dot.correct { background: var(--accent); }
+  .q-dot.wrong   { background: var(--wrong-border); }
+  .confetti-piece { position: absolute; top: -20px; width: 9px; height: 14px; opacity: 0.9; animation: confetti-fall linear forwards; }
+  @keyframes confetti-fall { to { transform: translateY(110vh) rotate(540deg); opacity: 0.3; } }
 </style>
 </head>
 <body>
 
-<header>
-  <button class="back-btn" id="back-btn" onclick="goBack()">← الرجوع</button>
-  <div class="surah-name">سورة البقرة</div>
-  <div class="subtitle">الآيات ٥٨ إلى ٦١</div>
-  <div class="subtitle">اختبار الحفظ | وجه ٨ — صفحة ٩</div>
-  <div class="score-bar">
-    <div class="score-item">✓ <span id="correct-count">0</span> صحيح</div>
-    <div class="score-item">✗ <span id="wrong-count">0</span> خطأ</div>
-    <div class="score-item" id="q-counter">السؤال ١ / ١٠</div>
+<div class="top-bar">
+  <a href="index.html" class="back-btn">← الرجوع</a><button id="theme-toggle" onclick="toggleTheme()" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;">🌙</button>
+</div>
+
+<div class="info-card">
+  <div class="surah-title">سورة البقرة</div>
+  <div class="ayat-range">الآيات ٥٨ إلى ٦١</div>
+  <div class="page-info">اختبار الحفظ | صفحة ٩</div>
+  <div class="stats-row">
+    <div class="stat-badge" id="qnum-badge">السؤال ١ /<br><span id="total-q">١٥</span></div>
+    <div class="stat-badge" id="wrong-badge">٠ ✗<br>خطأ</div>
+    <div class="stat-badge" id="correct-badge">٠ ✓<br>صحيح</div>
   </div>
-</header>
+</div>
 
+<div id="resume-banner" style="display:none; margin:0 16px 16px; background:var(--surface2); border:1.5px solid var(--gold); border-radius:14px; padding:14px 16px; text-align:center;">
+  <div style="margin-bottom:10px; font-size:15px; color:var(--text);">📌 عندك اختبار لسه ما خلصتيهوش، عايزة تكملي منين وقفتي؟</div>
+  <div style="display:flex; gap:10px;">
+    <button onclick="resumeQuiz()" style="flex:1; background:var(--accent); color:#fff; border:none; border-radius:10px; padding:10px; font-family:inherit; font-size:15px; cursor:pointer;">كمل من هنا</button>
+    <button onclick="dismissResume()" style="flex:1; background:var(--surface3); color:var(--text-soft); border:1.5px solid var(--border); border-radius:10px; padding:10px; font-family:inherit; font-size:15px; cursor:pointer;">ابدأ من جديد</button>
+  </div>
+</div>
 
-<!-- شاشة اختيار المستوى -->
-<div id="level-screen" class="level-screen">
+<div class="level-card" id="level-card">
   <div class="level-title">اختر مستوى الاختبار</div>
-  <div class="level-subtitle">كل مستوى له طريقة مختلفة في الاختبار</div>
-  <div class="level-cards">
-    <div class="level-card" onclick="selectLevel('easy', this)">
+  <div class="level-sub">كل مستوى له طريقة مختلفة في الاختبار</div>
+  <div class="levels-grid">
+    <button class="level-btn" onclick="selectLevel('easy')" id="btn-easy">
       <span class="level-icon">🌱</span>
       <span class="level-name">سهل</span>
-      <span class="level-desc">اختيار من متعدد — اختر الكلمة الصحيحة من ٤ خيارات</span>
-    </div>
-    <div class="level-card" onclick="selectLevel('medium', this)">
+      <span class="level-desc">اختيار من متعدد — اختر الكلمة الصحيحة من ٣ خيارات</span>
+    </button>
+    <button class="level-btn" onclick="selectLevel('medium')" id="btn-medium">
       <span class="level-icon">🌿</span>
       <span class="level-name">متوسط</span>
       <span class="level-desc">إكمال فراغ — اكتب الكلمة أو الجزء الناقص من الآية</span>
-    </div>
-    <div class="level-card" onclick="selectLevel('hard', this)">
+    </button>
+    <button class="level-btn" onclick="selectLevel('hard')" id="btn-hard">
       <span class="level-icon">🌳</span>
       <span class="level-name">صعب</span>
       <span class="level-desc">اكتب الآية كاملة من الذاكرة بدون أي مساعدة</span>
-    </div>
+    </button>
   </div>
   <button class="start-btn" id="start-btn" onclick="startQuiz()">ابدأ الاختبار ←</button>
 </div>
 
-<div class="quiz-container" id="quiz-container" style="display:none"></div>
-<div class="results-card" id="results-card"></div>
+<div class="quiz-area" id="quiz-area">
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+  <div id="dot-progress" style="display:flex; flex-wrap:wrap; gap:5px; justify-content:center; margin-bottom:14px;"></div>
+  <div class="q-number" id="q-number">السؤال ١</div>
+  <div class="q-text" id="q-text"></div>
+  <div id="answer-zone"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="skip-btn" id="skip-btn" onclick="skipQuestion()">⏭ تخطي — أظهر الإجابة</button>
+  <div style="display:flex; gap:10px; margin-top:12px;">
+    <button class="next-btn" id="prev-btn" onclick="prevQuestion()" style="display:block; background:var(--surface2); color:var(--accent); border:1.5px solid var(--border); margin-top:0;">→ السابق</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()" style="display:none; margin-top:0;">التالي ←</button>
+  </div>
+</div>
+
+<div class="result-area" id="result-area">
+  <div class="result-icon" id="result-icon">🌟</div>
+  <div class="result-title" id="result-title">أحسنت!</div>
+  <div class="result-score" id="result-score"></div>
+  <div class="result-msg" id="result-msg"></div>
+  <button class="retry-btn" id="review-mistakes-btn" onclick="startReview()" style="display:none; background:var(--wrong-border);">📝 راجع أخطائي</button>
+  <button class="retry-btn" onclick="retryQuiz()">أعد الاختبار</button>
+  <a href="index.html" class="home-link">← الرئيسية</a>
+</div>
+
+
+<!-- Review Mode -->
+<div class="quiz-area" id="review-area" style="display:none;">
+  <div class="q-number" id="review-number"></div>
+  <div class="q-text" id="review-q-text"></div>
+  <div style="background:var(--surface3); border-radius:12px; padding:16px; text-align:center; font-size:19px; line-height:2; color:var(--correct-text);" id="review-answer"></div>
+  <div style="display:flex; gap:10px; margin-top:14px;">
+    <button class="next-btn" style="display:block; background:var(--surface2); color:var(--accent); border:1.5px solid var(--border);" onclick="reviewNav(-1)">→ السابق</button>
+    <button class="next-btn" style="display:block;" onclick="reviewNav(1)">التالي ←</button>
+  </div>
+  <a href="#" onclick="endReview();return false;" style="display:block; text-align:center; margin-top:14px; color:var(--text-soft); font-size:14px;">إنهاء المراجعة</a>
+</div>
+
+<div id="confetti-container" style="position:fixed; inset:0; pointer-events:none; z-index:9999; overflow:hidden; display:none;"></div>
+
+<div class="translate-bar">🌐 ترجمة</div>
 
 <script>
-// كل الأسئلة مصنفة حسب المستوى
-const allQuestions = {
-  easy: [
-    { ayah: 'الآية ٥٨', question: 'أكمل الآية: ﴿وَإِذْ قُلْنَا ادْخُلُوا هَٰذِهِ الْقَرْيَةَ فَكُلُوا مِنْهَا حَيْثُ شِئْتُمْ ___﴾', options: ['رَغَدًا وَادْخُلُوا الْبَابَ سُجَّدًا', 'رَغَدًا وَاشْكُرُوا لِلَّهِ', 'رَغَدًا وَقُولُوا حِطَّةٌ', 'رَغَدًا وَآمِنُوا بِاللَّهِ'], answer: 0 },
-    { ayah: 'الآية ٥٨', question: 'ماذا أُمر بنو إسرائيل أن يقولوا عند دخول الباب؟', options: ['رَبَّنَا اغْفِرْ لَنَا', 'حِطَّةٌ', 'تُبْنَا إِلَيْكَ', 'اغْفِرْ لَنَا ذُنُوبَنَا'], answer: 1 },
-    { ayah: 'الآية ٥٨', question: '﴿وَادْخُلُوا الْبَابَ ___﴾', options: ['خَاشِعِينَ', 'رَاكِعِينَ', 'سُجَّدًا', 'تَائِبِينَ'], answer: 2 },
-    { ayah: 'الآية ٥٨', question: '﴿نَّغْفِرْ لَكُمْ ___﴾', options: ['ذُنُوبَكُمْ', 'سَيِّئَاتِكُمْ', 'خَطَايَاكُمْ', 'آثَامَكُمْ'], answer: 2 },
-    { ayah: 'الآية ٥٨', question: '﴿وَسَنَزِيدُ ___﴾', options: ['الصَّابِرِينَ', 'الشَّاكِرِينَ', 'الصَّالِحِينَ', 'الْمُحْسِنِينَ'], answer: 3 },
-    { ayah: 'الآية ٥٩', question: '﴿فَبَدَّلَ الَّذِينَ ظَلَمُوا قَوْلًا ___ الَّذِي قِيلَ لَهُمْ﴾', options: ['سِوَى', 'بَدَلَ', 'غَيْرَ', 'دُونَ'], answer: 2 },
-    { ayah: 'الآية ٥٩', question: '﴿فَأَنزَلْنَا عَلَى الَّذِينَ ظَلَمُوا ___ مِّنَ السَّمَاءِ﴾', options: ['عَذَابًا أَلِيمًا', 'بَلَاءً شَدِيدًا', 'رِجْزًا', 'صَاعِقَةً'], answer: 2 },
-    { ayah: 'الآية ٥٩', question: '﴿بِمَا كَانُوا ___﴾ في نهاية الآية ٥٩', options: ['يَكْفُرُونَ', 'يَعْصُونَ', 'يَظْلِمُونَ', 'يَفْسُقُونَ'], answer: 3 },
-    { ayah: 'الآية ٦٠', question: '﴿فَقُلْنَا اضْرِب بِّعَصَاكَ ___﴾', options: ['الْبَحْرَ', 'الصَّخْرَةَ', 'الْحَجَرَ', 'الْأَرْضَ'], answer: 2 },
-    { ayah: 'الآية ٦٠', question: 'كم عيناً انفجرت من الحجر؟', options: ['سَبْعَ عُيُونٍ', 'عَشْرَ عُيُونٍ', 'أَرْبَعَ عَشْرَةَ عَيْنًا', 'اثْنَتَا عَشْرَةَ عَيْنًا'], answer: 3 },
-    { ayah: 'الآية ٦٠', question: '﴿وَلَا تَعْثَوْا فِي الْأَرْضِ ___﴾', options: ['ظَالِمِينَ', 'كَافِرِينَ', 'مُفْسِدِينَ', 'جَاحِدِينَ'], answer: 2 },
-    { ayah: 'الآية ٦٠', question: '﴿قَدْ عَلِمَ كُلُّ أُنَاسٍ ___﴾', options: ['مَسْلَكَهُمْ', 'مَشْرَبَهُمْ', 'مَأْكَلَهُمْ', 'مَقَامَهُمْ'], answer: 1 },
-    { ayah: 'الآية ٦١', question: '﴿لَن نَّصْبِرَ عَلَىٰ طَعَامٍ ___﴾', options: ['وَاحِدٍ', 'بَعِيدٍ', 'قَلِيلٍ', 'يَسِيرٍ'], answer: 0 },
-    { ayah: 'الآية ٦١', question: '﴿وَضُرِبَتْ عَلَيْهِمُ الذِّلَّةُ وَالْمَسْكَنَةُ وَبَاءُوا بِـ___﴾', options: ['لَعْنَةٍ مِّنَ اللَّهِ', 'سَخَطٍ مِّنَ اللَّهِ', 'غَضَبٍ مِّنَ اللَّهِ', 'عَذَابٍ مِّنَ اللَّهِ'], answer: 2 },
-    { ayah: 'الآية ٦١', question: '﴿ذَٰلِكَ بِمَا عَصَوا وَّكَانُوا ___﴾', options: ['يَظْلِمُونَ', 'يَكْفُرُونَ', 'يَفْسُقُونَ', 'يَعْتَدُونَ'], answer: 3 },
-  ],
-  medium: [
-    { ayah: 'الآية ٥٨', question: 'أكمل: ﴿وَإِذْ قُلْنَا ادْخُلُوا هَٰذِهِ الْقَرْيَةَ فَكُلُوا مِنْهَا حَيْثُ شِئْتُمْ ___﴾', answer: 'رَغَدًا' },
-    { ayah: 'الآية ٥٨', question: 'أكمل: ﴿وَقُولُوا حِطَّةٌ نَّغْفِرْ لَكُمْ ___﴾', answer: 'خَطَايَاكُمْ' },
-    { ayah: 'الآية ٥٨', question: 'أكمل: ﴿وَسَنَزِيدُ ___﴾', answer: 'الْمُحْسِنِينَ' },
-    { ayah: 'الآية ٥٩', question: 'أكمل: ﴿فَبَدَّلَ الَّذِينَ ظَلَمُوا قَوْلًا غَيْرَ الَّذِي قِيلَ لَهُمْ فَأَنزَلْنَا عَلَى الَّذِينَ ظَلَمُوا رِجْزًا مِّنَ السَّمَاءِ بِمَا كَانُوا ___﴾', answer: 'يَفْسُقُونَ' },
-    { ayah: 'الآية ٦٠', question: 'أكمل: ﴿فَانفَجَرَتْ مِنْهُ اثْنَتَا عَشْرَةَ ___﴾', answer: 'عَيْنًا' },
-    { ayah: 'الآية ٦٠', question: 'أكمل: ﴿كُلُوا وَاشْرَبُوا مِن رِّزْقِ اللَّهِ وَلَا تَعْثَوْا فِي الْأَرْضِ ___﴾', answer: 'مُفْسِدِينَ' },
-    { ayah: 'الآية ٦١', question: 'أكمل: ﴿أَتَسْتَبْدِلُونَ الَّذِي هُوَ أَدْنَىٰ ___﴾', answer: 'بِالَّذِي هُوَ خَيْرٌ' },
-    { ayah: 'الآية ٦١', question: 'أكمل: ﴿وَبَاءُوا بِغَضَبٍ مِّنَ اللَّهِ ذَٰلِكَ بِأَنَّهُمْ كَانُوا يَكْفُرُونَ بِآيَاتِ اللَّهِ وَيَقْتُلُونَ ___﴾', answer: 'النَّبِيِّينَ بِغَيْرِ الْحَقِّ' },
-    { ayah: 'الآية ٦١', question: 'أكمل: ﴿ذَٰلِكَ بِمَا عَصَوا وَّكَانُوا ___﴾', answer: 'يَعْتَدُونَ' },
-    { ayah: 'الآية ٦٠', question: 'أكمل: ﴿وَإِذِ اسْتَسْقَىٰ مُوسَىٰ لِقَوْمِهِ فَقُلْنَا اضْرِب بِّعَصَاكَ ___﴾', answer: 'الْحَجَرَ' },
-  ],
-  hard: [
-    { ayah: 'الآية ٥٨', question: 'اكتب الآية ٥٨ كاملة من الذاكرة', answer: 'وَإِذْ قُلْنَا ادْخُلُوا هَٰذِهِ الْقَرْيَةَ فَكُلُوا مِنْهَا حَيْثُ شِئْتُمْ رَغَدًا وَادْخُلُوا الْبَابَ سُجَّدًا وَقُولُوا حِطَّةٌ نَّغْفِرْ لَكُمْ خَطَايَاكُمْ وَسَنَزِيدُ الْمُحْسِنِينَ' },
-    { ayah: 'الآية ٥٩', question: 'اكتب الآية ٥٩ كاملة من الذاكرة', answer: 'فَبَدَّلَ الَّذِينَ ظَلَمُوا قَوْلًا غَيْرَ الَّذِي قِيلَ لَهُمْ فَأَنزَلْنَا عَلَى الَّذِينَ ظَلَمُوا رِجْزًا مِّنَ السَّمَاءِ بِمَا كَانُوا يَفْسُقُونَ' },
-    { ayah: 'الآية ٦٠', question: 'اكتب الآية ٦٠ كاملة من الذاكرة', answer: 'وَإِذِ اسْتَسْقَىٰ مُوسَىٰ لِقَوْمِهِ فَقُلْنَا اضْرِب بِّعَصَاكَ الْحَجَرَ فَانفَجَرَتْ مِنْهُ اثْنَتَا عَشْرَةَ عَيْنًا قَدْ عَلِمَ كُلُّ أُنَاسٍ مَّشْرَبَهُمْ كُلُوا وَاشْرَبُوا مِن رِّزْقِ اللَّهِ وَلَا تَعْثَوْا فِي الْأَرْضِ مُفْسِدِينَ' },
-    { ayah: 'الآية ٦١', question: 'اكتب بداية الآية ٦١ حتى ﴿...فَإِنَّ لَكُم مَّا سَأَلْتُمْ﴾', answer: 'وَإِذْ قُلْتُمْ يَا مُوسَىٰ لَن نَّصْبِرَ عَلَىٰ طَعَامٍ وَاحِدٍ فَادْعُ لَنَا رَبَّكَ يُخْرِجْ لَنَا مِمَّا تُنبِتُ الْأَرْضُ مِن بَقْلِهَا وَقِثَّائِهَا وَفُومِهَا وَعَدَسِهَا وَبَصَلِهَا قَالَ أَتَسْتَبْدِلُونَ الَّذِي هُوَ أَدْنَىٰ بِالَّذِي هُوَ خَيْرٌ اهْبِطُوا مِصْرًا فَإِنَّ لَكُم مَّا سَأَلْتُمْ' },
-    { ayah: 'الآية ٦١', question: 'اكتب نهاية الآية ٦١ من ﴿وَضُرِبَتْ...﴾', answer: 'وَضُرِبَتْ عَلَيْهِمُ الذِّلَّةُ وَالْمَسْكَنَةُ وَبَاءُوا بِغَضَبٍ مِّنَ اللَّهِ ذَٰلِكَ بِأَنَّهُمْ كَانُوا يَكْفُرُونَ بِآيَاتِ اللَّهِ وَيَقْتُلُونَ النَّبِيِّينَ بِغَيْرِ الْحَقِّ ذَٰلِكَ بِمَا عَصَوا وَّكَانُوا يَعْتَدُونَ' },
-  ]
-};
+const AYAT = [
+  { num: 58, text: "وَإِذْ قُلْنَا ادْخُلُوا هَٰذِهِ الْقَرْيَةَ فَكُلُوا مِنْهَا حَيْثُ شِئْتُمْ رَغَدًا وَادْخُلُوا الْبَابَ سُجَّدًا وَقُولُوا حِطَّةٌ نَّغْفِرْ لَكُمْ خَطَايَاكُمْ وَسَنَزِيدُ الْمُحْسِنِينَ" },
+  { num: 59, text: "فَبَدَّلَ الَّذِينَ ظَلَمُوا قَوْلًا غَيْرَ الَّذِي قِيلَ لَهُمْ فَأَنزَلْنَا عَلَى الَّذِينَ ظَلَمُوا رِجْزًا مِّنَ السَّمَآءِ بِمَا كَانُوا يَفْسُقُونَ" },
+  { num: 60, text: "وَإِذِ اسْتَسْقَىٰ مُوسَىٰ لِقَوْمِهِ فَقُلْنَا اضْرِب بِّعَصَاكَ الْحَجَرَ فَانفَجَرَتْ مِنْهُ اثْنَتَا عَشْرَةَ عَيْنًا قَدْ عَلِمَ كُلُّ أُنَاسٍ مَّشْرَبَهُمْ كُلُوا وَاشْرَبُوا مِن رِّزْقِ اللَّهِ وَلَا تَعْثَوْا فِي الْأَرْضِ مُفْسِدِينَ" },
+  { num: 61, text: "وَإِذْ قُلْتُمْ يَٰمُوسَىٰ لَن نَّصْبِرَ عَلَىٰ طَعَامٍ وَاحِدٍ فَادْعُ لَنَا رَبَّكَ يُخْرِجْ لَنَا مِمَّا تُنۢبِتُ الْأَرْضُ مِن بَقْلِهَا وَقِثَّائِهَا وَفُومِهَا وَعَدَسِهَا وَبَصَلِهَا قَالَ أَتَسْتَبْدِلُونَ الَّذِي هُوَ أَدْنَىٰ بِالَّذِي هُوَ خَيْرٌ اهْبِطُوا مِصْرًا فَإِنَّ لَكُم مَّا سَأَلْتُمْ وَضُرِبَتْ عَلَيْهِمُ الذِّلَّةُ وَالْمَسْكَنَةُ وَبَاءُوا بِغَضَبٍ مِّنَ اللَّهِ ذَٰلِكَ بِأَنَّهُمْ كَانُوا يَكْفُرُونَ بِـَٔايَٰتِ اللَّهِ وَيَقْتُلُونَ النَّبِيِّينَ بِغَيْرِ الْحَقِّ ذَٰلِكَ بِمَا عَصَوا وَّكَانُوا يَعْتَدُونَ" }
+];
 
-let selectedLevel = null;
-let questions = [];
-let current = 0;
-let score = 0;
-let wrongCount = 0;
-let answered = [];
+const EASY_Q = [
+  {q:"«وَإِذْ قُلْنَا ادْخُلُوا هَٰذِهِ الْقَرْيَةَ فَكُلُوا مِنْهَا حَيْثُ شِئْتُمْ _____»",choices:["رَغَدًا وَادْخُلُوا الْبَابَ سُجَّدًا","رَغَدًا وَاشْكُرُوا لِلَّهِ","رَغَدًا وَقُولُوا حِطَّةٌ"],answer:0},
+  {q:"«وَادْخُلُوا الْبَابَ _____»",choices:["سُجَّدًا","خَاشِعِينَ","رَاكِعِينَ"],answer:0},
+  {q:"«وَقُولُوا حِطَّةٌ نَّغْفِرْ لَكُمْ _____»",choices:["خَطَايَاكُمْ","ذُنُوبَكُمْ","سَيِّئَاتِكُمْ"],answer:0},
+  {q:"«وَسَنَزِيدُ _____»",choices:["الْمُحْسِنِينَ","الصَّابِرِينَ","الشَّاكِرِينَ"],answer:0},
+  {q:"«فَبَدَّلَ الَّذِينَ ظَلَمُوا قَوْلًا _____ الَّذِي قِيلَ لَهُمْ»",choices:["غَيْرَ","سِوَى","دُونَ"],answer:0},
+  {q:"«فَأَنزَلْنَا عَلَى الَّذِينَ ظَلَمُوا _____ مِّنَ السَّمَآءِ»",choices:["رِجْزًا","عَذَابًا أَلِيمًا","صَاعِقَةً"],answer:0},
+  {q:"«بِمَا كَانُوا _____» — آية ٥٩",choices:["يَفْسُقُونَ","يَكْفُرُونَ","يَعْتَدُونَ"],answer:0},
+  {q:"«فَقُلْنَا اضْرِب بِّعَصَاكَ _____»",choices:["الْحَجَرَ","الْبَحْرَ","الْأَرْضَ"],answer:0},
+  {q:"«فَانفَجَرَتْ مِنْهُ اثْنَتَا عَشْرَةَ _____»",choices:["عَيْنًا","نَهْرًا","بِئْرًا"],answer:0},
+  {q:"«قَدْ عَلِمَ كُلُّ أُنَاسٍ _____»",choices:["مَّشْرَبَهُمْ","مَسْلَكَهُمْ","مَأْكَلَهُمْ"],answer:0},
+  {q:"«وَلَا تَعْثَوْا فِي الْأَرْضِ _____»",choices:["مُفْسِدِينَ","ظَالِمِينَ","كَافِرِينَ"],answer:0},
+  {q:"«لَن نَّصْبِرَ عَلَىٰ طَعَامٍ _____»",choices:["وَاحِدٍ","قَلِيلٍ","يَسِيرٍ"],answer:0},
+  {q:"«وَبَاءُوا بِـ_____»",choices:["غَضَبٍ مِّنَ اللَّهِ","لَعْنَةٍ مِّنَ اللَّهِ","سَخَطٍ مِّنَ اللَّهِ"],answer:0},
+  {q:"«كَانُوا يَكْفُرُونَ بِـَٔايَٰتِ اللَّهِ وَيَقْتُلُونَ _____»",choices:["النَّبِيِّينَ بِغَيْرِ الْحَقِّ","الرُّسُلَ بِغَيْرِ الْحَقِّ","الْمُؤْمِنِينَ بِغَيْرِ الْحَقِّ"],answer:0},
+  {q:"«ذَٰلِكَ بِمَا عَصَوا وَّكَانُوا _____»",choices:["يَعْتَدُونَ","يَظْلِمُونَ","يَكْفُرُونَ"],answer:0}
+];
 
-function selectLevel(level, el) {
-  selectedLevel = level;
-  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  document.getElementById('start-btn').classList.add('ready');
+const MEDIUM_Q = [
+  {q:"«وَإِذْ قُلْنَا ادْخُلُوا هَٰذِهِ الْقَرْيَةَ فَكُلُوا مِنْهَا حَيْثُ شِئْتُمْ _____»", answer:"رَغَدًا"},
+  {q:"«وَقُولُوا حِطَّةٌ نَّغْفِرْ لَكُمْ _____»", answer:"خَطَايَاكُمْ"},
+  {q:"«وَسَنَزِيدُ _____»", answer:"الْمُحْسِنِينَ"},
+  {q:"«فَأَنزَلْنَا عَلَى الَّذِينَ ظَلَمُوا رِجْزًا مِّنَ السَّمَآءِ بِمَا كَانُوا _____»", answer:"يَفْسُقُونَ"},
+  {q:"«فَانفَجَرَتْ مِنْهُ اثْنَتَا عَشْرَةَ _____»", answer:"عَيْنًا"},
+  {q:"«كُلُوا وَاشْرَبُوا مِن رِّزْقِ اللَّهِ وَلَا تَعْثَوْا فِي الْأَرْضِ _____»", answer:"مُفْسِدِينَ"},
+  {q:"«أَتَسْتَبْدِلُونَ الَّذِي هُوَ أَدْنَىٰ _____»", answer:"بِالَّذِي هُوَ خَيْرٌ"},
+  {q:"«وَضُرِبَتْ عَلَيْهِمُ الذِّلَّةُ وَالْمَسْكَنَةُ وَبَاءُوا بِغَضَبٍ مِّنَ اللَّهِ ذَٰلِكَ بِأَنَّهُمْ كَانُوا يَكْفُرُونَ بِـَٔايَٰتِ اللَّهِ وَيَقْتُلُونَ _____»", answer:"النَّبِيِّينَ بِغَيْرِ الْحَقِّ"},
+  {q:"«ذَٰلِكَ بِمَا عَصَوا وَّكَانُوا _____»", answer:"يَعْتَدُونَ"},
+  {q:"«وَإِذِ اسْتَسْقَىٰ مُوسَىٰ لِقَوْمِهِ فَقُلْنَا اضْرِب بِّعَصَاكَ _____»", answer:"الْحَجَرَ"}
+];
+
+const HARD_Q = [
+  {q:"اكتب الآية رقم ٥٨ من سورة البقرة كاملة", answer:"وَإِذْ قُلْنَا ادْخُلُوا هَٰذِهِ الْقَرْيَةَ فَكُلُوا مِنْهَا حَيْثُ شِئْتُمْ رَغَدًا وَادْخُلُوا الْبَابَ سُجَّدًا وَقُولُوا حِطَّةٌ نَّغْفِرْ لَكُمْ خَطَايَاكُمْ وَسَنَزِيدُ الْمُحْسِنِينَ"},
+  {q:"اكتب الآية رقم ٥٩ من سورة البقرة كاملة", answer:"فَبَدَّلَ الَّذِينَ ظَلَمُوا قَوْلًا غَيْرَ الَّذِي قِيلَ لَهُمْ فَأَنزَلْنَا عَلَى الَّذِينَ ظَلَمُوا رِجْزًا مِّنَ السَّمَآءِ بِمَا كَانُوا يَفْسُقُونَ"},
+  {q:"اكتب الآية رقم ٦٠ من سورة البقرة كاملة", answer:"وَإِذِ اسْتَسْقَىٰ مُوسَىٰ لِقَوْمِهِ فَقُلْنَا اضْرِب بِّعَصَاكَ الْحَجَرَ فَانفَجَرَتْ مِنْهُ اثْنَتَا عَشْرَةَ عَيْنًا قَدْ عَلِمَ كُلُّ أُنَاسٍ مَّشْرَبَهُمْ كُلُوا وَاشْرَبُوا مِن رِّزْقِ اللَّهِ وَلَا تَعْثَوْا فِي الْأَرْضِ مُفْسِدِينَ"},
+  {q:"اكتب بداية الآية ٦١ من «وَإِذْ قُلْتُمْ...» حتى «...فَإِنَّ لَكُم مَّا سَأَلْتُمْ»", answer:"وَإِذْ قُلْتُمْ يَٰمُوسَىٰ لَن نَّصْبِرَ عَلَىٰ طَعَامٍ وَاحِدٍ فَادْعُ لَنَا رَبَّكَ يُخْرِجْ لَنَا مِمَّا تُنۢبِتُ الْأَرْضُ مِن بَقْلِهَا وَقِثَّائِهَا وَفُومِهَا وَعَدَسِهَا وَبَصَلِهَا قَالَ أَتَسْتَبْدِلُونَ الَّذِي هُوَ أَدْنَىٰ بِالَّذِي هُوَ خَيْرٌ اهْبِطُوا مِصْرًا فَإِنَّ لَكُم مَّا سَأَلْتُمْ"},
+  {q:"اكتب نهاية الآية ٦١ من «وَضُرِبَتْ...» حتى آخرها", answer:"وَضُرِبَتْ عَلَيْهِمُ الذِّلَّةُ وَالْمَسْكَنَةُ وَبَاءُوا بِغَضَبٍ مِّنَ اللَّهِ ذَٰلِكَ بِأَنَّهُمْ كَانُوا يَكْفُرُونَ بِـَٔايَٰتِ اللَّهِ وَيَقْتُلُونَ النَّبِيِّينَ بِغَيْرِ الْحَقِّ ذَٰلِكَ بِمَا عَصَوا وَّكَانُوا يَعْتَدُونَ"}
+];
+
+let currentLevel = null;
+let statuses = [];
+let wrongIndices = [];
+const PAGE_ID = 'p9';
+let questions    = [];
+let qIndex       = 0;
+let correctCount = 0;
+let wrongCount   = 0;
+
+function selectLevel(lvl) {
+  currentLevel = lvl;
+  document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + lvl).classList.add('active');
+  const btn = document.getElementById('start-btn');
+  btn.classList.add('ready');
+
+  const totals = { easy: '١٥', medium: '١٠', hard: '٥' };
+  document.getElementById('total-q').textContent = totals[lvl];
 }
-
-function startQuiz() {
-  if (!selectedLevel) return;
-  questions = allQuestions[selectedLevel];
-  answered = new Array(questions.length).fill(null);
-  score = 0; wrongCount = 0; current = 0;
-  document.getElementById('correct-count').textContent = '0';
-  document.getElementById('wrong-count').textContent = '0';
-  document.getElementById('level-screen').style.display = 'none';
-  document.getElementById('quiz-container').style.display = 'block';
-  document.getElementById('back-btn').classList.add('visible');
-  document.getElementById('q-counter').textContent = `السؤال ١ / ${toArabicNum(questions.length)}`;
-  buildQuiz();
-}
-
-function goBack() {
-  document.getElementById('quiz-container').style.display = 'none';
-  document.getElementById('results-card').classList.remove('show');
-  document.getElementById('results-card').innerHTML = '';
-  document.getElementById('level-screen').style.display = 'block';
-  document.getElementById('back-btn').classList.remove('visible');
-  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('start-btn').classList.remove('ready');
-  selectedLevel = null;
-  score = 0; wrongCount = 0; current = 0;
-  document.getElementById('correct-count').textContent = '0';
-  document.getElementById('wrong-count').textContent = '0';
-}
-
-function buildQuiz() {
-  const container = document.getElementById('quiz-container');
-  container.innerHTML = '';
-
-  questions.forEach((q, i) => {
-    const card = document.createElement('div');
-    card.className = 'question-card' + (i === 0 ? ' active' : '');
-    card.id = `card-${i}`;
-
-    const isMCQ = q.options !== undefined;
-    let bodyHTML = '';
-
-    if (isMCQ) {
-      bodyHTML = `
-        <div class="ayah-ref">${q.ayah}</div>
-        <div class="question-text">${q.question}</div>
-        <div class="options">
-          ${q.options.map((opt, j) => `
-            <button class="option-btn" onclick="checkMCQ(${i}, ${j})" id="opt-${i}-${j}">${opt}</button>
-          `).join('')}
-        </div>
-        <div class="feedback" id="fb-${i}"></div>
-      `;
-    } else {
-      const isHard = selectedLevel === 'hard';
-      bodyHTML = `
-        <div class="ayah-ref">${q.ayah}</div>
-        <div class="question-text">${q.question}</div>
-        <div class="text-input-wrap">
-          <${isHard ? 'textarea rows="4" style="resize:vertical"' : 'input type="text"'} class="text-input" id="inp-${i}" placeholder="اكتب${isHard ? ' الآية كاملة' : ' إجابتك'} هنا..." dir="rtl"></${isHard ? 'textarea' : 'input'}>
-        </div>
-        <button class="submit-btn" onclick="checkFill(${i})">تحقق ✓</button>
-        <div class="feedback" id="fb-${i}"></div>
-      `;
-    }
-
-    card.innerHTML = `
-      <div class="question-header">
-        <div class="q-number">${i + 1}</div>
-        <div class="q-type">${isMCQ ? 'اختيار من متعدد' : (selectedLevel === 'hard' ? 'حفظ كامل' : 'إكمال فراغ')}</div>
-      </div>
-      ${bodyHTML}
-      <div class="nav-buttons">
-        <button class="nav-btn" onclick="navigate(${i}, -1)" ${i === 0 ? 'disabled' : ''}>◀ السابق</button>
-        <div class="progress-dots" id="dots-${i}"></div>
-        <button class="nav-btn" onclick="navigate(${i}, 1)" ${i === questions.length - 1 ? 'disabled' : ''}>التالي ▶</button>
-      </div>
-    `;
-    container.appendChild(card);
-  });
-
-  renderDots();
-}
-
-function renderDots() {
-  document.querySelectorAll('[id^="dots-"]').forEach(dotsEl => {
-    dotsEl.innerHTML = questions.map((_, i) => {
-      let cls = 'dot';
-      if (i === current) cls += ' active';
-      else if (answered[i] === true) cls += ' done-correct';
-      else if (answered[i] === false) cls += ' done-wrong';
-      return `<div class="${cls}"></div>`;
-    }).join('');
-  });
-}
-
-function checkMCQ(qi, chosen) {
-  if (answered[qi] !== null) return;
-  const q = questions[qi];
-  const isCorrect = chosen === q.answer;
-  answered[qi] = isCorrect;
-
-  for (let j = 0; j < q.options.length; j++) {
-    const btn = document.getElementById(`opt-${qi}-${j}`);
-    btn.disabled = true;
-    if (j === q.answer) btn.classList.add('correct');
-    else if (j === chosen && !isCorrect) btn.classList.add('wrong');
-  }
-
-  const fb = document.getElementById(`fb-${qi}`);
-  if (isCorrect) {
-    score++;
-    fb.textContent = '✓ إجابة صحيحة!';
-    fb.className = 'feedback correct';
-    document.getElementById('correct-count').textContent = score;
-  } else {
-    wrongCount++;
-    fb.textContent = '✗ الإجابة الصحيحة: ' + q.options[q.answer];
-    fb.className = 'feedback wrong';
-    document.getElementById('wrong-count').textContent = wrongCount;
-  }
-
-  renderDots();
-  setTimeout(() => {
-    if (qi < questions.length - 1) navigate(qi, 1);
-    else if (allAnswered()) showResults();
-  }, 4000);
-}
-
-function checkFill(qi) {
-  if (answered[qi] !== null) return;
-  const inp = document.getElementById(`inp-${qi}`);
-  const userVal = inp.value.trim().replace(/\s+/g, ' ');
-  const correctVal = questions[qi].answer;
-
-  const normalize = s => s
-    .replace(/[أإآ]/g, 'ا')
-    .replace(/[ةه]/g, 'ه')
-    .replace(/[ىي]/g, 'ي')
-    .replace(/[\u064B-\u065F]/g, '')
-    .replace(/\s+/g, ' ').trim();
-
-  const isCorrect = normalize(userVal) === normalize(correctVal);
-  answered[qi] = isCorrect;
-  inp.disabled = true;
-
-  const fb = document.getElementById(`fb-${qi}`);
-  if (isCorrect) {
-    score++;
-    inp.classList.add('correct');
-    fb.textContent = '✓ إجابة صحيحة!';
-    fb.className = 'feedback correct';
-    document.getElementById('correct-count').textContent = score;
-  } else {
-    wrongCount++;
-    inp.classList.add('wrong');
-    fb.innerHTML = '✗ الإجابة الصحيحة: <span style="font-family:Scheherazade New,serif;font-size:1.1rem">' + correctVal + '</span>';
-    fb.className = 'feedback wrong';
-    document.getElementById('wrong-count').textContent = wrongCount;
-  }
-
-  renderDots();
-  setTimeout(() => {
-    if (qi < questions.length - 1) navigate(qi, 1);
-    else if (allAnswered()) showResults();
-  }, 4000);
-}
-
-function navigate(from, dir) {
-  const to = from + dir;
-  if (to < 0 || to >= questions.length) return;
-  document.getElementById(`card-${from}`).classList.remove('active');
-  document.getElementById(`card-${to}`).classList.add('active');
-  current = to;
-  document.getElementById('q-counter').textContent = `السؤال ${toArabicNum(current + 1)} / ${toArabicNum(questions.length)}`;
-  renderDots();
-}
-
-function allAnswered() { return answered.every(a => a !== null); }
 
 function toArabicNum(n) {
   return n.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
 }
 
-function showResults() {
-  document.getElementById('quiz-container').style.display = 'none';
-  const res = document.getElementById('results-card');
-  res.classList.add('show');
-  const pct = Math.round((score / questions.length) * 100);
-  const levelNames = { easy: 'سهل 🌱', medium: 'متوسط 🌿', hard: 'صعب 🌳' };
-  let msg = '';
-  if (pct === 100) msg = 'ما شاء الله! حفظ ممتاز 🌟';
-  else if (pct >= 70) msg = 'أحسنت! استمر في المراجعة 📖';
-  else msg = 'لا تيأس، كرر الحفظ وأعد المحاولة 💪';
-
-  res.innerHTML = `
-    <div class="result-circle">
-      <div class="result-score">${toArabicNum(score)}/${toArabicNum(questions.length)}</div>
-      <div class="result-label">نتيجة</div>
-    </div>
-    <div class="result-title">${msg}</div>
-    <div class="result-message">المستوى: ${levelNames[selectedLevel]} — حصلت على ${toArabicNum(pct)}%</div>
-    <button class="retry-btn" onclick="goBack()">اختر مستوى آخر 🔄</button>
-  `;
+function updateBadges() {
+  document.getElementById('qnum-badge').innerHTML =
+    `السؤال ${toArabicNum(qIndex + 1)} /<br>${toArabicNum(questions.length)}`;
+  document.getElementById('wrong-badge').innerHTML   = `${toArabicNum(wrongCount)} ✗<br>خطأ`;
+  document.getElementById('correct-badge').innerHTML = `${toArabicNum(correctCount)} ✓<br>صحيح`;
 }
 
+function startQuiz() {
+  if (!currentLevel) return;
+  if (currentLevel === 'easy')   questions = [...EASY_Q];
+  if (currentLevel === 'medium') questions = [...MEDIUM_Q];
+  if (currentLevel === 'hard')   questions = [...HARD_Q];
 
-// جاهز — الاختبار يبدأ بعد اختيار المستوى
-
-function toggleTranslate() {
-  document.getElementById('translate-menu').classList.toggle('open');
+  qIndex = correctCount = wrongCount = 0; statuses = questions.map(() => 'pending'); wrongIndices = []; var rb=document.getElementById('resume-banner'); if(rb) rb.style.display='none';
+  document.getElementById('level-card').style.display = 'none';
+  document.getElementById('quiz-area').style.display  = 'block';
+  showQuestion();
 }
 
-function translateTo(lang) {
-  const url = 'https://translate.google.com/translate?sl=ar&tl=' + lang + '&u=' + encodeURIComponent(window.location.href);
-  window.open(url, '_blank');
-  document.getElementById('translate-menu').classList.remove('open');
-}
-
-document.addEventListener('click', function(e) {
-  const menu = document.getElementById('translate-menu');
-  if (!e.target.closest('.translate-btn') && !e.target.closest('.translate-menu')) {
-    menu.classList.remove('open');
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-});
+  return arr;
+}
 
+function showQuestion() {
+  const q = questions[qIndex];
+  updateBadges();
+
+  const fill = ((qIndex) / questions.length) * 100;
+  document.getElementById('progress-fill').style.width = fill + '%';
+  document.getElementById('q-number').textContent = `السؤال ${toArabicNum(qIndex + 1)} من ${toArabicNum(questions.length)}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('skip-btn').style.display = 'block';
+  const prevBtn = document.getElementById('prev-btn');
+  prevBtn.disabled = (qIndex === 0);
+  prevBtn.style.opacity = (qIndex === 0) ? '0.45' : '1';
+  prevBtn.style.cursor = (qIndex === 0) ? 'default' : 'pointer';
+
+  renderDotProgress();
+  const zone = document.getElementById('answer-zone');
+  zone.innerHTML = '';
+
+  if (currentLevel === 'easy') {
+    const div = document.createElement('div');
+    div.className = 'choices';
+    const shuffled = shuffle(q.choices.map((c, i) => ({ text: c, idx: i })));
+    shuffled.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = opt.text;
+      btn.onclick = () => checkMCQ(opt.idx, q.answer, btn);
+      div.appendChild(btn);
+    });
+    zone.appendChild(div);
+  } else {
+    if (currentLevel === 'hard') {
+      // اختيار طريقة الإجابة: صوت أو كتابة
+      const modeWrap = document.createElement('div');
+      modeWrap.style.cssText = 'display:flex; gap:10px; margin-bottom:12px;';
+      modeWrap.id = 'mode-selector';
+      [['🎤 تسجيل صوتي','voice'],['⌨️ كتابة','text']].forEach(([label,mode]) => {
+        const btn = document.createElement('button');
+        btn.textContent = label; btn.dataset.mode = mode;
+        btn.style.cssText = 'flex:1;padding:11px;border-radius:11px;font-size:15px;font-family:inherit;cursor:pointer;border:1.5px solid var(--border);background:var(--surface2);color:var(--text);transition:all .2s;';
+        btn.onclick = () => {
+          document.querySelectorAll('#mode-selector button').forEach(b=>{b.style.background='var(--surface2)';b.style.borderColor='var(--border)';b.style.color='var(--text)';});
+          btn.style.background='var(--accent)';btn.style.color='#fff';btn.style.borderColor='var(--accent)';
+          const vz=document.getElementById('voice-zone'); if(vz) vz.style.display=mode==='voice'?'block':'none';
+          const tz=document.getElementById('text-zone');  if(tz) tz.style.display=mode==='text'?'block':'none';
+        };
+        modeWrap.appendChild(btn);
+      });
+      zone.appendChild(modeWrap);
+
+      // منطقة التسجيل الصوتي
+      const voiceZone = document.createElement('div');
+      voiceZone.id = 'voice-zone'; voiceZone.style.display = 'none';
+      const recordBtn = document.createElement('button');
+      recordBtn.id = 'record-btn';
+      recordBtn.textContent = '🎤 اضغط للتسجيل';
+      recordBtn.style.cssText = 'width:100%;padding:16px;border-radius:14px;font-size:17px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:10px;';
+      const transcriptBox = document.createElement('div');
+      transcriptBox.id = 'transcript-box';
+      transcriptBox.style.cssText = 'min-height:60px;background:var(--surface3);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:17px;line-height:1.9;color:var(--text);text-align:right;direction:rtl;margin-bottom:10px;display:none;';
+      const voiceSubmit = document.createElement('button');
+      voiceSubmit.className = 'submit-btn'; voiceSubmit.textContent = 'تحقق ✓'; voiceSubmit.style.display = 'none';
+      voiceSubmit.onclick = () => {
+        const txt = transcriptBox.textContent.trim(); if(!txt) return;
+        voiceSubmit.disabled=true; recordBtn.disabled=true;
+        checkTextVal(q, txt);
+      };
+      let recognizing = false;
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRec) {
+        const rec = new SpeechRec();
+        rec.lang='ar-SA'; rec.continuous=false; rec.interimResults=true;
+        rec.onstart = ()=>{ recognizing=true; recordBtn.textContent='⏹ أوقف'; recordBtn.style.background='#e74c3c'; recordBtn.style.color='#fff'; recordBtn.style.borderColor='#e74c3c'; };
+        rec.onresult = (e)=>{ let t=''; for(let i=0;i<e.results.length;i++) t+=e.results[i][0].transcript; transcriptBox.textContent=t; transcriptBox.style.display='block'; voiceSubmit.style.display='block'; };
+        rec.onerror = ()=>{ recognizing=false; recordBtn.textContent='🎤 اضغط للتسجيل'; recordBtn.style.cssText='width:100%;padding:16px;border-radius:14px;font-size:17px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:10px;'; };
+        rec.onend   = ()=>{ recognizing=false; recordBtn.textContent= transcriptBox.textContent ? '🎤 أعد التسجيل' : '🎤 اضغط للتسجيل'; recordBtn.style.background='var(--surface2)'; recordBtn.style.color='var(--text)'; recordBtn.style.borderColor='var(--border)'; };
+        recordBtn.onclick = ()=>{
+          if(recognizing){ rec.stop(); return; }
+          transcriptBox.textContent=''; transcriptBox.style.display='none'; voiceSubmit.style.display='none';
+          recordBtn.textContent='⏳ جاري الاتصال بالميكروفون...'; recordBtn.disabled=true;
+          navigator.mediaDevices && navigator.mediaDevices.getUserMedia({audio:true})
+            .then(stream=>{ stream.getTracks().forEach(t=>t.stop()); recordBtn.disabled=false; recordBtn.textContent='🎤 اضغط للتسجيل'; rec.start(); })
+            .catch(err=>{
+              recordBtn.disabled=false;
+              if(err.name==='NotAllowedError'){ recordBtn.textContent='🚫 تم رفض إذن الميكروفون — افتحي الملف مباشرة في المتصفح'; }
+              else if(err.name==='NotFoundError'){ recordBtn.textContent='⚠️ لم يُعثر على ميكروفون'; }
+              else { recordBtn.textContent='⚠️ خطأ: '+err.message; }
+              transcriptBox.textContent='💡 لتفعيل التسجيل الصوتي: حمّلي الملف وافتحيه مباشرة في متصفح كروم';
+              transcriptBox.style.display='block';
+            });
+        };
+      } else {
+        recordBtn.textContent='⚠️ المتصفح لا يدعم التسجيل'; recordBtn.disabled=true;
+      }
+      voiceZone.appendChild(recordBtn); voiceZone.appendChild(transcriptBox); voiceZone.appendChild(voiceSubmit);
+      zone.appendChild(voiceZone);
+    }
+
+    // منطقة الكتابة
+    const textZoneWrap = document.createElement('div');
+    textZoneWrap.id = 'text-zone';
+    textZoneWrap.style.display = currentLevel==='hard' ? 'none' : 'block';
+    const ta = document.createElement('textarea');
+    ta.className='answer-input';
+    ta.placeholder=currentLevel==='medium'?'اكتب الكلمة الناقصة...':'اكتب الآية كاملة...';
+    ta.id='user-input';
+    textZoneWrap.appendChild(ta);
+    zone.appendChild(textZoneWrap);
+
+    if (currentLevel === 'hard') {
+      const hintBox = document.createElement('div');
+      hintBox.id = 'hint-box';
+      hintBox.style.cssText = 'display:none; background:var(--hint-bg); border:1.5px dashed var(--hint-border); border-radius:10px; padding:10px 14px; margin-top:10px; font-size:18px; color:var(--accent-dark); text-align:center;';
+      zone.appendChild(hintBox);
+
+      const hintBtn = document.createElement('button');
+      hintBtn.id = 'hint-btn';
+      hintBtn.textContent = '💡 مساعدة (أول ٣ كلمات)';
+      hintBtn.style.cssText = 'width:100%; background:var(--hint-btn-bg); color:var(--hint-btn-text); border:1.5px solid var(--hint-btn-border); border-radius:10px; padding:10px; font-size:15px; font-family:inherit; cursor:pointer; margin-top:10px;';
+      hintBtn.onclick = () => {
+        const words = q.answer.split(' ').slice(0, 3).join(' ');
+        hintBox.textContent = words + ' ...';
+        hintBox.style.display = 'block';
+        hintBtn.disabled = true;
+        hintBtn.style.opacity = '0.5';
+        hintBtn.style.cursor = 'default';
+      };
+      zone.appendChild(hintBtn);
+    }
+
+    const sub = document.createElement('button');
+    sub.className = 'submit-btn';
+    sub.textContent = 'تحقق ✓';
+    sub.onclick = () => checkText(q);
+    zone.appendChild(sub);
+  }
+}
+
+function normalize(str) {
+  return str
+    .replace(/[\u064B-\u065F\u0670]/g, '')
+    .replace(/[أإآا]/g, 'ا')
+    .replace(/ة/g, 'ه')
+    .replace(/ى/g, 'ي')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function checkMCQ(chosen, correct, btn) {
+  document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('feedback');
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    correctCount++; statuses[qIndex]='correct';
+    fb.className = 'feedback correct';
+    fb.textContent = '✓ أحسنت!';
+  } else {
+    btn.classList.add('wrong');
+    wrongCount++; statuses[qIndex]='wrong'; wrongIndices.push(qIndex);
+    document.querySelectorAll('.choice-btn').forEach(b => {
+      if (b.textContent === questions[qIndex].choices[correct]) b.classList.add('correct');
+    });
+    fb.className = 'feedback wrong';
+    fb.textContent = `✗ الإجابة الصحيحة: ${questions[qIndex].choices[correct]}`;
+  }
+  fb.style.display = 'block';
+  updateBadges();
+  renderDotProgress(); saveResumeState(); document.getElementById('next-btn').style.display = 'block'; document.getElementById('skip-btn').style.display = 'none';
+}
+
+function checkTextVal(q, userVal) {
+  const input = document.getElementById('user-input');
+  if (input) input.disabled = true;
+  const sub = document.querySelector('.submit-btn'); if(sub) sub.disabled=true;
+  const fb = document.getElementById('feedback');
+  if (normalize(userVal) === normalize(q.answer)) {
+    correctCount++; statuses[qIndex]='correct';
+    fb.className='feedback correct'; fb.innerHTML='✓ أحسنت! إجابة صحيحة تماماً';
+  } else {
+    wrongCount++; statuses[qIndex]='wrong'; wrongIndices.push(qIndex);
+    fb.className='feedback wrong'; fb.innerHTML=`✗ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2">${q.answer}</span>`;
+  }
+  fb.style.display='block'; updateBadges(); renderDotProgress(); saveResumeState();
+  document.getElementById('next-btn').style.display='block'; document.getElementById('skip-btn').style.display='none';
+}
+
+function checkText(q) {
+  const input = document.getElementById('user-input');
+  const userVal = input.value.trim();
+  if (!userVal) return;
+
+  input.disabled = true;
+  document.querySelector('.submit-btn').disabled = true;
+
+  const fb = document.getElementById('feedback');
+  const correct = normalize(q.answer);
+  const user    = normalize(userVal);
+
+  if (user === correct) {
+    correctCount++; statuses[qIndex]='correct';
+    fb.className = 'feedback correct';
+    fb.innerHTML = `✓ أحسنت! إجابة صحيحة تماماً`;
+  } else {
+    wrongCount++; statuses[qIndex]='wrong'; wrongIndices.push(qIndex);
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `✗ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2">${q.answer}</span>`;
+  }
+  fb.style.display = 'block';
+  updateBadges();
+  renderDotProgress(); saveResumeState(); document.getElementById('next-btn').style.display = 'block'; document.getElementById('skip-btn').style.display = 'none';
+}
+
+function skipQuestion(){
+  const q=questions[qIndex];
+  const fb=document.getElementById('feedback');
+  if(currentLevel==='easy'){
+    document.querySelectorAll('.choice-btn').forEach(b=>{
+      b.disabled=true;
+      if(b.textContent===q.choices[q.answer]) b.classList.add('correct');
+    });
+    fb.className='feedback wrong';
+    fb.innerHTML=`⬅ الإجابة الصحيحة: ${q.choices[q.answer]}`;
+  } else {
+    if(document.getElementById('user-input')) document.getElementById('user-input').disabled=true;
+    const sub=document.querySelector('.submit-btn');
+    if(sub) sub.disabled=true;
+    fb.className='feedback wrong';
+    fb.innerHTML=`⬅ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2">${q.answer}</span>`;
+  }
+  wrongCount++; statuses[qIndex]='wrong'; wrongIndices.push(qIndex);
+  fb.style.display='block';
+  updateBadges();
+  document.getElementById('skip-btn').style.display='none';
+  document.getElementById('next-btn').style.display='block';
+}
+function prevQuestion() {
+  if (qIndex === 0) return;
+  qIndex--;
+  showQuestion();
+}
+function nextQuestion() {
+  qIndex++;
+  if (qIndex >= questions.length) {
+    showResult();
+  } else {
+    showQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('quiz-area').style.display   = 'none';
+  document.getElementById('result-area').style.display = 'block';
+
+  const pct = Math.round((correctCount / questions.length) * 100);
+  document.getElementById('result-score').textContent =
+    `${toArabicNum(correctCount)} / ${toArabicNum(questions.length)} — ${toArabicNum(pct)}%`;
+
+  let icon, title, msg;
+  if (pct === 100) {
+    icon = '🌟'; title = 'ممتاز! حفظ مثالي';
+    msg  = 'ما شاء الله! أتقنت الصفحة بالكامل';
+  } else if (pct >= 80) {
+    icon = '✨'; title = 'أحسنت!';
+    msg  = 'نتيجة رائعة، استمر في المراجعة';
+  } else if (pct >= 60) {
+    icon = '📖'; title = 'جيد';
+    msg  = 'راجع الصفحة مرة أخرى وأعد الاختبار';
+  } else {
+    icon = '🌱'; title = 'تحتاج مراجعة';
+    msg  = 'لا تيأس، المراجعة المستمرة هي المفتاح';
+  }
+
+  document.getElementById('result-icon').textContent  = icon;
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-msg').textContent   = msg;
+
+  document.getElementById('progress-fill').style.width = '100%';
+  updateBadges();
+  try { localStorage.removeItem('quranResume_p9'); } catch(e) {}
+  var __rb = document.getElementById('review-mistakes-btn'); if (__rb) __rb.style.display = (wrongIndices.length > 0 ? 'inline-block' : 'none');
+  var __pct = Math.round((correctCount/questions.length)*100); if (__pct === 100) spawnConfetti();
+}
+
+function retryQuiz() {
+  document.getElementById('result-area').style.display = 'none';
+  document.getElementById('level-card').style.display  = 'block';
+  currentLevel = null;
+  document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('start-btn').classList.remove('ready');
+  document.getElementById('total-q').textContent = '١٠';
+  document.getElementById('wrong-badge').innerHTML   = '٠ ✗<br>خطأ';
+  document.getElementById('correct-badge').innerHTML = '٠ ✓<br>صحيح';
+  document.getElementById('qnum-badge').innerHTML    = 'السؤال ١ /<br>١٠';
+  document.getElementById('progress-fill').style.width = '0%';
+}
+
+// ══════════════════════════════════════════════
+//  الوضع الليلي
+// ══════════════════════════════════════════════
+function applyTheme(mode) {
+  document.documentElement.setAttribute('data-theme', mode);
+  document.getElementById('theme-toggle').textContent = mode === 'dark' ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  try { localStorage.setItem('quranTheme', next); } catch(e) {}
+}
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem('quranTheme'); } catch(e) {}
+  if (!saved) saved = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  applyTheme(saved);
+})();
+
+
+// ══════════════════════════════════════════════
+//  شريط النقاط التفاعلي
+// ══════════════════════════════════════════════
+function renderDotProgress() {
+  const wrap = document.getElementById('dot-progress');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  if (!statuses || !statuses.length) return;
+  statuses.forEach((st, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'q-dot' + (i === qIndex ? ' current' : st !== 'pending' ? ' ' + st : '');
+    wrap.appendChild(dot);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  حفظ/استئناف التقدم (نص الاختبار)
+// ══════════════════════════════════════════════
+function saveResumeState() {
+  try {
+    localStorage.setItem('quranResume_p9', JSON.stringify({
+      level: currentLevel, qIndex, correctCount, wrongCount, statuses, wrongIndices, date: Date.now()
+    }));
+  } catch(e) {}
+}
+function dismissResume() {
+  try { localStorage.removeItem('quranResume_p9'); } catch(e) {}
+  const b = document.getElementById('resume-banner');
+  if (b) b.style.display = 'none';
+}
+function resumeQuiz() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem('quranResume_p9')); } catch(e) {}
+  if (!saved) return;
+  currentLevel = saved.level;
+  if (currentLevel === 'easy')   questions = [...EASY_Q];
+  if (currentLevel === 'medium') questions = [...MEDIUM_Q];
+  if (currentLevel === 'hard')   questions = [...HARD_Q];
+  qIndex = saved.qIndex;
+  correctCount = saved.correctCount;
+  wrongCount = saved.wrongCount;
+  statuses = saved.statuses || questions.map(() => 'pending');
+  wrongIndices = saved.wrongIndices || [];
+  document.getElementById('resume-banner').style.display = 'none';
+  document.getElementById('level-card').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  showQuestion();
+}
+(function checkResumeOnLoad() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem('quranResume_p9')); } catch(e) {}
+  if (saved && saved.qIndex > 0) {
+    const b = document.getElementById('resume-banner');
+    if (b) b.style.display = 'block';
+  }
+})();
+
+// ══════════════════════════════════════════════
+//  مراجعة الأخطاء
+// ══════════════════════════════════════════════
+let reviewQuestions = [];
+let reviewIdx = 0;
+function startReview() {
+  reviewQuestions = wrongIndices.map(i => questions[i]);
+  reviewIdx = 0;
+  if (!reviewQuestions.length) return;
+  document.getElementById('result-area').style.display = 'none';
+  document.getElementById('review-area').style.display = 'block';
+  renderReviewQ();
+}
+function renderReviewQ() {
+  const q = reviewQuestions[reviewIdx];
+  document.getElementById('review-number').textContent = `مراجعة ${toArabicNum(reviewIdx + 1)} من ${toArabicNum(reviewQuestions.length)}`;
+  document.getElementById('review-q-text').textContent = q.q;
+  const answerText = (currentLevel === 'easy') ? q.choices[q.answer] : q.answer;
+  document.getElementById('review-answer').textContent = '✓ ' + answerText;
+}
+function reviewNav(dir) {
+  reviewIdx = Math.max(0, Math.min(reviewQuestions.length - 1, reviewIdx + dir));
+  renderReviewQ();
+}
+function endReview() {
+  document.getElementById('review-area').style.display = 'none';
+  document.getElementById('result-area').style.display = 'block';
+}
+
+// ══════════════════════════════════════════════
+//  تأثير الاحتفال (١٠٠٪)
+// ══════════════════════════════════════════════
+function spawnConfetti() {
+  const colors = ['#4a7c4a', '#c4a84a', '#9db89d', '#e0edd8', '#7a9a7a'];
+  const container = document.getElementById('confetti-container');
+  if (!container) return;
+  container.innerHTML = '';
+  container.style.display = 'block';
+  for (let i = 0; i < 45; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (2 + Math.random() * 1.5) + 's';
+    piece.style.animationDelay = (Math.random() * 0.4) + 's';
+    container.appendChild(piece);
+  }
+  setTimeout(() => { container.style.display = 'none'; container.innerHTML = ''; }, 4000);
+}
+
+// ══════════════════════════════════════════════
+//  السابق + التنقل بالسحب (Swipe)
+// ══════════════════════════════════════════════
+function prevQuestion() {
+  if (qIndex === 0) return;
+  qIndex--;
+  showQuestion();
+}
+(function enableSwipe() {
+  const area = document.getElementById('quiz-area');
+  if (!area) return;
+  let startX = 0, startY = 0;
+  area.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  area.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
+    const nextBtn = document.getElementById('next-btn');
+    if (dx < 0 && nextBtn && nextBtn.style.display === 'block') {
+      nextQuestion();
+    } else if (dx > 0) {
+      prevQuestion();
+    }
+  }, { passive: true });
+})();
 </script>
-
-<!-- Translate Button -->
-<div class="translate-menu" id="translate-menu">
-  <a class="translate-option" href="#" onclick="translateTo('en')">🇬🇧 English</a>
-  <a class="translate-option" href="#" onclick="translateTo('fr')">🇫🇷 Français</a>
-  <a class="translate-option" href="#" onclick="translateTo('tr')">🇹🇷 Türkçe</a>
-  <a class="translate-option" href="#" onclick="translateTo('ur')">🇵🇰 اردو</a>
-  <a class="translate-option" href="#" onclick="translateTo('id')">🇮🇩 Indonesia</a>
-</div>
-<button class="translate-btn" onclick="toggleTranslate()">🌐 ترجمة</button>
-
 </body>
 </html>
