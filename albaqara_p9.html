@@ -685,7 +685,7 @@ function showQuestion() {
         rec = new SpeechAPI();
         rec.lang='ar-SA'; rec.continuous=true; rec.interimResults=true;
 
-        rec.onstart = () => { recognizing=true; currentText=''; setBtn('rec'); };
+        rec.onstart = () => { recognizing=true; currentText=''; setBtn('rec'); txBox.style.display='block'; txBox.textContent=savedText||'🎤 ...'; };
 
         rec.onresult = e => {
           // الحل الصحيح: استخدم e.resultIndex لمعالجة النتائج الجديدة فقط
@@ -732,7 +732,7 @@ function showQuestion() {
               // rec جديد في كل جلسة لضمان e.results نظيف
               rec = new SpeechAPI();
               rec.lang='ar-SA'; rec.continuous=true; rec.interimResults=true;
-              rec.onstart  = ()=>{ recognizing=true; currentText=''; setBtn('rec'); };
+              rec.onstart  = ()=>{ recognizing=true; currentText=''; setBtn('rec'); txBox.style.display='block'; txBox.textContent=savedText||'🎤 ...'; };
               rec.onresult = e=>{
                 for(let i=e.resultIndex;i<e.results.length;i++){
                   if(e.results[i].isFinal) currentText=(currentText+' '+e.results[i][0].transcript).trim();
@@ -785,14 +785,26 @@ function showQuestion() {
   }
 }
 
+function wordDiff(userVal, correctAnswer) {
+  const nm = s => s.replace(/[ً-ٰٟ]/g,'').replace(/[أإآا]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/\s+/g,' ').trim();
+  const uWords = nm(userVal).split(' ');
+  const cWords = correctAnswer.split(' ');
+  return cWords.map((word, i) => {
+    const ok = nm(uWords[i]||'') === nm(word);
+    return ok
+      ? '<span style="color:var(--correct-text);background:var(--correct-bg);border-radius:4px;padding:1px 4px;margin:0 1px;">'+word+'</span>'
+      : '<span style="color:var(--wrong-text);background:var(--wrong-bg);border-radius:4px;padding:1px 4px;margin:0 1px;">'+word+'</span>';
+  }).join(' ');
+}
+
 function checkTextVal(q, userVal) {
   const fb=document.getElementById('feedback');
   if(normalize(userVal)===normalize(q.answer)){
     correctCount++;statuses[qIndex]='correct';
-    fb.className='feedback correct';fb.innerHTML='✓ أحسنت!';
+    fb.className='feedback correct';fb.innerHTML='✓ أحسنت! إجابة صحيحة تماماً 🌟';
   } else {
     wrongCount++;statuses[qIndex]='wrong';wrongIndices.push(qIndex);
-    fb.className='feedback wrong';fb.innerHTML='✗ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2">'+q.answer+'</span>';
+    fb.className='feedback wrong';fb.innerHTML='✗ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2.2;direction:rtl;display:block;text-align:right;">'+wordDiff(userVal,q.answer)+'</span>';
   }
   fb.style.display='block';updateBadges();renderDotProgress();saveResumeState();
   document.getElementById('next-btn').style.display='block';
@@ -846,11 +858,11 @@ function checkText(q) {
   if (user === correct) {
     correctCount++; statuses[qIndex]='correct';
     fb.className = 'feedback correct';
-    fb.innerHTML = `✓ أحسنت! إجابة صحيحة تماماً`;
+    fb.innerHTML = '✓ أحسنت! إجابة صحيحة تماماً 🌟';
   } else {
     wrongCount++; statuses[qIndex]='wrong'; wrongIndices.push(qIndex);
     fb.className = 'feedback wrong';
-    fb.innerHTML = `✗ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2">${q.answer}</span>`;
+    fb.innerHTML = '✗ الإجابة الصحيحة:<br><span style="font-size:18px;line-height:2.2;direction:rtl;display:block;text-align:right;">'+wordDiff(userVal,q.answer)+'</span>';
   }
   fb.style.display = 'block';
   updateBadges();
