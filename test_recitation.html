@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار التلاوة — سورة النبأ</title>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f4f0;--text:#2d4a2d;--card:#fff;--border:#c8d9c0;--gold:#c4a84a;--accent:#4a7c4a;--surface2:#f4f8f2;--surface3:#f8fbf6;--surface-hover:#e0edd8;--accent-dark:#3a6a3a;--wrong-border:#c0392b;}
+html[data-theme="dark"]{--bg:#1c2420;--text:#d9ecd9;--card:#232f29;--border:#3a4d40;--gold:#d9b96a;--accent:#5fae5f;--surface2:#2a3830;--surface3:#1f2a24;--surface-hover:#324438;--accent-dark:#7fcf7f;--wrong-border:#e74c3c;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Amiri','Scheherazade New',serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl;}
+.top-bar{background:var(--bg);padding:12px 20px;display:flex;align-items:center;gap:10px;}
+.back-btn{background:none;border:none;color:var(--accent);font-size:18px;cursor:pointer;text-decoration:none;font-family:inherit;}
+#theme-toggle{background:var(--surface2);border:1.5px solid var(--border);border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;margin-right:auto;}
+.info-card{margin:0 16px 16px;background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:20px;text-align:center;position:relative;}
+.info-card::before,.info-card::after{content:'✦';color:var(--gold);font-size:18px;position:absolute;top:14px;}
+.info-card::before{right:16px;}.info-card::after{left:16px;}
+.surah-title{font-size:26px;font-weight:700;margin-bottom:4px;}
+.surah-sub{font-size:14px;color:var(--accent);}
+.rec-card{margin:0 16px 16px;background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:22px 20px;}
+.rec-title{font-size:16px;color:var(--accent);font-weight:700;margin-bottom:6px;text-align:center;}
+.rec-desc{font-size:13px;color:#888;text-align:center;margin-bottom:18px;line-height:1.7;}
+.rec-btn{width:100%;padding:18px;border-radius:14px;font-size:18px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);transition:all .25s;margin-bottom:10px;}
+.rec-btn.recording{background:#e74c3c;color:#fff;border-color:#e74c3c;animation:pulse 1.2s infinite;}
+.rec-btn.paused{background:#e67e22;color:#fff;border-color:#e67e22;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4);}50%{box-shadow:0 0 0 10px rgba(231,76,60,0);}}
+.clear-btn{width:100%;padding:10px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid var(--wrong-border);background:transparent;color:var(--wrong-border);display:none;margin-bottom:10px;}
+.transcript-box{background:var(--surface3);border:1.5px solid var(--border);border-radius:12px;padding:14px;font-size:18px;line-height:2;direction:rtl;text-align:right;min-height:80px;margin-bottom:14px;display:none;color:var(--text);}
+.check-btn{width:100%;padding:13px;border-radius:12px;font-size:17px;font-family:inherit;cursor:pointer;background:var(--accent);color:#fff;border:none;display:none;}
+.check-btn:hover{background:var(--accent-dark);}
+.result-card{margin:0 16px 16px;background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:22px 20px;display:none;}
+.result-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.result-title{font-size:18px;font-weight:700;color:var(--accent);}
+.result-stats{display:flex;gap:10px;}
+.stat{border-radius:10px;padding:6px 14px;font-size:14px;font-weight:700;}
+.stat.ok{background:#d4edda;color:#1a5c1a;}
+.stat.err{background:#f8d7da;color:#7a1a1a;}
+.ayah-display{font-family:'Scheherazade New',serif;font-size:20px;line-height:2.8;direction:rtl;text-align:right;}
+.w-ok{color:#155724;background:#c3e6cb;border-radius:5px;padding:1px 5px;margin:1px;}
+.w-err{color:#fff;background:#c0392b;border-radius:5px;padding:1px 5px;margin:1px;}
+.w-missing{color:#888;background:#f0f0f0;border-radius:5px;padding:1px 5px;margin:1px;text-decoration:line-through;}
+.legend{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:13px;}
+.legend-dot{width:14px;height:14px;border-radius:3px;}
+.score-bar{background:var(--surface2);border-radius:8px;height:10px;margin-bottom:16px;overflow:hidden;}
+.score-fill{height:100%;border-radius:8px;transition:width .6s ease;background:var(--accent);}
+.retry-btn{width:100%;padding:12px;border-radius:12px;font-size:16px;font-family:inherit;cursor:pointer;background:var(--surface2);color:var(--accent);border:1.5px solid var(--border);margin-top:12px;}
+.where-msg{font-size:13px;color:var(--accent);background:var(--surface2);border-radius:8px;padding:8px 12px;margin-bottom:12px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <a href="annaba.html" class="back-btn">← الرجوع</a>
+  <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
+</div>
+
+<div class="info-card">
+  <div class="surah-title">سورة النبأ</div>
+  <div class="surah-sub">🎤 اختبر تلاوتك — اقرأ ما حفظت والموقع يصحح</div>
+</div>
+
+<div class="rec-card">
+  <div class="rec-title">كيف يعمل؟</div>
+  <div class="rec-desc">
+    اضغط زر التسجيل واقرأ من أي آية تريد<br>
+    لما توقف — سيظهر لك التصحيح كلمة بكلمة<br>
+    🟢 صح &nbsp;|&nbsp; 🔴 غلط &nbsp;|&nbsp; ➖ ناقص
+  </div>
+  <button class="rec-btn" id="recBtn" onclick="toggleRec()">🎤 اضغط وابدأ التلاوة</button>
+  <button class="clear-btn" id="clearBtn" onclick="clearAll()">🗑️ مسح والبدء من جديد</button>
+  <div class="transcript-box" id="transcriptBox"></div>
+  <button class="check-btn" id="checkBtn" onclick="checkRecitation()">✓ تحقق من التلاوة</button>
+</div>
+
+<div class="result-card" id="resultCard">
+  <div class="result-header">
+    <div class="result-title" id="resultTitle">نتيجة التلاوة</div>
+    <div class="result-stats">
+      <div class="stat ok" id="statOk">✓ ٠</div>
+      <div class="stat err" id="statErr">✗ ٠</div>
+    </div>
+  </div>
+  <div class="where-msg" id="whereMsg"></div>
+  <div class="score-bar"><div class="score-fill" id="scoreFill" style="width:0%"></div></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#c3e6cb;border:1px solid #155724"></div> كلمة صحيحة</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div> كلمة خاطئة</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f0f0f0;border:1px solid #ccc"></div> كلمة محذوفة</div>
+  </div>
+  <div class="ayah-display" id="ayahDisplay"></div>
+  <button class="retry-btn" onclick="retryRec()">🔄 إعادة التسجيل</button>
+</div>
+
+<script>
+// ===== نص سورة النبأ كاملاً =====
+const SURAH_TEXT = `عَمَّ يَتَسَآءَلُونَ عَنِ ٱلنَّبَإِ ٱلْعَظِيمِ ٱلَّذِى هُمْ فِيهِ مُخْتَلِفُونَ كَلَّا سَيَعْلَمُونَ ثُمَّ كَلَّا سَيَعْلَمُونَ أَلَمْ نَجْعَلِ ٱلْأَرْضَ مِهَٰدًا وَٱلْجِبَالَ أَوْتَادًا وَخَلَقْنَٰكُمْ أَزْوَٰجًا وَجَعَلْنَا نَوْمَكُمْ سُبَاتًا وَجَعَلْنَا ٱلَّيْلَ لِبَاسًا وَجَعَلْنَا ٱلنَّهَارَ مَعَاشًا وَبَنَيْنَا فَوْقَكُمْ سَبْعًا شِدَادًا وَجَعَلْنَا سِرَاجًا وَهَّاجًا وَأَنزَلْنَا مِنَ ٱلْمُعْصِرَٰتِ مَآءً ثَجَّاجًا لِّنُخْرِجَ بِهِۦ حَبًّا وَنَبَاتًا وَجَنَّٰتٍ أَلْفَافًا إِنَّ يَوْمَ ٱلْفَصْلِ كَانَ مِيقَٰتًا يَوْمَ يُنفَخُ فِى ٱلصُّورِ فَتَأْتُونَ أَفْوَاجًا وَفُتِحَتِ ٱلسَّمَآءُ فَكَانَتْ أَبْوَٰبًا وَسُيِّرَتِ ٱلْجِبَالُ فَكَانَتْ سَرَابًا إِنَّ جَهَنَّمَ كَانَتْ مِرْصَادًا لِّلطَّٰغِينَ مَـَٔابًا لَّٰبِثِينَ فِيهَآ أَحْقَابًا لَّا يَذُوقُونَ فِيهَا بَرْدًا وَلَا شَرَابًا إِلَّا حَمِيمًا وَغَسَّاقًا جَزَآءً وِفَاقًا إِنَّهُمْ كَانُوا لَا يَرْجُونَ حِسَابًا وَكَذَّبُوا بِـَٔايَٰتِنَا كِذَّابًا وَكُلَّ شَىْءٍ أَحْصَيْنَٰهُ كِتَٰبًا فَذُوقُوا فَلَن نَّزِيدَكُمْ إِلَّا عَذَابًا إِنَّ لِلْمُتَّقِينَ مَفَازًا حَدَآئِقَ وَأَعْنَٰبًا وَكَوَاعِبَ أَتْرَابًا وَكَأْسًا دِهَاقًا لَّا يَسْمَعُونَ فِيهَا لَغْوًا وَلَا كِذَّٰبًا جَزَآءً مِّن رَّبِّكَ عَطَآءً حِسَابًا رَّبِّ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَمَا بَيْنَهُمَا ٱلرَّحْمَٰنِ لَا يَمْلِكُونَ مِنْهُ خِطَابًا يَوْمَ يَقُومُ ٱلرُّوحُ وَٱلْمَلَٰٓئِكَةُ صَفًّا لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ ٱلرَّحْمَٰنُ وَقَالَ صَوَابًا ذَٰلِكَ ٱلْيَوْمُ ٱلْحَقُّ فَمَن شَآءَ ٱتَّخَذَ إِلَىٰ رَبِّهِۦ مَـَٔابًا إِنَّآ أَنذَرْنَٰكُمْ عَذَابًا قَرِيبًا يَوْمَ يَنظُرُ ٱلْمَرْءُ مَا قَدَّمَتْ يَدَاهُ وَيَقُولُ ٱلْكَافِرُ يَٰلَيْتَنِى كُنتُ تُرَٰبًا`;
+
+const SURAH_WORDS = SURAH_TEXT.split(/\s+/).filter(w => w.length > 0);
+
+// normalize: إزالة التشكيل وتوحيد الأحرف
+function norm(s) {
+  return s
+    .replace(/[\u064B-\u065F\u0670\u0671]/g, '') // تشكيل + wasla
+    .replace(/[أإآا]/g, 'ا')
+    .replace(/ة/g, 'ه')
+    .replace(/ى/g, 'ي')
+    .replace(/ئ|ؤ/g, 'ء')
+    .replace(/[^\u0600-\u06FF]/g, '')
+    .trim();
+}
+
+// البحث عن موضع البداية في السورة
+function findStartIndex(userWords) {
+  if (!userWords.length) return -1;
+  const first3 = userWords.slice(0, 3).map(norm).join(' ');
+  for (let i = 0; i <= SURAH_WORDS.length - 3; i++) {
+    const chunk = SURAH_WORDS.slice(i, i + 3).map(norm).join(' ');
+    if (chunk === first3) return i;
+    // مطابقة جزئية — كلمتان فقط
+    if (i < SURAH_WORDS.length - 2) {
+      const chunk2 = SURAH_WORDS.slice(i, i + 2).map(norm).join(' ');
+      const user2 = userWords.slice(0, 2).map(norm).join(' ');
+      if (chunk2 === user2) return i;
+    }
+  }
+  return -1;
+}
+
+// مقارنة كلمة بكلمة
+function compareWords(userWords, refWords) {
+  const results = [];
+  let ui = 0, ri = 0;
+  while (ri < refWords.length) {
+    if (ui >= userWords.length) {
+      // كلمات ناقصة
+      results.push({ ref: refWords[ri], user: null, status: 'missing' });
+      ri++;
+    } else if (norm(userWords[ui]) === norm(refWords[ri])) {
+      results.push({ ref: refWords[ri], user: userWords[ui], status: 'ok' });
+      ui++; ri++;
+    } else {
+      // خطأ — تحقق إذا كانت الكلمة التالية تطابق
+      const nextMatch = ui + 1 < userWords.length && norm(userWords[ui + 1]) === norm(refWords[ri]);
+      if (nextMatch) {
+        // كلمة زائدة من المستخدم — تجاهلها
+        ui++;
+      } else {
+        results.push({ ref: refWords[ri], user: userWords[ui], status: 'err' });
+        ui++; ri++;
+      }
+    }
+  }
+  return results;
+}
+
+// ===== التسجيل =====
+const SpeechAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recInst = null, recognizing = false, savedText = '', currentText = '';
+const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+
+function makeRec() {
+  const r = new SpeechAPI();
+  r.lang = 'ar-SA'; r.continuous = true; r.interimResults = false;
+  r.onstart = () => { recognizing = true; updateRecBtn('rec'); showTranscript(); };
+  r.onresult = e => {
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) currentText = (currentText + ' ' + e.results[i][0].transcript).trim();
+    }
+    const full = savedText ? (savedText + ' ' + currentText).trim() : currentText;
+    document.getElementById('transcriptBox').textContent = full;
+    document.getElementById('checkBtn').style.display = 'block';
+    document.getElementById('clearBtn').style.display = 'block';
+  };
+  r.onerror = e => { if (e.error !== 'no-speech' && e.error !== 'aborted') recognizing = false; };
+  r.onend = () => {
+    recognizing = false;
+    if (currentText) { savedText = savedText ? (savedText + ' ' + currentText).trim() : currentText; currentText = ''; }
+    updateRecBtn(savedText ? 'paused' : 'idle');
+  };
+  return r;
+}
+
+function toggleRec() {
+  if (!SpeechAPI || !isSecure) {
+    alert('التسجيل الصوتي يعمل على الموقع الرسمي فقط (https)');
+    return;
+  }
+  if (recognizing) {
+    recognizing = false;
+    if (currentText) { savedText = savedText ? (savedText + ' ' + currentText).trim() : currentText; currentText = ''; }
+    try { recInst.stop(); } catch(e) {}
+    updateRecBtn('paused');
+    return;
+  }
+  recInst = makeRec();
+  try { recInst.start(); } catch(e) { updateRecBtn('idle'); }
+}
+
+function updateRecBtn(state) {
+  const btn = document.getElementById('recBtn');
+  if (state === 'rec') { btn.textContent = '⏸ إيقاف مؤقت'; btn.className = 'rec-btn recording'; }
+  else if (state === 'paused') { btn.textContent = '▶️ استمر في التلاوة'; btn.className = 'rec-btn paused'; }
+  else { btn.textContent = '🎤 اضغط وابدأ التلاوة'; btn.className = 'rec-btn'; }
+}
+
+function showTranscript() {
+  document.getElementById('transcriptBox').style.display = 'block';
+}
+
+function clearAll() {
+  if (recognizing) { try { recInst.stop(); } catch(e) {} recognizing = false; }
+  savedText = ''; currentText = '';
+  document.getElementById('transcriptBox').textContent = '';
+  document.getElementById('transcriptBox').style.display = 'none';
+  document.getElementById('checkBtn').style.display = 'none';
+  document.getElementById('clearBtn').style.display = 'none';
+  document.getElementById('resultCard').style.display = 'none';
+  updateRecBtn('idle');
+}
+
+function retryRec() {
+  clearAll();
+}
+
+// ===== التصحيح =====
+function checkRecitation() {
+  const text = savedText || document.getElementById('transcriptBox').textContent.trim();
+  if (!text) return;
+
+  if (recognizing) { try { recInst.stop(); } catch(e) {} recognizing = false; }
+  updateRecBtn('idle');
+
+  const userWords = text.split(/\s+/).filter(w => w.length > 0);
+  const startIdx = findStartIndex(userWords);
+
+  let refWords, whereMsg;
+  if (startIdx === -1) {
+    // لم نجد البداية — نقارن من أول السورة
+    refWords = SURAH_WORDS.slice(0, userWords.length + 5);
+    whereMsg = '⚠️ لم نتعرف على موضع البداية — تمت المقارنة من أول السورة';
+  } else {
+    refWords = SURAH_WORDS.slice(startIdx, startIdx + userWords.length + 5);
+    const ayahNum = Math.floor(startIdx / 4) + 1; // تقريب
+    whereMsg = `📍 بدأت من الكلمة ${startIdx + 1} تقريباً في السورة`;
+  }
+
+  const results = compareWords(userWords, refWords);
+  const okCount = results.filter(r => r.status === 'ok').length;
+  const errCount = results.filter(r => r.status === 'err').length;
+  const misCount = results.filter(r => r.status === 'missing').length;
+  const total = results.length;
+  const pct = Math.round((okCount / total) * 100);
+
+  // عرض النتيجة
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('whereMsg').textContent = whereMsg;
+  document.getElementById('statOk').textContent = `✓ ${okCount}`;
+  document.getElementById('statErr').textContent = `✗ ${errCount + misCount}`;
+  document.getElementById('scoreFill').style.width = pct + '%';
+  document.getElementById('scoreFill').style.background = pct >= 80 ? '#4a7c4a' : pct >= 60 ? '#e67e22' : '#c0392b';
+
+  // بناء العرض
+  const display = document.getElementById('ayahDisplay');
+  display.innerHTML = '';
+  results.forEach(r => {
+    const span = document.createElement('span');
+    if (r.status === 'ok') {
+      span.className = 'w-ok';
+      span.textContent = r.ref;
+    } else if (r.status === 'err') {
+      span.className = 'w-err';
+      span.title = `قلت: ${r.user}`;
+      span.textContent = r.ref;
+    } else {
+      span.className = 'w-missing';
+      span.textContent = r.ref;
+    }
+    display.appendChild(span);
+    display.appendChild(document.createTextNode(' '));
+  });
+
+  // تحديث العنوان
+  document.getElementById('resultTitle').textContent =
+    pct === 100 ? '🌟 ممتاز! تلاوة مثالية' :
+    pct >= 80 ? '✨ أحسنتِ!' :
+    pct >= 60 ? '📖 جيد — راجعي الكلمات الحمراء' :
+    '💪 تحتاجين مراجعة';
+
+  // scroll للنتيجة
+  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ===== theme =====
+function applyTheme(mode){document.documentElement.setAttribute('data-theme',mode);document.getElementById('theme-toggle').textContent=mode==='dark'?'☀️':'🌙';}
+function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';const next=cur==='dark'?'light':'dark';applyTheme(next);try{localStorage.setItem('quranTheme',next);}catch(e){}}
+(function(){let s=null;try{s=localStorage.getItem('quranTheme');}catch(e){}if(!s)s=(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';applyTheme(s);})();
+</script>
+</body>
+</html>
