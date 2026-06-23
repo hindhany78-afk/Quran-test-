@@ -1,501 +1,86 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WFT6TYVB75"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-WFT6TYVB75");
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-WFT6TYVB75");</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>دربي لحفظ القرآن — هند هاني أبوبكر</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap');
-
-      :root {
-    --bg:       #F5EFE6;
-    --card:     #FFFDF8;
-    --parchment:#FDF3E3;
-    --accent:   #8B5E3C;
-    --accent2:  #C4965A;
-    --teal:     #4A7C7E;
-    --text:     #2E1F0F;
-    --text-soft:#6B4C2A;
-    --border:   #D4AF7A;
-    --shadow:   rgba(139,94,60,0.12);
-    --soon:     #B0A090;
-    --nav-bg:   #FAFCF7;
-  }
-
-  html[data-theme="dark"] {
-    --bg:       #1C1812;
-    --card:     #2A241B;
-    --parchment:#2F2A20;
-    --accent:   #E0B068;
-    --accent2:  #C4965A;
-    --teal:     #6FB8BA;
-    --text:     #EFE6D8;
-    --text-soft:#C9B89A;
-    --border:   #4A4030;
-    --shadow:   rgba(0,0,0,0.35);
-    --soon:     #6B6354;
-    --nav-bg:   #221D16;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Amiri', serif;
-    background: var(--bg);
-    background-image:
-      radial-gradient(ellipse at top right, rgba(196,150,90,0.10) 0%, transparent 55%),
-      radial-gradient(ellipse at bottom left, rgba(139,94,60,0.08) 0%, transparent 55%);
-    min-height: 100vh;
-    padding: 0 0 40px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    color: var(--text);
-  }
-
-  /* NAV */
-  nav {
-    background: var(--nav-bg);
-    border-bottom: 1.5px solid var(--border);
-    padding: 12px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 8px var(--shadow);
-    position: sticky;
-    top: 0;
-    z-index: 200;
-  }
-
-  .nav-right { display: flex; align-items: center; gap: 16px; }
-
-  .theme-toggle {
-    background: var(--parchment);
-    border: 1.5px solid var(--border);
-    border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.2s;
-  }
-  .theme-toggle:hover { border-color: var(--teal); transform: scale(1.08); }
-
-  .nav-logo {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.2rem;
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 0.95rem;
-    color: var(--text-soft);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--accent); }
-
-  /* HERO */
-  .hero {
-    text-align: center;
-    padding: 20px 20px 28px;
-    background: var(--nav-bg);
-    border-bottom: 2px solid var(--border);
-    box-shadow: 0 2px 16px var(--shadow);
-  }
-
-  .hero-ornament {
-    font-size: 1.3rem;
-    color: var(--accent2);
-    letter-spacing: 12px;
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  .hero-basmala {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.35rem;
-    color: var(--teal);
-    margin-bottom: 10px;
-  }
-
-  .hero-title {
-    font-family: 'Scheherazade New', serif;
-    font-size: 2.5rem;
-    color: var(--accent);
-    font-weight: 700;
-    line-height: 1.3;
-  }
-
-  .hero-name {
-    font-size: 1rem;
-    color: var(--text-soft);
-    margin-top: 6px;
-  }
-
-  .hero-sub {
-    font-size: 0.97rem;
-    color: var(--text-soft);
-    margin-top: 4px;
-  }
-
-  .hero-stats {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 18px;
-    flex-wrap: wrap;
-  }
-
-  .stat {
-    background: var(--parchment);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 5px 18px;
-    font-size: 0.9rem;
-    color: var(--text-soft);
-  }
-  .stat span { color: var(--accent); font-weight: 700; font-size: 1rem; }
-
-  /* SEARCH */
-  .search-sticky {
-    position: sticky;
-    top: 57px;
-    z-index: 150;
-    background: var(--bg);
-    padding-top: 14px;
-    padding-bottom: 10px;
-  }
-
-  .search-wrap {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 0 16px;
-  }
-
-  .search-input {
-    font-family: 'Amiri', serif;
-    font-size: 1rem;
-    width: 100%;
-    padding: 10px 18px;
-    border: 1.5px solid var(--border);
-    border-radius: 24px;
-    background: var(--nav-bg);
-    color: var(--text);
-    outline: none;
-    text-align: right;
-    direction: rtl;
-    transition: border-color 0.2s;
-  }
-  .search-input:focus { border-color: var(--teal); }
-  .search-input::placeholder { color: var(--text-soft); opacity: 0.7; }
-
-  /* JUZ CHIPS */
-  .juz-chips {
-    max-width: 600px;
-    margin: 10px auto 0;
-    padding: 0 16px;
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    scrollbar-width: thin;
-  }
-  .juz-chips::-webkit-scrollbar { height: 4px; }
-  .juz-chip {
-    flex-shrink: 0;
-    background: var(--parchment);
-    border: 1.5px solid var(--border);
-    color: var(--text-soft);
-    border-radius: 16px;
-    padding: 5px 14px;
-    font-size: 0.85rem;
-    font-family: 'Amiri', serif;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.18s;
-  }
-  .juz-chip:hover { border-color: var(--teal); color: var(--teal); }
-  .juz-chip.active { background: var(--accent); border-color: var(--accent); color: #FFFDF8; }
-
-  /* MAIN */
-  .main {
-    max-width: 860px;
-    margin: 28px auto 0;
-    padding: 0 16px;
-  }
-
-  /* JUZ */
-  .juz-section { margin-bottom: 28px; }
-
-  .juz-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 14px;
-    padding-bottom: 8px;
-    border-bottom: 1.5px solid var(--border);
-    flex-wrap: wrap;
-  }
-
-  .juz-badge {
-    background: var(--accent);
-    color: #FFFDF8;
-    font-family: 'Scheherazade New', serif;
-    font-size: 0.95rem;
-    padding: 4px 14px;
-    border-radius: 16px;
-    white-space: nowrap;
-  }
-
-  .juz-title {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.15rem;
-    color: var(--accent);
-  }
-
-  .juz-progress {
-    margin-right: auto;
-    font-size: 0.8rem;
-    color: var(--text-soft);
-    background: var(--parchment);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 2px 10px;
-  }
-
-  /* CARDS */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-  }
-
-  @keyframes shimmer {
-    0% { background-position: -300px 0; }
-    100% { background-position: 300px 0; }
-  }
-  .quiz-card.skeleton {
-    pointer-events: none;
-    color: transparent;
-    background: linear-gradient(90deg, var(--parchment) 25%, var(--card) 50%, var(--parchment) 75%);
-    background-size: 600px 100%;
-    animation: shimmer 1.2s infinite linear;
-  }
-  .quiz-card.skeleton * { visibility: hidden; }
-
-  .quiz-card {
-    background: var(--nav-bg);
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    text-decoration: none;
-    color: var(--text);
-    transition: all 0.22s;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .quiz-card:not(.soon):hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px var(--shadow);
-    border-color: var(--teal);
-  }
-
-  .quiz-card.soon {
-    opacity: 0.55;
-    cursor: default;
-    pointer-events: none;
-  }
-
-  .card-corner {
-    position: absolute;
-    right: 0; top: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--teal);
-  }
-  .quiz-card.soon .card-corner { background: var(--soon); }
-
-  .card-surah {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.08rem;
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  .card-info {
-    font-size: 0.8rem;
-    color: var(--text-soft);
-  }
-
-  .card-badge {
-    display: inline-block;
-    font-size: 0.74rem;
-    padding: 2px 10px;
-    border-radius: 10px;
-    margin-top: 4px;
-    font-family: 'Amiri', serif;
-  }
-
-  .badge-ready { background: #DFF0D8; color: var(--teal); border: 1px solid #8CC47A; }
-  .badge-soon  { background: var(--parchment); color: var(--soon); border: 1px solid var(--border); }
-  .badge-done  { background: #FFE8B0; color: #8B5E1A; border: 1px solid #E0B860; }
-
-  .card-check {
-    position: absolute;
-    left: 8px;
-    top: 8px;
-    background: var(--teal);
-    color: #fff;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    font-size: 0.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* ABOUT */
-  .about-section {
-    max-width: 860px;
-    margin: 36px auto 0;
-    padding: 0 16px;
-  }
-
-  .about-card {
-    background: var(--nav-bg);
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    padding: 28px 28px;
-    box-shadow: 0 2px 14px var(--shadow);
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .about-icon {
-    font-size: 3rem;
-    flex-shrink: 0;
-  }
-
-  .about-content { flex: 1; min-width: 220px; }
-
-  .about-name {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.5rem;
-    color: var(--accent);
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-
-  .about-text {
-    font-size: 0.97rem;
-    color: var(--text-soft);
-    line-height: 1.9;
-  }
-
-  .about-ayah {
-    margin-top: 14px;
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.1rem;
-    color: var(--teal);
-    border-right: 3px solid var(--accent2);
-    padding-right: 12px;
-  }
-
-  /* FOOTER */
-  footer {
-    text-align: center;
-    margin-top: 44px;
-    color: var(--text-soft);
-    font-size: 0.88rem;
-    padding: 0 16px;
-  }
-  footer .ornament { color: var(--accent2); letter-spacing: 8px; }
-
-  @media (max-width: 480px) {
-    .hero-title { font-size: 1.85rem; }
-    .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .quiz-card { padding: 10px 8px; }
-    .card-info { font-size: 0.7rem; }
-    nav { flex-direction: column; gap: 10px; }
-  }
-
-  /* Translate Button */
-  .translate-btn {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: var(--accent);
-    color: #FAFCF7;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 16px;
-    font-family: 'Amiri', serif;
-    font-size: 0.9rem;
-    cursor: pointer;
-    box-shadow: 0 4px 14px var(--shadow);
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    z-index: 999;
-  }
-  .translate-btn:hover { background: var(--accent2); transform: translateY(-2px); }
-
-  .translate-menu {
-    position: fixed;
-    bottom: 64px;
-    left: 20px;
-    background: var(--nav-bg);
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px var(--shadow);
-    overflow: hidden;
-    display: none;
-    z-index: 999;
-    min-width: 160px;
-  }
-  .translate-menu.open { display: block; }
-
-  .translate-option {
-    display: block;
-    padding: 10px 18px;
-    font-family: 'Amiri', serif;
-    font-size: 0.95rem;
-    color: var(--text);
-    text-decoration: none;
-    transition: background 0.15s;
-    border-bottom: 1px solid var(--border);
-  }
-  .translate-option:last-child { border-bottom: none; }
-  .translate-option:hover { background: var(--parchment); color: var(--accent); }
+  :root{--bg:#F5EFE6;--card:#FFFDF8;--parchment:#FDF3E3;--accent:#8B5E3C;--accent2:#C4965A;--teal:#4A7C7E;--text:#2E1F0F;--text-soft:#6B4C2A;--border:#D4AF7A;--shadow:rgba(139,94,60,0.12);--soon:#B0A090;--nav-bg:#FAFCF7;}
+  html[data-theme="dark"]{--bg:#1C1812;--card:#2A241B;--parchment:#2F2A20;--accent:#E0B068;--accent2:#C4965A;--teal:#6FB8BA;--text:#EFE6D8;--text-soft:#C9B89A;--border:#4A4030;--shadow:rgba(0,0,0,0.35);--soon:#6B6354;--nav-bg:#221D16;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Amiri',serif;background:var(--bg);background-image:radial-gradient(ellipse at top right,rgba(196,150,90,0.10) 0%,transparent 55%),radial-gradient(ellipse at bottom left,rgba(139,94,60,0.08) 0%,transparent 55%);min-height:100vh;padding:0 0 40px;transition:background-color 0.3s ease,color 0.3s ease;color:var(--text);}
+  nav{background:var(--nav-bg);border-bottom:1.5px solid var(--border);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px var(--shadow);position:sticky;top:0;z-index:200;}
+  .nav-right{display:flex;align-items:center;gap:16px;}
+  .theme-toggle{background:var(--parchment);border:1.5px solid var(--border);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all 0.2s;}
+  .theme-toggle:hover{border-color:var(--teal);transform:scale(1.08);}
+  .nav-logo{font-family:'Scheherazade New',serif;font-size:1.2rem;color:var(--accent);font-weight:700;}
+  .nav-links{display:flex;gap:20px;list-style:none;}
+  .nav-links a{font-size:0.95rem;color:var(--text-soft);text-decoration:none;transition:color 0.2s;}
+  .nav-links a:hover{color:var(--accent);}
+  .hero{text-align:center;padding:20px 20px 28px;background:var(--nav-bg);border-bottom:2px solid var(--border);box-shadow:0 2px 16px var(--shadow);}
+  .hero-ornament{font-size:1.3rem;color:var(--accent2);letter-spacing:12px;margin-bottom:10px;display:block;}
+  .hero-basmala{font-family:'Scheherazade New',serif;font-size:1.35rem;color:var(--teal);margin-bottom:10px;}
+  .hero-title{font-family:'Scheherazade New',serif;font-size:2.5rem;color:var(--accent);font-weight:700;line-height:1.3;}
+  .hero-sub{font-size:0.97rem;color:var(--text-soft);margin-top:4px;}
+  .hero-stats{display:flex;justify-content:center;gap:20px;margin-top:18px;flex-wrap:wrap;}
+  .stat{background:var(--parchment);border:1px solid var(--border);border-radius:20px;padding:5px 18px;font-size:0.9rem;color:var(--text-soft);}
+  .stat span{color:var(--accent);font-weight:700;font-size:1rem;}
+  .search-sticky{position:sticky;top:57px;z-index:150;background:var(--bg);padding-top:14px;padding-bottom:10px;}
+  .search-wrap{max-width:600px;margin:0 auto;padding:0 16px;}
+  .search-input{font-family:'Amiri',serif;font-size:1rem;width:100%;padding:10px 18px;border:1.5px solid var(--border);border-radius:24px;background:var(--nav-bg);color:var(--text);outline:none;text-align:right;direction:rtl;transition:border-color 0.2s;}
+  .search-input:focus{border-color:var(--teal);}
+  .search-input::placeholder{color:var(--text-soft);opacity:0.7;}
+  .juz-chips{max-width:600px;margin:10px auto 0;padding:0 16px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin;}
+  .juz-chips::-webkit-scrollbar{height:4px;}
+  .juz-chip{flex-shrink:0;background:var(--parchment);border:1.5px solid var(--border);color:var(--text-soft);border-radius:16px;padding:5px 14px;font-size:0.85rem;font-family:'Amiri',serif;cursor:pointer;white-space:nowrap;transition:all 0.18s;}
+  .juz-chip:hover{border-color:var(--teal);color:var(--teal);}
+  .juz-chip.active{background:var(--accent);border-color:var(--accent);color:#FFFDF8;}
+  .main{max-width:860px;margin:28px auto 0;padding:0 16px;}
+  .juz-section{margin-bottom:28px;}
+  .juz-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid var(--border);flex-wrap:wrap;}
+  .juz-badge{background:var(--accent);color:#FFFDF8;font-family:'Scheherazade New',serif;font-size:0.95rem;padding:4px 14px;border-radius:16px;white-space:nowrap;}
+  .juz-title{font-family:'Scheherazade New',serif;font-size:1.15rem;color:var(--accent);}
+  .juz-progress{margin-right:auto;font-size:0.8rem;color:var(--text-soft);background:var(--parchment);border:1px solid var(--border);border-radius:12px;padding:2px 10px;}
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+  @keyframes shimmer{0%{background-position:-300px 0;}100%{background-position:300px 0;}}
+  .quiz-card.skeleton{pointer-events:none;color:transparent;background:linear-gradient(90deg,var(--parchment) 25%,var(--card) 50%,var(--parchment) 75%);background-size:600px 100%;animation:shimmer 1.2s infinite linear;}
+  .quiz-card.skeleton *{visibility:hidden;}
+  .quiz-card{background:var(--nav-bg);border:1.5px solid var(--border);border-radius:8px;padding:14px;text-decoration:none;color:var(--text);transition:all 0.22s;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;}
+  .quiz-card:not(.soon):hover{transform:translateY(-3px);box-shadow:0 6px 20px var(--shadow);border-color:var(--teal);}
+  .quiz-card.soon{opacity:0.55;cursor:default;pointer-events:none;}
+  .card-corner{position:absolute;right:0;top:0;width:4px;height:100%;background:var(--teal);}
+  .quiz-card.soon .card-corner{background:var(--soon);}
+  .card-surah{font-family:'Scheherazade New',serif;font-size:1.08rem;color:var(--accent);font-weight:700;}
+  .card-info{font-size:0.8rem;color:var(--text-soft);}
+  .card-badge{display:inline-block;font-size:0.74rem;padding:2px 10px;border-radius:10px;margin-top:4px;font-family:'Amiri',serif;}
+  .badge-ready{background:#DFF0D8;color:var(--teal);border:1px solid #8CC47A;}
+  .badge-soon{background:var(--parchment);color:var(--soon);border:1px solid var(--border);}
+  .badge-done{background:#FFE8B0;color:#8B5E1A;border:1px solid #E0B860;}
+  .card-check{position:absolute;left:8px;top:8px;background:var(--teal);color:#fff;width:20px;height:20px;border-radius:50%;font-size:0.7rem;display:flex;align-items:center;justify-content:center;}
+  .about-section{max-width:860px;margin:36px auto 0;padding:0 16px;}
+  .about-card{background:var(--nav-bg);border:1.5px solid var(--border);border-radius:8px;padding:28px;box-shadow:0 2px 14px var(--shadow);display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;}
+  .about-icon{font-size:3rem;flex-shrink:0;}
+  .about-content{flex:1;min-width:220px;}
+  .about-name{font-family:'Scheherazade New',serif;font-size:1.5rem;color:var(--accent);font-weight:700;margin-bottom:6px;}
+  .about-text{font-size:0.97rem;color:var(--text-soft);line-height:1.9;}
+  .about-ayah{margin-top:14px;font-family:'Scheherazade New',serif;font-size:1.1rem;color:var(--teal);border-right:3px solid var(--accent2);padding-right:12px;}
+  footer{text-align:center;margin-top:44px;color:var(--text-soft);font-size:0.88rem;padding:0 16px;}
+  footer .ornament{color:var(--accent2);letter-spacing:8px;}
+  @media(max-width:480px){.hero-title{font-size:1.85rem;}.cards-grid{grid-template-columns:repeat(3,1fr);gap:8px;}.quiz-card{padding:10px 8px;}.card-info{font-size:0.7rem;}nav{flex-direction:column;gap:10px;}}
+  .translate-btn{position:fixed;bottom:20px;left:20px;background:var(--accent);color:#FAFCF7;border:none;border-radius:50px;padding:10px 16px;font-family:'Amiri',serif;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 14px var(--shadow);transition:all 0.2s;display:flex;align-items:center;gap:6px;z-index:999;}
+  .translate-btn:hover{background:var(--accent2);transform:translateY(-2px);}
+  .translate-menu{position:fixed;bottom:64px;left:20px;background:var(--nav-bg);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 4px 20px var(--shadow);overflow:hidden;display:none;z-index:999;min-width:160px;}
+  .translate-menu.open{display:block;}
+  .translate-option{display:block;padding:10px 18px;font-family:'Amiri',serif;font-size:0.95rem;color:var(--text);text-decoration:none;transition:background 0.15s;border-bottom:1px solid var(--border);}
+  .translate-option:last-child{border-bottom:none;}
+  .translate-option:hover{background:var(--parchment);color:var(--accent);}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-logo">دربي لحفظ القرآن</div>
   <div class="nav-right">
@@ -507,14 +92,12 @@
   </div>
 </nav>
 
-<!-- TOP STRIP -->
-<div style="text-align:center; padding:10px 16px; background:var(--bg); border-bottom:1.5px solid var(--border); font-family:'Scheherazade New',serif;">
-  <div style="font-size:0.9rem; color:var(--teal);">﴿ إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ ﴾ صدق الله العظيم</div>
-  <div style="font-size:0.95rem; color:var(--text-soft); margin-top:4px; font-family:'Scheherazade New',serif; font-weight:700;">دربي لحفظ القرآن</div>
-  <div style="font-size:0.85rem; color:var(--text-soft); margin-top:2px; font-family:'Scheherazade New',serif; font-weight:700;">هند هاني أبوبكر</div>
+<div style="text-align:center;padding:10px 16px;background:var(--bg);border-bottom:1.5px solid var(--border);font-family:'Scheherazade New',serif;">
+  <div style="font-size:0.9rem;color:var(--teal);">﴿ إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ ﴾ صدق الله العظيم</div>
+  <div style="font-size:0.95rem;color:var(--text-soft);margin-top:4px;font-family:'Scheherazade New',serif;font-weight:700;">دربي لحفظ القرآن</div>
+  <div style="font-size:0.85rem;color:var(--text-soft);margin-top:2px;font-family:'Scheherazade New',serif;font-weight:700;">هند هاني أبوبكر</div>
 </div>
 
-<!-- HERO -->
 <div class="hero">
   <span class="hero-ornament">✦ ✦ ✦</span>
   <div class="hero-basmala">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
@@ -523,11 +106,10 @@
   <div class="hero-stats">
     <div class="stat">الأجزاء <span>٣٠</span></div>
     <div class="stat">الصفحات <span>٦٠٤</span></div>
-    <div class="stat">المتاح الآن <span>٤٠</span></div>
+    <div class="stat">المتاح الآن <span>٥٢</span></div>
   </div>
 </div>
 
-<!-- SEARCH -->
 <div class="search-sticky">
   <div class="search-wrap">
     <input type="text" class="search-input" placeholder="🔍 ابحث عن سورة أو صفحة..." oninput="filterCards(this.value)" />
@@ -535,10 +117,21 @@
   <div class="juz-chips" id="juz-chips"></div>
 </div>
 
-<!-- TESTS -->
 <div class="main" id="tests">
 
-  <!-- الجزء الأول -->
+  <!-- سورة الفاتحة -->
+  <div class="juz-section" data-juz="0">
+    <div class="juz-header">
+      <div class="juz-badge" style="background:var(--teal)">الفاتحة</div>
+      <div class="juz-title">أم الكتاب — السبع المثاني</div>
+      <div class="juz-progress">١ / ١ متاح</div>
+    </div>
+    <div class="cards-grid">
+      <a href="alfatiha_p1.html" class="quiz-card" data-text="سورة الفاتحة صفحة ١ آيات ١–٧"><div class="card-corner"></div><div class="card-surah">سورة الفاتحة</div><div class="card-info">الآيات ١–٧ | ص ١ | أم الكتاب</div><span class="card-badge badge-ready">✓ متاح</span></a>
+    </div>
+  </div>
+
+  <!-- الجزء الأول: ص٢–ص٢١ -->
   <div class="juz-section" data-juz="1">
     <div class="juz-header">
       <div class="juz-badge">الجزء الأول</div>
@@ -546,129 +139,30 @@
       <div class="juz-progress">٢٠ / ٢٠ متاح</div>
     </div>
     <div class="cards-grid">
-      <a href="albaqara_p2.html" class="quiz-card" data-text="سورة البقرة صفحة ٢ آيات ١–٥">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١–٥ | وجه ١ | ص ٢</div>
-        <span class="card-badge badge-soon">قريباً</span>
-      </div>
-      <a href="albaqara_p3.html" class="quiz-card" data-text="سورة البقرة صفحة ٣ آيات ٦–١٦">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٦–١٦ | وجه ٢ | ص ٣</div>
-        <span class="card-badge badge-soon">قريباً</span>
-      </div>
-      <a href="albaqara_p4.html" class="quiz-card" data-text="سورة البقرة صفحة ٤ آيات ١٧–٢٤">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٧–٢٤ | وجه ٣ | ص ٤</div>
-        <span class="card-badge badge-soon">قريباً</span>
-      </div>
-      <a href="albaqara_p5.html" class="quiz-card" data-text="سورة البقرة صفحة ٥ آيات ٢٥–٢٩">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٥–٢٩ | وجه ٤ | ص ٥</div>
-        <span class="card-badge badge-soon">قريباً</span>
-      </div>
-      <a href="albaqara_p6.html" class="quiz-card" data-text="سورة البقرة صفحة ٦ آيات ٣٠–٣٧">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٣٠–٣٧ | وجه ٥ | ص ٦</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p7.html" class="quiz-card" data-text="سورة البقرة صفحة ٧ آيات ٣٨–٤٨">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٣٨–٤٨ | وجه ٦ | ص ٧</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p8.html" class="quiz-card" data-text="سورة البقرة صفحة ٨ آيات ٤٩–٥٧">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٤٩–٥٧ | وجه ٧ | ص ٨</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p9.html" class="quiz-card" data-text="سورة البقرة صفحة ٩ آيات ٥٨–٦١">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٥٨–٦١ | وجه ٨ | ص ٩</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p10.html" class="quiz-card" data-text="سورة البقرة صفحة ١٠ آيات ٦٢–٦٩">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٦٢–٦٩ | وجه ٩ | ص ١٠</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p11.html" class="quiz-card" data-text="سورة البقرة صفحة ١١ آيات ٧٠–٧٦">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٧٠–٧٦ | وجه ١٠ | ص ١١</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p12.html" class="quiz-card" data-text="سورة البقرة صفحة ١٢ آيات ٧٧–٨٣">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٧٧–٨٣ | وجه ١١ | ص ١٢</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p13.html" class="quiz-card" data-text="سورة البقرة صفحة ١٣ آيات ٨٤–٨٨">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٨٤–٨٨ | وجه ١٢ | ص ١٣</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p14.html" class="quiz-card" data-text="سورة البقرة صفحة ١٤ آيات ٨٩–٩٣">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٨٩–٩٣ | وجه ١٣ | ص ١٤</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p15.html" class="quiz-card" data-text="سورة البقرة صفحة ١٥ آيات ٩٤–١٠١">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٩٤–١٠١ | وجه ١٤ | ص ١٥</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p16.html" class="quiz-card" data-text="سورة البقرة صفحة ١٦ آيات ١٠٢–١٠٥">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٠٢–١٠٥ | وجه ١٥ | ص ١٦</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p17.html" class="quiz-card" data-text="سورة البقرة صفحة ١٧ آيات ١٠٦–١١٢">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٠٦–١١٢ | وجه ١٦ | ص ١٧</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p18.html" class="quiz-card" data-text="سورة البقرة صفحة ١٨ آيات ١١٣–١١٩">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١١٣–١١٩ | وجه ١٧ | ص ١٨</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p19.html" class="quiz-card" data-text="سورة البقرة صفحة ١٩ آيات ١٢٠–١٢٦">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٢٠–١٢٦ | وجه ١٨ | ص ١٩</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p20.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٠ آيات ١٢٧–١٣٤">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٢٧–١٣٤ | وجه ١٩ | ص ٢٠</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p21.html" class="quiz-card" data-text="سورة البقرة صفحة ٢١ آيات ١٣٥–١٤١">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٣٥–١٤١ | وجه ٢٠ | ص ٢١</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
+      <a href="albaqara_p2.html" class="quiz-card" data-text="سورة البقرة صفحة ٢ آيات ١–٥"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١–٥ | وجه ١ | ص ٢</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p3.html" class="quiz-card" data-text="سورة البقرة صفحة ٣ آيات ٦–١٦"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٦–١٦ | وجه ٢ | ص ٣</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p4.html" class="quiz-card" data-text="سورة البقرة صفحة ٤ آيات ١٧–٢٤"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٧–٢٤ | وجه ٣ | ص ٤</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p5.html" class="quiz-card" data-text="سورة البقرة صفحة ٥ آيات ٢٥–٢٩"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٥–٢٩ | وجه ٤ | ص ٥</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p6.html" class="quiz-card" data-text="سورة البقرة صفحة ٦ آيات ٣٠–٣٨"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٣٠–٣٨ | وجه ٥ | ص ٦</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p7.html" class="quiz-card" data-text="سورة البقرة صفحة ٧ آيات ٣٩–٤٦"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٣٩–٤٦ | وجه ٦ | ص ٧</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p8.html" class="quiz-card" data-text="سورة البقرة صفحة ٨ آيات ٤٧–٥٧"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٤٧–٥٧ | وجه ٧ | ص ٨</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p9.html" class="quiz-card" data-text="سورة البقرة صفحة ٩ آيات ٥٨–٦١"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٥٨–٦١ | وجه ٨ | ص ٩</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p10.html" class="quiz-card" data-text="سورة البقرة صفحة ١٠ آيات ٦٢–٦٨"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٦٢–٦٨ | وجه ٩ | ص ١٠</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p11.html" class="quiz-card" data-text="سورة البقرة صفحة ١١ آيات ٦٩–٧٦"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٦٩–٧٦ | وجه ١٠ | ص ١١</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p12.html" class="quiz-card" data-text="سورة البقرة صفحة ١٢ آيات ٧٧–٨٥"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٧٧–٨٥ | وجه ١١ | ص ١٢</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p13.html" class="quiz-card" data-text="سورة البقرة صفحة ١٣ آيات ٨٦–٩٢"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٨٦–٩٢ | وجه ١٢ | ص ١٣</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p14.html" class="quiz-card" data-text="سورة البقرة صفحة ١٤ آيات ٩٣–١٠١"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٩٣–١٠١ | وجه ١٣ | ص ١٤</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p15.html" class="quiz-card" data-text="سورة البقرة صفحة ١٥ آيات ١٠٢–١٠٧"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٠٢–١٠٧ | وجه ١٤ | ص ١٥</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p16.html" class="quiz-card" data-text="سورة البقرة صفحة ١٦ آيات ١٠٨–١١٣"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٠٨–١١٣ | وجه ١٥ | ص ١٦</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p17.html" class="quiz-card" data-text="سورة البقرة صفحة ١٧ آيات ١١٤–١٢٣"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١١٤–١٢٣ | وجه ١٦ | ص ١٧</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p18.html" class="quiz-card" data-text="سورة البقرة صفحة ١٨ آيات ١٢٤–١٢٩"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٢٤–١٢٩ | وجه ١٧ | ص ١٨</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p19.html" class="quiz-card" data-text="سورة البقرة صفحة ١٩ آيات ١٣٠–١٤١"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٣٠–١٤١ | وجه ١٨ | ص ١٩</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p20.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٠ آيات ١٤٢–١٥٠"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٤٢–١٥٠ | وجه ١٩ | ص ٢٠</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p21.html" class="quiz-card" data-text="سورة البقرة صفحة ٢١ آيات ١٥١–١٥٩"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٥١–١٥٩ | وجه ٢٠ | ص ٢١</div><span class="card-badge badge-ready">✓ متاح</span></a>
     </div>
   </div>
 
+  <!-- الجزء الثاني: ص٢٢–ص٤١ -->
   <div class="juz-section" data-juz="2">
     <div class="juz-header">
       <div class="juz-badge">الجزء الثاني</div>
@@ -676,169 +170,114 @@
       <div class="juz-progress">٢٠ / ٢٠ متاح</div>
     </div>
     <div class="cards-grid">
-      <a href="albaqara_p22.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٢ آيات ١٤٢–١٤٥">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٤٢–١٤٥ | وجه ٢١ | ص ٢٢</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p23.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٣ آيات ١٤٦–١٥٣">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٤٦–١٥٣ | وجه ٢٢ | ص ٢٣</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p24.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٤ آيات ١٥٤–١٦٣">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٥٤–١٦٣ | وجه ٢٣ | ص ٢٤</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p25.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٥ آيات ١٦٤–١٦٩">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٦٤–١٦٩ | وجه ٢٤ | ص ٢٥</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p26.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٦ آيات ١٧٠–١٧٦">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٧٠–١٧٦ | وجه ٢٥ | ص ٢٦</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p27.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٧ آيات ١٧٧–١٨١">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٧٧–١٨١ | وجه ٢٦ | ص ٢٧</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p28.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٨ آيات ١٨٢–١٨٦">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٨٢–١٨٦ | وجه ٢٧ | ص ٢٨</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p29.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٩ آيات ١٨٧–١٩٠">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٨٧–١٩٠ | وجه ٢٨ | ص ٢٩</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p30.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٠ آيات ١٩١–١٩٦">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٩١–١٩٦ | وجه ٢٩ | ص ٣٠</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p31.html" class="quiz-card" data-text="سورة البقرة صفحة ٣١ آيات ١٩٧–٢٠٢">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ١٩٧–٢٠٢ | وجه ٣٠ | ص ٣١</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p32.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٢ آيات ٢٠٣–٢١٠">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٠٣–٢١٠ | وجه ٣١ | ص ٣٢</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p33.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٣ آيات ٢١١–٢١٥">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢١١–٢١٥ | وجه ٣٢ | ص ٣٣</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p34.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٤ آيات ٢١٦–٢١٩">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢١٦–٢١٩ | وجه ٣٣ | ص ٣٤</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p35.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٥ آيات ٢٢٠–٢٢٤">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٢٠–٢٢٤ | وجه ٣٤ | ص ٣٥</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p36.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٦ آيات ٢٢٥–٢٣٠">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٢٥–٢٣٠ | وجه ٣٥ | ص ٣٦</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p37.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٧ آيات ٢٣١–٢٣٣">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٣١–٢٣٣ | وجه ٣٦ | ص ٣٧</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p38.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٨ آيات ٢٣٤–٢٣٧">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٣٤–٢٣٧ | وجه ٣٧ | ص ٣٨</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p39.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٩ آيات ٢٣٨–٢٤٥">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٣٨–٢٤٥ | وجه ٣٨ | ص ٣٩</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p40.html" class="quiz-card" data-text="سورة البقرة صفحة ٤٠ آيات ٢٤٦–٢٤٨">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٤٦–٢٤٨ | وجه ٣٩ | ص ٤٠</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-      <a href="albaqara_p41.html" class="quiz-card" data-text="سورة البقرة صفحة ٤١ آيات ٢٤٩–٢٥٢">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٤٩–٢٥٢ | وجه ٤٠ | ص ٤١</div>
-        <span class="card-badge badge-ready">✓ متاح الآن</span>
-      </a>
-
+      <a href="albaqara_p22.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٢ آيات ١٦٠–١٦٧"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٦٠–١٦٧ | وجه ٢١ | ص ٢٢</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p23.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٣ آيات ١٦٨–١٧٦"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٦٨–١٧٦ | وجه ٢٢ | ص ٢٣</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p24.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٤ آيات ١٧٧–١٨٢"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٧٧–١٨٢ | وجه ٢٣ | ص ٢٤</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p25.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٥ آيات ١٨٣–١٨٧"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٨٣–١٨٧ | وجه ٢٤ | ص ٢٥</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p26.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٦ آيات ١٨٨–١٩٦"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٨٨–١٩٦ | وجه ٢٥ | ص ٢٦</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p27.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٧ آيات ١٩٧–٢٠٢"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ١٩٧–٢٠٢ | وجه ٢٦ | ص ٢٧</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p28.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٨ آيات ٢٠٣–٢٠٩"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٠٣–٢٠٩ | وجه ٢٧ | ص ٢٨</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p29.html" class="quiz-card" data-text="سورة البقرة صفحة ٢٩ آيات ٢١٠–٢١٦"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢١٠–٢١٦ | وجه ٢٨ | ص ٢٩</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p30.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٠ آيات ٢١٧–٢٢١"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢١٧–٢٢١ | وجه ٢٩ | ص ٣٠</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p31.html" class="quiz-card" data-text="سورة البقرة صفحة ٣١ آيات ٢٢٢–٢٢٧"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٢٢–٢٢٧ | وجه ٣٠ | ص ٣١</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p32.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٢ آيات ٢٢٨–٢٣١"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٢٨–٢٣١ | وجه ٣١ | ص ٣٢</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p33.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٣ آيات ٢٣٢–٢٣٣"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٣٢–٢٣٣ | وجه ٣٢ | ص ٣٣</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p34.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٤ آيات ٢٣٣–٢٣٤"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٣٣–٢٣٤ | وجه ٣٣ | ص ٣٤</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p35.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٥ آيات ٢٣٤–٢٣٦"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٣٤–٢٣٦ | وجه ٣٤ | ص ٣٥</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p36.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٦ آيات ٢٣٦–٢٣٩"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٣٦–٢٣٩ | وجه ٣٥ | ص ٣٦</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p37.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٧ آيات ٢٣٩–٢٤٢"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٣٩–٢٤٢ | وجه ٣٦ | ص ٣٧</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p38.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٨ آيات ٢٤٢–٢٤٥"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٤٢–٢٤٥ | وجه ٣٧ | ص ٣٨</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p39.html" class="quiz-card" data-text="سورة البقرة صفحة ٣٩ آيات ٢٤٥–٢٤٨"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٤٥–٢٤٨ | وجه ٣٨ | ص ٣٩</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p40.html" class="quiz-card" data-text="سورة البقرة صفحة ٤٠ آيات ٢٤٨–٢٥٢"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٤٨–٢٥٢ | وجه ٣٩ | ص ٤٠</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p41.html" class="quiz-card" data-text="سورة البقرة صفحة ٤١ آيات ٢٥٢–٢٥٣"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٥٢–٢٥٣ | وجه ٤٠ | ص ٤١</div><span class="card-badge badge-ready">✓ متاح</span></a>
     </div>
   </div>
 
-  <!-- الجزء الثالث -->
-  <div class="juz-section">
+  <!-- الجزء الثالث: ص٤٢–ص٤٩ (٨ متاح، ١٢ قريباً) -->
+  <div class="juz-section" data-juz="3">
     <div class="juz-header">
-      <div class="juz-number">الجزء الثالث</div>
+      <div class="juz-badge">الجزء الثالث</div>
       <div class="juz-title">سورة البقرة (تابع)</div>
-      <div class="juz-progress">٠ / ٨ متاح</div>
+      <div class="juz-progress">٨ / ٢٠ متاح</div>
     </div>
     <div class="cards-grid">
-      <div class="quiz-card soon">
+      <a href="albaqara_p42.html" class="quiz-card" data-text="سورة البقرة صفحة ٤٢ آيات ٢٥٣–٢٥٦"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٥٣–٢٥٦ | وجه ٤١ | ص ٤٢</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p43.html" class="quiz-card" data-text="سورة البقرة صفحة ٤٣ آيات ٢٥٧–٢٥٩"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٥٧–٢٥٩ | وجه ٤٢ | ص ٤٣</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p44.html" class="quiz-card" data-text="سورة البقرة صفحة ٤٤ آيات ٢٦٠–٢٦٤"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٦٠–٢٦٤ | وجه ٤٣ | ص ٤٤</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p45.html" class="quiz-card" data-text="سورة البقرة صفحة ٤٥ آيات ٢٦٥–٢٦٩"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٦٥–٢٦٩ | وجه ٤٤ | ص ٤٥</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p46.html" class="quiz-card" data-text="سورة البقرة صفحة ٤٦ آيات ٢٧٠–٢٧٤"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٧٠–٢٧٤ | وجه ٤٥ | ص ٤٦</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p47.html" class="quiz-card" data-text="سورة البقرة صفحة ٤٧ آيات ٢٧٥–٢٨١"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٧٥–٢٨١ | وجه ٤٦ | ص ٤٧</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p48.html" class="quiz-card" data-text="سورة البقرة صفحة ٤٨ آية الدين"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآية ٢٨٢ | وجه ٤٧ | ص ٤٨</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <a href="albaqara_p49.html" class="quiz-card" data-text="سورة البقرة صفحة ٤٩ آيات ٢٨٣–٢٨٦"><div class="card-corner"></div><div class="card-surah">سورة البقرة</div><div class="card-info">الآيات ٢٨٣–٢٨٦ | وجه ٤٨ | ص ٤٩</div><span class="card-badge badge-ready">✓ متاح</span></a>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">سورة آل عمران</div><div class="card-info">ص ٥٠–٦٢</div><span class="card-badge badge-soon">قريباً</span></div>
+    </div>
+  </div>
+
+
+  <!-- جزء عمّ -->
+  <div class="juz-section" data-juz="30">
+    <div class="juz-header">
+      <div class="juz-badge">الجزء الثلاثون</div>
+      <div class="juz-title">جزء عمّ</div>
+      <div class="juz-progress">٣ / ٢٣ متاح</div>
+    </div>
+    <div class="cards-grid">
+      <a href="annaba.html" class="quiz-card" data-text="سورة النبأ آيات ١–٤٠ جزء عم">
         <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٥٣–٢٥٦ | وجه ٤١ | ص ٤٢</div>
-        <span class="card-badge badge-soon">قريباً</span>
-      </div>
-      <div class="quiz-card soon">
+        <div class="card-surah">سورة النبأ</div>
+        <div class="card-info">الآيات ١–٤٠ | ص ٥٨٢–٥٨٣</div>
+        <span class="card-badge badge-ready">✓ متاح</span>
+      </a>
+      <a href="annaziat.html" class="quiz-card" data-text="سورة النازعات آيات ١–٤٦ جزء عم">
         <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٥٧–٢٥٩ | وجه ٤٢ | ص ٤٣</div>
-        <span class="card-badge badge-soon">قريباً</span>
-      </div>
-      <div class="quiz-card soon">
+        <div class="card-surah">سورة النازعات</div>
+        <div class="card-info">الآيات ١–٤٦ | ص ٥٨٣–٥٨٤</div>
+        <span class="card-badge badge-ready">✓ متاح</span>
+      </a>
+      <a href="abasa.html" class="quiz-card" data-text="سورة عبس آيات ١–٤٢ جزء عم">
         <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٦٠–٢٦٤ | وجه ٤٣ | ص ٤٤</div>
-        <span class="card-badge badge-soon">قريباً</span>
-      </div>
-      <div class="quiz-card soon">
-        <div class="card-corner"></div>
-        <div class="card-surah">سورة البقرة</div>
-        <div class="card-info">الآيات ٢٦٥–٢٦٩ | وجه ٤٤ | ص ٤٥</div>
-        <span class="card-badge badge-soon">قريباً</span>
-      </div>
+        <div class="card-surah">سورة عبس</div>
+        <div class="card-info">الآيات ١–٤٢ | ص ٥٨٤–٥٨٥</div>
+        <span class="card-badge badge-ready">✓ متاح</span>
+      </a>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">سورة التكوير</div><div class="card-info">الآيات ١–٢٩ | ص ٥٨٦</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">الانفطار — المطففين</div><div class="card-info">ص ٥٨٧–٥٨٩</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">الانشقاق — الأعلى</div><div class="card-info">ص ٥٨٩–٥٩١</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">الغاشية — الفجر</div><div class="card-info">ص ٥٩٢–٥٩٤</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">البلد — الشمس</div><div class="card-info">ص ٥٩٤–٥٩٦</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">الليل — الضحى</div><div class="card-info">ص ٥٩٦–٥٩٧</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">الشرح — العلق</div><div class="card-info">ص ٥٩٧–٥٩٩</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">القدر — البينة</div><div class="card-info">ص ٥٩٩–٦٠٠</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">الزلزلة — العاديات</div><div class="card-info">ص ٦٠٠–٦٠١</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">القارعة — التكاثر</div><div class="card-info">ص ٦٠١</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">العصر — الهمزة</div><div class="card-info">ص ٦٠١–٦٠٢</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">الفيل — قريش</div><div class="card-info">ص ٦٠٢</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">الماعون — الكوثر</div><div class="card-info">ص ٦٠٣</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">الكافرون — النصر</div><div class="card-info">ص ٦٠٣</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">المسد — الإخلاص</div><div class="card-info">ص ٦٠٣–٦٠٤</div><span class="card-badge badge-soon">قريباً</span></div>
+      <div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">الفلق — الناس</div><div class="card-info">ص ٦٠٤</div><span class="card-badge badge-soon">قريباً</span></div>
+    </div>
+  </div>
+
+  <!-- اختبار التلاوة -->
+  <div class="juz-section" data-juz="99">
+    <div class="juz-header">
+      <div class="juz-badge" style="background:var(--teal)">🎤 جديد</div>
+      <div class="juz-title">اختبر تلاوتك</div>
+    </div>
+    <div class="cards-grid">
+      <a href="test_recitation.html" class="quiz-card" data-text="اختبار تلاوة سورة النبأ صوتي">
+        <div class="card-corner" style="background:var(--teal)"></div>
+        <div class="card-surah">🎤 سورة النبأ</div>
+        <div class="card-info">اقرأ ما حفظت — تصحيح فوري بالأحمر والأخضر</div>
+        <span class="card-badge" style="background:#e0f4f4;color:#2a6a6a;border:1px solid var(--teal)">تجريبي</span>
+      </a>
     </div>
   </div>
 
   <div id="remaining-juz"></div>
 </div>
 
-<!-- ABOUT -->
 <div class="about-section" id="about">
   <div class="about-card">
     <div class="about-icon">🌙</div>
@@ -853,159 +292,13 @@
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="ornament">✦ ✦ ✦</div>
-  <p style="margin-top:8px; font-family:'Scheherazade New',serif; font-size:1.1rem; color:var(--accent);">هند هاني أبوبكر</p>
-  <p style="margin-top:4px; font-size:0.85rem">دربي لحفظ القرآن</p>
-  <p style="margin-top:6px; font-size:0.8rem">﴿ إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ ﴾</p>
+  <p style="margin-top:8px;font-family:'Scheherazade New',serif;font-size:1.1rem;color:var(--accent);">هند هاني أبوبكر</p>
+  <p style="margin-top:4px;font-size:0.85rem">دربي لحفظ القرآن</p>
+  <p style="margin-top:6px;font-size:0.8rem">﴿ إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ ﴾</p>
 </footer>
 
-<script>
-const juzData = [
-  { num: '٣', title: 'البقرة — آل عمران', pages: 'ص ٤٢–٦٢' },
-  { num: '٤', title: 'آل عمران — النساء', pages: 'ص ٦٣–٨٢' },
-  { num: '٥', title: 'سورة النساء (تابع)', pages: 'ص ٨٣–١٠٢' },
-  { num: '٦', title: 'النساء — المائدة', pages: 'ص ١٠٢–١٢١' },
-  { num: '٧', title: 'المائدة — الأنعام', pages: 'ص ١٢١–١٤١' },
-  { num: '٨', title: 'الأنعام — الأعراف', pages: 'ص ١٤٢–١٦٢' },
-  { num: '٩', title: 'الأعراف — الأنفال', pages: 'ص ١٦٣–١٨٢' },
-  { num: '١٠', title: 'الأنفال — التوبة', pages: 'ص ١٨٢–٢٠١' },
-  { num: '١١', title: 'التوبة — هود', pages: 'ص ٢٠١–٢٢١' },
-  { num: '١٢', title: 'هود — يوسف', pages: 'ص ٢٢١–٢٤١' },
-  { num: '١٣', title: 'يوسف — إبراهيم', pages: 'ص ٢٤١–٢٦١' },
-  { num: '١٤', title: 'الحجر — النحل', pages: 'ص ٢٦٢–٢٨١' },
-  { num: '١٥', title: 'الإسراء — الكهف', pages: 'ص ٢٨٢–٣٠١' },
-  { num: '١٦', title: 'الكهف — طه', pages: 'ص ٣٠١–٣٢١' },
-  { num: '١٧', title: 'الأنبياء — الحج', pages: 'ص ٣٢٢–٣٤١' },
-  { num: '١٨', title: 'المؤمنون — الفرقان', pages: 'ص ٣٤٢–٣٦١' },
-  { num: '١٩', title: 'الفرقان — النمل', pages: 'ص ٣٦٢–٣٨١' },
-  { num: '٢٠', title: 'النمل — العنكبوت', pages: 'ص ٣٨٢–٤٠١' },
-  { num: '٢١', title: 'العنكبوت — الأحزاب', pages: 'ص ٤٠٢–٤٢١' },
-  { num: '٢٢', title: 'الأحزاب — يس', pages: 'ص ٤٢١–٤٤١' },
-  { num: '٢٣', title: 'يس — الزمر', pages: 'ص ٤٤٢–٤٦٢' },
-  { num: '٢٤', title: 'الزمر — فصلت', pages: 'ص ٤٦٢–٤٨١' },
-  { num: '٢٥', title: 'فصلت — الجاثية', pages: 'ص ٤٨٢–٥٠١' },
-  { num: '٢٦', title: 'الأحقاف — الذاريات', pages: 'ص ٥٠٢–٥٢١' },
-  { num: '٢٧', title: 'الذاريات — الحديد', pages: 'ص ٥٢٢–٥٤٢' },
-  { num: '٢٨', title: 'المجادلة — التحريم', pages: 'ص ٥٤٢–٥٦٢' },
-  { num: '٢٩', title: 'الملك — المرسلات', pages: 'ص ٥٦٢–٥٨٢' },
-  { num: '٣٠', title: 'جزء عمّ', pages: 'ص ٥٨٢–٦٠٤' },
-];
-
-const container = document.getElementById('remaining-juz');
-const juzNumToArabic = {3:'٣',4:'٤',5:'٥',6:'٦',7:'٧',8:'٨',9:'٩',10:'١٠',11:'١١',12:'١٢',13:'١٣',14:'١٤',15:'١٥',16:'١٦',17:'١٧',18:'١٨',19:'١٩',20:'٢٠',21:'٢١',22:'٢٢',23:'٢٣',24:'٢٤',25:'٢٥',26:'٢٦',27:'٢٧',28:'٢٨',29:'٢٩',30:'٣٠'};
-const arabicToNum = Object.fromEntries(Object.entries(juzNumToArabic).map(([k,v])=>[v,k]));
-
-juzData.forEach(j => {
-  container.innerHTML += `
-    <div class="juz-section" data-juz="${arabicToNum[j.num]}">
-      <div class="juz-header">
-        <div class="juz-badge">الجزء ${j.num}</div>
-        <div class="juz-title">${j.title}</div>
-        <div class="juz-progress">٠ / ٢٠ متاح</div>
-      </div>
-      <div class="cards-grid">
-        <div class="quiz-card soon">
-          <div class="card-corner"></div>
-          <div class="card-surah">${j.title.split('—')[0].trim()}</div>
-          <div class="card-info">${j.pages}</div>
-          <span class="card-badge badge-soon">قريباً</span>
-        </div>
-      </div>
-    </div>
-  `;
-});
-
-function filterCards(val) {
-  const q = val.trim();
-  document.querySelectorAll('.juz-section').forEach(sec => {
-    const cards = sec.querySelectorAll('.quiz-card');
-    let anyVisible = false;
-    cards.forEach(card => {
-      const text = (card.dataset.text || card.innerText);
-      const match = !q || text.includes(q);
-      card.style.display = match ? '' : 'none';
-      if (match) anyVisible = true;
-    });
-    sec.style.display = anyVisible ? '' : 'none';
-  });
-}
-
-/* === DARK MODE === */
-function applyTheme(mode) {
-  document.documentElement.setAttribute('data-theme', mode);
-  document.getElementById('theme-toggle').textContent = mode === 'dark' ? '☀️' : '🌙';
-}
-function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-  const next = current === 'dark' ? 'light' : 'dark';
-  applyTheme(next);
-  try { localStorage.setItem('quranTheme', next); } catch(e) {}
-}
-(function initTheme(){
-  let saved = null;
-  try { saved = localStorage.getItem('quranTheme'); } catch(e) {}
-  if (!saved) {
-    saved = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-  }
-  applyTheme(saved);
-})();
-
-/* === JUZ QUICK FILTER CHIPS === */
-(function buildJuzChips(){
-  const chipsWrap = document.getElementById('juz-chips');
-  const names = {1:'الأول',2:'الثاني',3:'الثالث',4:'الرابع',5:'الخامس',6:'السادس',7:'السابع',8:'الثامن',9:'التاسع',10:'العاشر'};
-  for (let i = 1; i <= 30; i++) {
-    const chip = document.createElement('button');
-    chip.className = 'juz-chip';
-    chip.dataset.juz = i;
-    chip.textContent = names[i] ? `الجزء ${names[i]}` : `الجزء ${i}`;
-    chip.onclick = () => {
-      const target = document.querySelector(`.juz-section[data-juz="${i}"]`);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        document.querySelectorAll('.juz-chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-      }
-    };
-    chipsWrap.appendChild(chip);
-  }
-})();
-
-/* === PROGRESS TRACKING (localStorage written by quiz pages) === */
-(function applyProgress(){
-  document.querySelectorAll('a.quiz-card[href]').forEach(card => {
-    const match = card.getAttribute('href').match(/albaqara_(p\d+)\.html/);
-    if (!match) return;
-    let saved = null;
-    try { saved = localStorage.getItem('quranProgress_' + match[1]); } catch(e) {}
-    if (!saved) return;
-    let data;
-    try { data = JSON.parse(saved); } catch(e) { return; }
-    const badge = card.querySelector('.card-badge');
-    if (badge) {
-      badge.className = 'card-badge badge-done';
-      badge.textContent = `✓ تم — ${data.pct}%`;
-    }
-    const check = document.createElement('div');
-    check.className = 'card-check';
-    check.textContent = '✓';
-    card.appendChild(check);
-  });
-})();
-
-/* === SKELETON LOADING POLISH === */
-(function skeletonReveal(){
-  const cards = document.querySelectorAll('.quiz-card:not(.soon)');
-  cards.forEach(c => c.classList.add('skeleton'));
-  window.requestAnimationFrame(() => {
-    setTimeout(() => cards.forEach(c => c.classList.remove('skeleton')), 280);
-  });
-})();
-</script>
-
-<!-- Translate Button -->
 <div class="translate-menu" id="translate-menu">
   <a class="translate-option" href="#" onclick="translateTo('en')">🇬🇧 English</a>
   <a class="translate-option" href="#" onclick="translateTo('fr')">🇫🇷 Français</a>
@@ -1015,5 +308,72 @@ function toggleTheme() {
 </div>
 <button class="translate-btn" onclick="toggleTranslate()">🌐 ترجمة</button>
 
+<script>
+const juzData=[
+  {num:'٤',title:'آل عمران — النساء',pages:'ص ٦٣–٨٢'},{num:'٥',title:'سورة النساء (تابع)',pages:'ص ٨٣–١٠٢'},
+  {num:'٦',title:'النساء — المائدة',pages:'ص ١٠٢–١٢١'},{num:'٧',title:'المائدة — الأنعام',pages:'ص ١٢١–١٤١'},
+  {num:'٨',title:'الأنعام — الأعراف',pages:'ص ١٤٢–١٦٢'},{num:'٩',title:'الأعراف — الأنفال',pages:'ص ١٦٣–١٨٢'},
+  {num:'١٠',title:'الأنفال — التوبة',pages:'ص ١٨٢–٢٠١'},{num:'١١',title:'التوبة — هود',pages:'ص ٢٠١–٢٢١'},
+  {num:'١٢',title:'هود — يوسف',pages:'ص ٢٢١–٢٤١'},{num:'١٣',title:'يوسف — إبراهيم',pages:'ص ٢٤١–٢٦١'},
+  {num:'١٤',title:'الحجر — النحل',pages:'ص ٢٦٢–٢٨١'},{num:'١٥',title:'الإسراء — الكهف',pages:'ص ٢٨٢–٣٠١'},
+  {num:'١٦',title:'الكهف — طه',pages:'ص ٣٠١–٣٢١'},{num:'١٧',title:'الأنبياء — الحج',pages:'ص ٣٢٢–٣٤١'},
+  {num:'١٨',title:'المؤمنون — الفرقان',pages:'ص ٣٤٢–٣٦١'},{num:'١٩',title:'الفرقان — النمل',pages:'ص ٣٦٢–٣٨١'},
+  {num:'٢٠',title:'النمل — العنكبوت',pages:'ص ٣٨٢–٤٠١'},{num:'٢١',title:'العنكبوت — الأحزاب',pages:'ص ٤٠٢–٤٢١'},
+  {num:'٢٢',title:'الأحزاب — يس',pages:'ص ٤٢١–٤٤١'},{num:'٢٣',title:'يس — الزمر',pages:'ص ٤٤٢–٤٦٢'},
+  {num:'٢٤',title:'الزمر — فصلت',pages:'ص ٤٦٢–٤٨١'},{num:'٢٥',title:'فصلت — الجاثية',pages:'ص ٤٨٢–٥٠١'},
+  {num:'٢٦',title:'الأحقاف — الذاريات',pages:'ص ٥٠٢–٥٢١'},{num:'٢٧',title:'الذاريات — الحديد',pages:'ص ٥٢٢–٥٤٢'},
+  {num:'٢٨',title:'المجادلة — التحريم',pages:'ص ٥٤٢–٥٦٢'},{num:'٢٩',title:'الملك — المرسلات',pages:'ص ٥٦٢–٥٨٢'},
+  
+];
+
+const arabicNums={'٤':4,'٥':5,'٦':6,'٧':7,'٨':8,'٩':9,'١٠':10,'١١':11,'١٢':12,'١٣':13,'١٤':14,'١٥':15,'١٦':16,'١٧':17,'١٨':18,'١٩':19,'٢٠':20,'٢١':21,'٢٢':22,'٢٣':23,'٢٤':24,'٢٥':25,'٢٦':26,'٢٧':27,'٢٨':28,'٢٩':29,'٣٠':30};
+const container=document.getElementById('remaining-juz');
+juzData.forEach(j=>{
+  container.innerHTML+=`<div class="juz-section" data-juz="${arabicNums[j.num]}"><div class="juz-header"><div class="juz-badge">الجزء ${j.num}</div><div class="juz-title">${j.title}</div><div class="juz-progress">٠ / ٢٠ متاح</div></div><div class="cards-grid"><div class="quiz-card soon"><div class="card-corner"></div><div class="card-surah">${j.title.split('—')[0].trim()}</div><div class="card-info">${j.pages}</div><span class="card-badge badge-soon">قريباً</span></div></div></div>`;
+});
+
+function filterCards(val){
+  const q=val.trim();
+  document.querySelectorAll('.juz-section').forEach(sec=>{
+    const cards=sec.querySelectorAll('.quiz-card');let anyVisible=false;
+    cards.forEach(card=>{const text=(card.dataset.text||card.innerText);const match=!q||text.includes(q);card.style.display=match?'':'none';if(match)anyVisible=true;});
+    sec.style.display=anyVisible?'':'none';
+  });
+}
+
+function applyTheme(mode){document.documentElement.setAttribute('data-theme',mode);document.getElementById('theme-toggle').textContent=mode==='dark'?'☀️':'🌙';}
+function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';const next=cur==='dark'?'light':'dark';applyTheme(next);try{localStorage.setItem('quranTheme',next);}catch(e){}}
+(function initTheme(){let saved=null;try{saved=localStorage.getItem('quranTheme');}catch(e){}if(!saved)saved=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';applyTheme(saved);})();
+
+(function buildJuzChips(){
+  const chipsWrap=document.getElementById('juz-chips');
+  const names={1:'الأول',2:'الثاني',3:'الثالث',4:'الرابع',5:'الخامس',6:'السادس',7:'السابع',8:'الثامن',9:'التاسع',10:'العاشر'};
+  for(let i=1;i<=30;i++){
+    const chip=document.createElement('button');chip.className='juz-chip';chip.dataset.juz=i;
+    chip.textContent=names[i]?`الجزء ${names[i]}`:`الجزء ${i}`;
+    chip.onclick=()=>{const target=document.querySelector(`.juz-section[data-juz="${i}"]`);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.juz-chip').forEach(c=>c.classList.remove('active'));chip.classList.add('active');}};
+    chipsWrap.appendChild(chip);
+  }
+})();
+
+(function applyProgress(){
+  document.querySelectorAll('a.quiz-card[href]').forEach(card=>{
+    const match=card.getAttribute('href').match(/albaqara_(p\d+)\.html/);if(!match)return;
+    let saved=null;try{saved=localStorage.getItem('quranProgress_'+match[1]);}catch(e){}if(!saved)return;
+    let data;try{data=JSON.parse(saved);}catch(e){return;}
+    const badge=card.querySelector('.card-badge');
+    if(badge){badge.className='card-badge badge-done';badge.textContent=`✓ تم — ${data.pct}%`;}
+    const check=document.createElement('div');check.className='card-check';check.textContent='✓';card.appendChild(check);
+  });
+})();
+
+(function skeletonReveal(){
+  const cards=document.querySelectorAll('.quiz-card:not(.soon)');cards.forEach(c=>c.classList.add('skeleton'));
+  window.requestAnimationFrame(()=>{setTimeout(()=>cards.forEach(c=>c.classList.remove('skeleton')),280);});
+})();
+
+function toggleTranslate(){document.getElementById('translate-menu').classList.toggle('open');}
+function translateTo(lang){const url=`https://translate.google.com/translate?sl=ar&tl=${lang}&u=`+encodeURIComponent(location.href);window.open(url,'_blank');document.getElementById('translate-menu').classList.remove('open');}
+</script>
 </body>
 </html>
