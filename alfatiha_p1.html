@@ -183,26 +183,27 @@ let currentLevel=null,statuses=[],wrongIndices=[],questions=[],qIndex=0,correctC
 function toArabicNum(n){return n.toString().replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);}
 function normalize(str){
   return str
-    .replace(/[\u064B-\u065F]/g,"")
-    .replace(/\u0670/g,"\u0627")
-    .replace(/[\u0622\u0623\u0625\u0671\u0627]/g,"\u0627")
-    .replace(/\u0621/g,"")
-    .replace(/\u0629/g,"\u0647")
-    .replace(/[\u0649\u0626]/g,"\u064A")
-    .replace(/\u0624/g,"\u0648")
-    .replace(/\u0631\u062D\u0645\u0627\u0646/g,"\u0631\u062D\u0645\u0646")
+    .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,"")
+    .replace(/ٰ/g,"ا")
+    .replace(/[آأإٱا]/g,"ا")
+    .replace(/ء/g,"")
+    .replace(/ة/g,"ه")
+    .replace(/[ىئ]/g,"ي")
+    .replace(/ؤ/g,"و")
+    .replace(/رحمان/g,"رحمن")
     .replace(/\s+/g," ")
     .trim();
 }
 function wordDiff(userVal,correctAnswer){
-  const nm=s=>s
-    .replace(/[\u064B-\u065F]/g,'')
-    .replace(/\u0670/g,'\u0627')
-    .replace(/[\u0622\u0623\u0625\u0671\u0627]/g,'\u0627')
-    .replace(/\u0621/g,'')
-    .replace(/\u0629/g,'\u0647')
-    .replace(/[\u0649\u0626]/g,'\u064A')
-    .replace(/\u0624/g,'\u0648')
+    const nm=s=>s
+    .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,'')
+    .replace(/ٰ/g,'ا')
+    .replace(/[آأإٱا]/g,'ا')
+    .replace(/ء/g,'')
+    .replace(/ة/g,'ه')
+    .replace(/[ىئ]/g,'ي')
+    .replace(/ؤ/g,'و')
+    .replace(/رحمان/g,'رحمن')
     .replace(/ +/g,' ').trim();
   const uWords=nm(userVal).split(' ');const cWords=correctAnswer.split(' ');let correct=0;
   const html=cWords.map((word,i)=>{const ok=nm(uWords[i]||'')===nm(word);if(ok)correct++;return ok?'<span style="color:#155724;background:#c3e6cb;border-radius:5px;padding:2px 6px;margin:2px 1px;display:inline-block;font-weight:bold;">'+word+'</span>':'<span style="color:#fff;background:#c0392b;border-radius:5px;padding:2px 6px;margin:2px 1px;display:inline-block;">'+word+'</span>';}).join(' ');
