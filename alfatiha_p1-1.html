@@ -181,7 +181,18 @@ const HARD_Q=[
 let currentLevel=null,statuses=[],wrongIndices=[],questions=[],qIndex=0,correctCount=0,wrongCount=0;
 
 function toArabicNum(n){return n.toString().replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);}
-function normalize(str){return str.replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآا]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/\s+/g,' ').trim();}
+function normalize(str){
+  return str
+    .replace(/[\u064B-\u065F]/g,"")
+    .replace(/\u0670/g,"\u0627")
+    .replace(/[\u0622\u0623\u0625\u0671\u0627]/g,"\u0627")
+    .replace(/\u0621/g,"")
+    .replace(/\u0629/g,"\u0647")
+    .replace(/[\u0649\u0626]/g,"\u064A")
+    .replace(/\u0624/g,"\u0648")
+    .replace(/\s+/g," ")
+    .trim();
+}
 function wordDiff(userVal,correctAnswer){
   const nm=s=>s.replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآا]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/ +/g,' ').trim();
   const uWords=nm(userVal).split(' ');const cWords=correctAnswer.split(' ');let correct=0;
@@ -237,46 +248,62 @@ function showQuestion(){
     setTimeout(()=>{const el=document.getElementById('user-input');if(el)el.focus();},100);
   } else {
     // صعب — صوت + كتابة
-    const modeRow=document.createElement('div');modeRow.style.cssText='display:flex;gap:10px;margin-bottom:12px;';
-    const bVoice=document.createElement('button');bVoice.textContent='🎤 تسجيل صوتي';bVoice.style.cssText='flex:1;padding:11px;border-radius:11px;font-size:15px;font-family:inherit;cursor:pointer;background:var(--accent);color:#fff;border:1.5px solid var(--accent);';
-    const bText=document.createElement('button');bText.textContent='⌨️ كتابة';bText.style.cssText='flex:1;padding:11px;border-radius:11px;font-size:15px;font-family:inherit;cursor:pointer;background:var(--surface2);color:var(--text);border:1.5px solid var(--border);';
+        const modeRow=document.createElement('div');
+    modeRow.style.cssText='display:flex;gap:10px;margin-bottom:12px;';
+    const bVoice=document.createElement('button');
+    bVoice.textContent='🎤 تسجيل صوتي';
+    bVoice.style.cssText='flex:1;padding:11px;border-radius:11px;font-size:15px;font-family:inherit;cursor:pointer;background:var(--accent);color:#fff;border:1.5px solid var(--accent);';
+    const bText=document.createElement('button');
+    bText.textContent='⌨️ كتابة';
+    bText.style.cssText='flex:1;padding:11px;border-radius:11px;font-size:15px;font-family:inherit;cursor:pointer;background:var(--surface2);color:var(--text);border:1.5px solid var(--border);';
     modeRow.appendChild(bVoice);modeRow.appendChild(bText);zone.appendChild(modeRow);
     const vZone=document.createElement('div');zone.appendChild(vZone);
     const tZone=document.createElement('div');tZone.style.display='none';zone.appendChild(tZone);
     bVoice.onclick=()=>{vZone.style.display='';tZone.style.display='none';bVoice.style.background='var(--accent)';bVoice.style.color='#fff';bText.style.background='var(--surface2)';bText.style.color='var(--text)';};
     bText.onclick=()=>{vZone.style.display='none';tZone.style.display='';bText.style.background='var(--accent)';bText.style.color='#fff';bVoice.style.background='var(--surface2)';bVoice.style.color='var(--text)';};
-    const recBtn=document.createElement('button');recBtn.style.cssText='width:100%;padding:14px;border-radius:12px;font-size:16px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:8px;';recBtn.textContent='🎤 اضغط للتسجيل';
-    const clrBtn=document.createElement('button');clrBtn.style.cssText='width:100%;padding:9px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid var(--wrong-border);background:var(--wrong-bg);color:var(--wrong-text);margin-bottom:8px;display:none;';clrBtn.textContent='🗑️ مسح والبدء من جديد';
-    const txBox=document.createElement('div');txBox.style.cssText='background:var(--surface3);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:17px;line-height:1.9;color:var(--text);direction:rtl;text-align:right;margin-bottom:10px;display:none;min-height:60px;';
+    const recBtn=document.createElement('button');
+    recBtn.style.cssText='width:100%;padding:14px;border-radius:12px;font-size:16px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:8px;transition:all .2s;';
+    recBtn.textContent='🎤 اضغط للتسجيل';
+    const clrBtn=document.createElement('button');
+    clrBtn.style.cssText='width:100%;padding:9px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid var(--wrong-border);background:var(--wrong-bg);color:var(--wrong-text);margin-bottom:8px;display:none;';
+    clrBtn.textContent='🗑️ مسح والبدء من جديد';
+    const txBox=document.createElement('div');
+    txBox.style.cssText='background:var(--surface3);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:17px;line-height:1.9;color:var(--text);direction:rtl;text-align:right;margin-bottom:10px;display:none;min-height:60px;';
     const vSub=document.createElement('button');vSub.className='submit-btn';vSub.textContent='تحقق ✓';vSub.style.display='none';
-    vSub.onclick=()=>{const t=txBox.textContent.trim();if(!t||t==='🎤 ...')return;vSub.disabled=true;recBtn.disabled=true;checkTextVal(q,t);};
     vZone.appendChild(recBtn);vZone.appendChild(clrBtn);vZone.appendChild(txBox);vZone.appendChild(vSub);
-    const isSecure=location.protocol==='https:'||location.hostname==='localhost';
-    const SpeechAPI=window.SpeechRecognition||window.webkitSpeechRecognition;
-    let rec=null,recognizing=false,savedText='',currentText='';
-    function setBtn(state){if(state==='rec'){recBtn.textContent='⏸ إيقاف مؤقت';recBtn.style.background='#e74c3c';recBtn.style.color='#fff';recBtn.style.borderColor='#e74c3c';}if(state==='pause'){recBtn.textContent='▶️ استمر في التسجيل';recBtn.style.background='#e67e22';recBtn.style.color='#fff';recBtn.style.borderColor='#e67e22';}if(state==='idle'){recBtn.textContent='🎤 اضغط للتسجيل';recBtn.style.background='var(--surface2)';recBtn.style.color='var(--text)';recBtn.style.borderColor='var(--border)';}}
-    clrBtn.onclick=()=>{if(recognizing){try{rec.stop();}catch(e){}}recognizing=false;savedText='';currentText='';txBox.textContent='';txBox.style.display='none';vSub.style.display='none';clrBtn.style.display='none';setBtn('idle');};
-    if(SpeechAPI&&isSecure){
-      rec=new SpeechAPI();rec.lang='ar-SA';rec.continuous=true;rec.interimResults=false;
-      rec.onstart=()=>{recognizing=true;currentText='';setBtn('rec');txBox.textContent=savedText||'🎤 ...';txBox.style.display='block';};
-      rec.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)currentText=(currentText+' '+e.results[i][0].transcript).trim();}const full=savedText?(savedText+' '+currentText).trim():currentText;txBox.textContent=full;vSub.style.display='block';clrBtn.style.display='block';};
-      rec.onerror=e=>{if(e.error!=='no-speech'&&e.error!=='aborted')recognizing=false;};
-      rec.onend=()=>{recognizing=false;if(currentText){savedText=savedText?(savedText+' '+currentText).trim():currentText;currentText='';}setBtn(savedText?'pause':'idle');};
+    let _rec=null,_recog=false,_saved='',_cur='';
+    const _SpeechAPI=window.SpeechRecognition||window.webkitSpeechRecognition;
+    const _secure=location.protocol==='https:'||location.hostname==='localhost';
+    function _setB(s){
+      if(s==='rec'){recBtn.textContent='⏸ إيقاف';recBtn.style.background='#e74c3c';recBtn.style.color='#fff';recBtn.style.borderColor='#e74c3c';}
+      else if(s==='pause'){recBtn.textContent='▶️ استمر';recBtn.style.background='#e67e22';recBtn.style.color='#fff';recBtn.style.borderColor='#e67e22';}
+      else{recBtn.textContent='🎤 اضغط للتسجيل';recBtn.style.background='var(--surface2)';recBtn.style.color='var(--text)';recBtn.style.borderColor='var(--border)';}
+    }
+    function _mkRec(){
+      const r=new _SpeechAPI();r.lang='ar-SA';r.continuous=true;r.interimResults=false;
+      r.onstart=()=>{_recog=true;_cur='';_setB('rec');txBox.textContent=_saved||'🎤 ...';txBox.style.display='block';};
+      r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)_cur=(_cur+' '+e.results[i][0].transcript).trim();}const full=_saved?(_saved+' '+_cur).trim():_cur;txBox.textContent=full;vSub.style.display='block';clrBtn.style.display='block';};
+      r.onerror=e=>{if(e.error!=='no-speech'&&e.error!=='aborted'){_recog=false;_setB(_saved?'pause':'idle');}};
+      r.onend=()=>{_recog=false;if(_cur){_saved=_saved?(_saved+' '+_cur).trim():_cur;_cur='';}  _setB(_saved?'pause':'idle');};
+      return r;
+    }
+    clrBtn.onclick=()=>{if(_recog){try{_rec.stop();}catch(e){}}_recog=false;_saved='';_cur='';txBox.textContent='';txBox.style.display='none';vSub.style.display='none';clrBtn.style.display='none';_setB('idle');};
+    vSub.onclick=()=>{const t=txBox.textContent.trim();if(!t||t==='🎤 ...')return;vSub.disabled=true;recBtn.disabled=true;checkTextVal(q,t);};
+    if(_SpeechAPI&&_secure){
       recBtn.onclick=()=>{
-        if(recognizing){recognizing=false;if(currentText){savedText=savedText?(savedText+' '+currentText).trim():currentText;currentText='';}try{rec.stop();}catch(e){}setBtn('pause');return;}
-        rec=new SpeechAPI();rec.lang='ar-SA';rec.continuous=true;rec.interimResults=false;
-        rec.onstart=()=>{recognizing=true;currentText='';setBtn('rec');txBox.textContent=savedText||'🎤 ...';txBox.style.display='block';};
-        rec.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)currentText=(currentText+' '+e.results[i][0].transcript).trim();}const full=savedText?(savedText+' '+currentText).trim():currentText;txBox.textContent=full;vSub.style.display='block';clrBtn.style.display='block';};
-        rec.onerror=e=>{if(e.error!=='no-speech'&&e.error!=='aborted')recognizing=false;};
-        rec.onend=()=>{recognizing=false;if(currentText){savedText=savedText?(savedText+' '+currentText).trim():currentText;currentText='';}setBtn(savedText?'pause':'idle');};
-        try{rec.start();}catch(e){setBtn(savedText?'pause':'idle');}
+        if(_recog){_recog=false;if(_cur){_saved=_saved?(_saved+' '+_cur).trim():_cur;_cur='';}try{_rec.stop();}catch(e){}_setB('pause');return;}
+        _rec=_mkRec();try{_rec.start();}catch(e){_setB(_saved?'pause':'idle');}
       };
-    }else{recBtn.textContent=isSecure?'⚠️ المتصفح لا يدعم التسجيل':'🔒 يعمل على الموقع الرسمي فقط';recBtn.disabled=true;recBtn.style.opacity='0.65';}
+    }else{recBtn.textContent=_secure?'⚠️ المتصفح لا يدعم التسجيل':'🔒 يعمل على الموقع الرسمي فقط';recBtn.disabled=true;recBtn.style.opacity='0.65';}
     const ta2=document.createElement('textarea');ta2.className='answer-input';ta2.placeholder='اكتب الآية كاملة...';ta2.id='user-input';tZone.appendChild(ta2);
     const tSub=document.createElement('button');tSub.className='submit-btn';tSub.textContent='تحقق ✓';tSub.onclick=()=>checkText(q);tZone.appendChild(tSub);
-    const hBox=document.createElement('div');hBox.style.cssText='display:none;background:var(--hint-bg);border:1.5px dashed var(--hint-border);border-radius:10px;padding:10px 14px;margin-top:10px;font-size:18px;color:var(--accent-dark);text-align:center;';zone.appendChild(hBox);
-    const hBtn=document.createElement('button');hBtn.id='hint-btn';hBtn.textContent='💡 مساعدة (أول ٣ كلمات)';hBtn.style.cssText='width:100%;background:var(--hint-btn-bg);color:var(--hint-btn-text);border:1.5px solid var(--hint-btn-border);border-radius:10px;padding:10px;font-size:15px;font-family:inherit;cursor:pointer;margin-top:10px;';
-    hBtn.onclick=()=>{hBox.textContent=q.answer.split(' ').slice(0,3).join(' ')+' ...';hBox.style.display='block';hBtn.disabled=true;hBtn.style.opacity='0.5';};zone.appendChild(hBtn);
+    const hBox=document.createElement('div');
+    hBox.style.cssText='display:none;background:var(--hint-bg);border:1.5px dashed var(--hint-border);border-radius:10px;padding:10px 14px;margin-top:10px;font-size:18px;color:var(--accent-dark);text-align:center;direction:rtl;line-height:2;';
+    zone.appendChild(hBox);
+    const hBtn=document.createElement('button');hBtn.id='hint-btn';hBtn.textContent='💡 مساعدة (أول ٣ كلمات)';
+    hBtn.style.cssText='width:100%;background:var(--hint-btn-bg);color:var(--hint-btn-text);border:1.5px solid var(--hint-btn-border);border-radius:10px;padding:10px;font-size:15px;font-family:inherit;cursor:pointer;margin-top:10px;';
+    hBtn.onclick=()=>{hBox.textContent=q.answer.split(' ').slice(0,3).join(' ')+' ...';hBox.style.display='block';hBtn.disabled=true;hBtn.style.opacity='0.5';};
+    zone.appendChild(hBtn);
   }
 }
 
