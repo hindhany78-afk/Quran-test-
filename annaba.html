@@ -195,25 +195,25 @@ function normalize(str){
   return str
     .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,"")
     .replace(/ٰ/g,"ا")
+    .replace(/ـ/g,"")
     .replace(/[آأإٱا]/g,"ا")
-    .replace(/ء/g,"")
+    .replace(/[ءئؤ]/g,"")
     .replace(/ة/g,"ه")
     .replace(/[ىئ]/g,"ي")
-    .replace(/ؤ/g,"و")
     .replace(/رحمان/g,"رحمن")
     .replace(/(.)(\1)+/g,"$1")
     .replace(/\s+/g," ")
     .trim();
 }
 function wordDiff(userVal,correctAnswer){
-  const nm=s=>s
+    const nm=s=>s
     .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,'')
     .replace(/ٰ/g,'ا')
+    .replace(/ـ/g,'')
     .replace(/[آأإٱا]/g,'ا')
-    .replace(/ء/g,'')
+    .replace(/[ءئؤ]/g,'')
     .replace(/ة/g,'ه')
     .replace(/[ىئ]/g,'ي')
-    .replace(/ؤ/g,'و')
     .replace(/رحمان/g,'رحمن')
     .replace(/(.)(\1)+/g,'$1')
     .replace(/ +/g,' ').trim();
@@ -333,12 +333,18 @@ function showQuestion(){
     const txBox=document.createElement('div');
     txBox.style.cssText='background:var(--surface3);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:17px;line-height:1.9;color:var(--text);direction:rtl;text-align:right;margin-bottom:10px;display:none;min-height:60px;';
     const vSub=document.createElement('button');vSub.className='submit-btn';vSub.textContent='تحقق ✓';vSub.style.display='none';
-    vSub.onclick=()=>{const t=txBox.textContent.trim();if(!t||t==='🎤 ...')return;vSub.disabled=true;recBtn.disabled=true;checkTextVal(q,t);};
+    vSub.onclick=()=>{
+      const t=txBox.textContent.trim();if(!t||t==='🎤 ...')return;
+      // بعد التحقق نعيد تفعيل الأزرار للمحاولة مرة أخرى
+      checkTextVal(q,t);
+      setTimeout(()=>{recBtn.disabled=false;vSub.disabled=false;},100);
+    };
     vZone.appendChild(recBtn);vZone.appendChild(clrBtn);vZone.appendChild(txBox);vZone.appendChild(vSub);
     const isSecure=location.protocol==='https:'||location.hostname==='localhost';
     const SpeechAPI=window.SpeechRecognition||window.webkitSpeechRecognition;
     let recognizing=false,savedText='',currentText='',recInst=null;
     function setRecBtn(state){
+      recBtn.disabled=false;
       if(state==='rec'){recBtn.textContent='⏸ إيقاف مؤقت';recBtn.style.background='#e74c3c';recBtn.style.color='#fff';recBtn.style.borderColor='#e74c3c';}
       else if(state==='pause'){recBtn.textContent='▶️ استمر في التسجيل';recBtn.style.background='#e67e22';recBtn.style.color='#fff';recBtn.style.borderColor='#e67e22';}
       else{recBtn.textContent='🎤 اضغط للتسجيل';recBtn.style.background='var(--surface2)';recBtn.style.color='var(--text)';recBtn.style.borderColor='var(--border)';}
