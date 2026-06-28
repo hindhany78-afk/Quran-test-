@@ -270,6 +270,12 @@ function normalize(str){
     .replace(/(.)()+/g,'$1')
     .replace(/ا(?=\s|$)/g,'ي')
     .replace(/\s+/g,' ')
+    // إقلاب: نون قبل باء تُنطق ميماً
+    .replace(/نب/g,'مب')
+    // واو الصلة الصغيرة
+    .replace(/وء/g,'')
+    // اللام المشددة: توحيد
+    .replace(/لل/g,'ل')
     .trim();
 }
 
@@ -295,6 +301,12 @@ function wordDiff(userVal,correctAnswer){
       .replace(/(.)()+/g,'$1')
       .replace(/ا(?=\s|$)/g,'ي')
       .replace(/\s+/g,' ')
+      // إقلاب
+      .replace(/نب/g,'مب')
+      // واو الصلة
+      .replace(/وء/g,'')
+      // اللام المشددة
+      .replace(/لل/g,'ل')
       .trim();
   };
   const uWords=userVal.trim().split(/\s+/);
