@@ -61,6 +61,8 @@ body{font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;backgroun
 .nav-btn.primary:hover{background:var(--accent-dark);}
 .skip-btn{margin-top:10px;width:100%;background:var(--surface2);color:var(--accent);border:1.5px solid var(--border);border-radius:12px;padding:12px 18px;font-size:16px;font-family:inherit;cursor:pointer;}
 .skip-btn:hover{background:var(--surface-hover);}
+/* feedback يكبر لأعلى — مش يدفع nav-row */
+.feedback{margin-top:14px;padding:14px;border-radius:12px;font-size:16px;line-height:1.9;display:none;text-align:center;}
 
 .q-dot{width:11px;height:11px;border-radius:50%;background:var(--border);transition:all .2s;}
 .q-dot.current{width:15px;height:15px;box-shadow:0 0 0 3px var(--surface-hover);background:var(--accent);}
@@ -135,13 +137,13 @@ body{font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;backgroun
   <div class="q-number" id="q-number">السؤال ١</div>
   <div class="q-text" id="q-text"></div>
   <div id="answer-zone"></div>
-  <div class="feedback" id="feedback"></div>
   <!-- أزرار التنقل ثابتة دائماً هنا — لا تتحرك -->
   <div class="nav-row" id="nav-row">
     <button class="nav-btn" id="prev-btn" onclick="prevQuestion()">→ السابق</button>
     <button class="nav-btn" id="skip-btn" onclick="skipQuestion()">⏭ تخطي</button>
     <button class="nav-btn primary" id="next-btn" onclick="nextQuestion()" style="display:none;">التالي ←</button>
   </div>
+  <div class="feedback" id="feedback"></div>
 </div>
 
 <div class="result-area" id="result-area">
@@ -208,18 +210,17 @@ function normalize(str){
   if(!str)return'';
   return str
     .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,'')   // حذف التشكيل
-    .replace(/وٰ/g,'ا')      // ألف خنجرية فوق واو → ألف فقط (الصلاة، الحياة)
-    .replace(/[ىی]ٰ/g,'ا')   // ألف خنجرية فوق ى → ألف (مولانا، الرحمن...)
+    .replace(/[ىی]ٰ/g,'ا')   // ألف خنجرية فوق ى → ألف (مولانا، موسى...)
     .replace(/اٰ/g,'ا')      // ألف خنجرية فوق ألف → ألف
-    .replace(/نٰ/g,'نا')     // ألف خنجرية فوق نون → نا (سبحانا)
-    .replace(/ٰ/g,'ا')       // أي ألف خنجرية متبقية فوق أي حرف → ا
+    .replace(/نٰ/g,'نا')     // ألف خنجرية فوق نون → نا
+    .replace(/ٰ/g,'ا')       // أي ألف خنجرية → ألف (السماوات: مٰ→ما، كٰ→كا)
     .replace(/ـ/g,'')        // حذف الكشيدة
     .replace(/[آأإٱا]/g,'ا') // توحيد الألفات
     .replace(/[ءئؤ]/g,'')    // حذف الهمزات
     .replace(/ة/g,'ه')
     .replace(/[ىی]/g,'ي')
-    // هاء الضمير + واو صلة (ۥ) أو ياء صلة (ۦ) = هاء فقط — الواو/الياء الأساسية في الكلمة لا تُحذف
-    .replace(/ه[ۥۦ]/g,'ه')
+    .replace(/ه[ۥۦ]/g,'ه')   // هاء الضمير + واو/ياء صلة = هاء فقط
+    .replace(/واه(?=\s|$)/g,'اه') // الواو الإملائية: صلاة/زكاة/حياة
     .replace(/رحمان/g,'رحمن')
     .replace(/مولانا/g,'مولنا')  // مولانا = مولنا في المقارنة
     .replace(/(.)(\1)+/g,'$1')
