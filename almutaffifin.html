@@ -82,7 +82,6 @@ body{font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;backgroun
 <body>
 <div class="top-bar">
   <a href="index.html" class="back-btn">← الرجوع</a>
-  <button id="level-back-btn" onclick="backToLevel()" title="اختيار المستوى" style="display:none;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:6px 14px;font-size:14px;font-family:inherit;cursor:pointer;color:var(--accent);">🔄 المستوى</button>
   <button id="theme-toggle" onclick="toggleTheme()" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;">🌙</button>
 </div>
 
@@ -123,6 +122,9 @@ body{font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;backgroun
 </div>
 
 <div class="quiz-area" id="quiz-area">
+  <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+    <button onclick="backToLevel()" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:6px 14px;font-size:14px;font-family:inherit;cursor:pointer;color:var(--accent);">🔄 اختر مستوى</button>
+  </div>
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
   <div id="dot-progress" style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:14px;"></div>
   <div class="q-number" id="q-number">السؤال ١</div>
@@ -354,18 +356,17 @@ function startQuiz(){
   const rb=document.getElementById('resume-banner');if(rb)rb.style.display='none';
   document.getElementById('level-card').style.display='none';
   document.getElementById('quiz-area').style.display='block';
-  const lbb=document.getElementById('level-back-btn');if(lbb)lbb.style.display='';
   showQuestion();
 }
 function backToLevel(){
   document.getElementById('quiz-area').style.display='none';
   document.getElementById('result-area').style.display='none';
-  document.getElementById('review-area').style.display='none';
+  const ra=document.getElementById('review-area');if(ra)ra.style.display='none';
   document.getElementById('level-card').style.display='block';
-  const lbb=document.getElementById('level-back-btn');if(lbb)lbb.style.display='none';
   currentLevel=null;
   document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('start-btn').classList.remove('ready');
+  document.getElementById('progress-fill').style.width='0%';
 }
 
 function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
@@ -440,51 +441,49 @@ function renderHard(q,zone){
   const tZone=document.createElement('div');tZone.style.display='none';zone.appendChild(tZone);
 
   // ===== منطقة التسجيل الصوتي =====
-  // ===== STATE: المصفوفة هي المصدر الوحيد =====
-  let _rec=null,_recog=false,_words=[],_interim='';
+  let _rec=null,_recog=false,_words=[],_cur='';
   const _SpeechAPI=window.SpeechRecognition||window.webkitSpeechRecognition;
   const _secure=location.protocol==='https:'||location.hostname==='localhost';
 
   const recBtn=document.createElement('button');
-  recBtn.style.cssText='width:100%;padding:14px;border-radius:12px;font-size:16px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:10px;transition:all .2s;';
+  recBtn.style.cssText='width:100%;padding:14px;border-radius:12px;font-size:16px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:8px;';
   recBtn.textContent='🎤 اضغط للتسجيل';
 
   const txBox=document.createElement('div');
   txBox.className='rec-transcript';
   txBox.dir='rtl';
-  txBox.style.cssText='min-height:80px;margin-bottom:10px;line-height:2.2;font-size:17px;padding:12px;display:none;word-break:break-word;';
+  txBox.style.cssText='min-height:80px;margin-bottom:8px;line-height:2.2;font-size:17px;padding:12px;display:none;word-break:break-word;';
 
   const vSub=document.createElement('button');
   vSub.className='submit-btn';vSub.textContent='تحقق ✓';
   vSub.style.display='none';vSub.style.marginBottom='8px';
 
   const clrBtn=document.createElement('button');
-  clrBtn.style.cssText='width:100%;padding:9px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid var(--wrong-border);background:var(--wrong-bg);color:var(--wrong-text);display:none;';
+  clrBtn.style.cssText='width:100%;padding:9px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid var(--wrong-border);background:var(--wrong-bg);color:var(--wrong-text);display:none;margin-bottom:8px;';
   clrBtn.textContent='🗑️ مسح الكل والبدء من جديد';
 
   vZone.appendChild(recBtn);vZone.appendChild(txBox);vZone.appendChild(vSub);vZone.appendChild(clrBtn);
 
-  // عرض كامل من المصفوفة (المصدر الوحيد)
-  function _render(){
+  function _renderWords(){
     txBox.innerHTML='';
-    const show=_words.length>0||_interim.length>0;
-    txBox.style.display=show?'block':'none';
-    vSub.style.display=_words.length>0?'block':'none';
-    clrBtn.style.display=show?'block':'none';
+    if(!_words.length&&!_cur){txBox.style.display='none';clrBtn.style.display='none';vSub.style.display='none';return;}
+    txBox.style.display='block';
     _words.forEach((w,i)=>{
-      if(i>0)txBox.appendChild(document.createTextNode(' '));
       const sp=document.createElement('span');
-      sp.style.cssText='display:inline-block;background:var(--surface-hover);border-radius:4px;padding:2px 7px;margin:1px;cursor:pointer;line-height:2;';
-      sp.title='انقري مرتين للحذف';sp.textContent=w;
-      sp.ondblclick=(e)=>{e.stopPropagation();_words.splice(i,1);_render();};
+      sp.style.cssText='display:inline-block;background:var(--surface-hover);border-radius:4px;padding:2px 7px;margin:2px 1px;cursor:pointer;line-height:2;';
+      sp.title='انقري للحذف';sp.textContent=w;
+      sp.onclick=(e)=>{e.stopPropagation();_words.splice(i,1);_renderWords();};
       txBox.appendChild(sp);
+      if(i<_words.length-1)txBox.appendChild(document.createTextNode(' '));
     });
-    if(_interim){
+    if(_cur){
       const sp=document.createElement('span');
-      sp.style.cssText='color:var(--text-soft);font-style:italic;opacity:0.75;';
-      sp.textContent=(_words.length?' ':'')+_interim;
+      sp.style.cssText='color:var(--text-soft);font-style:italic;';
+      sp.textContent=' '+_cur;
       txBox.appendChild(sp);
     }
+    vSub.style.display=_words.length?'block':'none';
+    clrBtn.style.display='block';
   }
 
   function _setB(s){
@@ -495,33 +494,29 @@ function renderHard(q,zone){
   }
 
   function _mkRec(){
-    const r=new _SpeechAPI();
-    r.lang='ar-SA';r.continuous=true;r.interimResults=true;
-    r.onstart=()=>{_recog=true;_interim='';_setB('rec');_render();};
+    const r=new _SpeechAPI();r.lang='ar-SA';r.continuous=true;r.interimResults=false;
+    r.onstart=()=>{_recog=true;_cur='';_setB('rec');_renderWords();};
     r.onresult=e=>{
-      _interim='';
-      // e.resultIndex = النتيجة الجديدة فقط — لا نلمس ما قبلها
-      const res=e.results[e.resultIndex];
-      if(res.isFinal){
-        _words=_words.concat(res[0].transcript.trim().split(/\s+/).filter(Boolean));
-      }else{
-        _interim=res[0].transcript;
+      for(let i=e.resultIndex;i<e.results.length;i++){
+        if(e.results[i].isFinal){_words=_words.concat(e.results[i][0].transcript.trim().split(/\s+/).filter(Boolean));_cur='';}
       }
-      _render();
+      _renderWords();
     };
-    r.onerror=e=>{if(e.error!=='no-speech'&&e.error!=='aborted'){_recog=false;_interim='';_render();_setB(_words.length?'pause':'idle');}};
-    r.onend=()=>{_recog=false;_interim='';_render();_setB(_words.length?'pause':'idle');};
+    r.onerror=e=>{if(e.error!=='no-speech'&&e.error!=='aborted'){_recog=false;_cur='';_renderWords();_setB(_words.length?'pause':'idle');}};
+    r.onend=()=>{_recog=false;if(_cur){_words=_words.concat(_cur.trim().split(/\s+/).filter(Boolean));_cur='';}  _renderWords();_setB(_words.length?'pause':'idle');};
     return r;
   }
 
   clrBtn.onclick=()=>{
     if(_recog){try{_rec.stop();}catch(e){}_recog=false;}
-    _rec=null;_words=[];_interim='';
-    _render();recBtn.disabled=false;_setB('idle');
+    _rec=null;_words=[];_cur='';
+    txBox.innerHTML='';txBox.style.display='none';
+    clrBtn.style.display='none';vSub.style.display='none';
+    recBtn.disabled=false;_setB('idle');
   };
 
   vSub.onclick=()=>{
-    if(_recog){_recog=false;try{_rec.stop();}catch(e){}}_interim='';
+    if(_recog){_recog=false;try{_rec.stop();}catch(e){}}_cur='';
     const t=_words.join(' ');if(!t)return;
     vSub.disabled=true;recBtn.disabled=false;checkTextVal(q,t);
   };
