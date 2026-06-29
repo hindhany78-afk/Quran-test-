@@ -75,6 +75,8 @@ body{font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;backgroun
 .rec-word:hover{opacity:0.8;text-decoration:line-through;}
 .hint-btn{width:100%;background:var(--hint-btn-bg);color:var(--hint-btn-text);border:1.5px solid var(--hint-btn-border);border-radius:10px;padding:10px;font-size:15px;font-family:inherit;cursor:pointer;margin-top:10px;}
 .hint-box{display:none;background:var(--hint-bg);border:1.5px dashed var(--hint-border);border-radius:10px;padding:10px 14px;margin-top:10px;font-size:18px;color:var(--accent-dark);text-align:center;direction:rtl;line-height:2;}
+.level-return-btn{display:block;width:100%;margin-top:14px;padding:11px;background:var(--surface2);color:var(--text-soft);border:1.5px solid var(--border);border-radius:12px;font-size:15px;font-family:inherit;cursor:pointer;transition:all .2s;text-align:center;}
+.level-return-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--accent);}
 </style>
 </head>
 <body>
@@ -131,6 +133,7 @@ body{font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;backgroun
     <button class="nav-btn primary" id="next-btn" onclick="nextQuestion()" style="display:none;">التالي ←</button>
   </div>
   <div class="feedback" id="feedback"></div>
+  <button class="level-return-btn" onclick="returnToLevels()">&#x1F504; &#x627;&#x62E;&#x62A;&#x631; &#x645;&#x633;&#x62A;&#x648;&#x649; &#x622;&#x62E;&#x631;</button>
 </div>
 
 <div class="result-area" id="result-area">
@@ -570,6 +573,7 @@ function showResult(){
   if(pct===100)spawnConfetti();
 }
 
+function returnToLevels(){document.getElementById('quiz-area').style.display='none';document.getElementById('level-card').style.display='block';currentLevel=null;document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));document.getElementById('start-btn').classList.remove('ready');document.getElementById('total-q').textContent='-';document.getElementById('wrong-badge').innerHTML='&#x6F0; &#x2717;<br>&#x62E;&#x637;&#x623;';document.getElementById('correct-badge').innerHTML='&#x6F0; &#x2713;<br>&#x635;&#x62D;&#x64A;&#x62D;';document.getElementById('qnum-badge').innerHTML='&#x627;&#x644;&#x633;&#x624;&#x627;&#x644; &#x6F1; /<br>-';document.getElementById('progress-fill').style.width='0%';}
 function retryQuiz(){
   document.getElementById('result-area').style.display='none';
   document.getElementById('level-card').style.display='block';

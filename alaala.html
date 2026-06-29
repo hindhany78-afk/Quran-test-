@@ -74,6 +74,8 @@ body{font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;backgroun
 .rec-word{display:inline-block;background:var(--surface-hover);border-radius:4px;padding:2px 6px;margin:2px 1px;cursor:pointer;}
 .hint-btn{width:100%;background:var(--hint-btn-bg);color:var(--hint-btn-text);border:1.5px solid var(--hint-btn-border);border-radius:10px;padding:10px;font-size:15px;font-family:inherit;cursor:pointer;margin-top:10px;}
 .hint-box{display:none;background:var(--hint-bg);border:1.5px dashed var(--hint-border);border-radius:10px;padding:10px 14px;margin-top:10px;font-size:18px;color:var(--accent-dark);text-align:center;direction:rtl;line-height:2;}
+.level-return-btn{display:block;width:100%;margin-top:14px;padding:11px;background:var(--surface2);color:var(--text-soft);border:1.5px solid var(--border);border-radius:12px;font-size:15px;font-family:inherit;cursor:pointer;transition:all .2s;text-align:center;}
+.level-return-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--accent);}
 </style>
 </head>
 <body>
@@ -123,6 +125,7 @@ body{font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;backgroun
     <button class="nav-btn primary" id="next-btn" onclick="nextQuestion()" style="display:none;">التالي ←</button>
   </div>
   <div class="feedback" id="feedback"></div>
+  <button class="level-return-btn" onclick="returnToLevels()">&#x1F504; &#x627;&#x62E;&#x62A;&#x631; &#x645;&#x633;&#x62A;&#x648;&#x649; &#x622;&#x62E;&#x631;</button>
 </div>
 <div class="result-area" id="result-area">
   <div class="result-icon" id="result-icon">🌟</div>
@@ -259,6 +262,7 @@ function skipQuestion(){const q=questions[qIndex];const fb=document.getElementBy
 function prevQuestion(){if(qIndex===0)return;qIndex--;showQuestion();}
 function nextQuestion(){qIndex++;if(qIndex>=questions.length)showResult();else showQuestion();}
 function showResult(){document.getElementById('quiz-area').style.display='none';document.getElementById('result-area').style.display='block';const pct=Math.round((correctCount/questions.length)*100);document.getElementById('result-score').textContent=`${toArabicNum(correctCount)} / ${toArabicNum(questions.length)} — ${toArabicNum(pct)}%`;let icon,title,msg;if(pct===100){icon='🌟';title='ممتاز! حفظ مثالي';msg='ما شاء الله! أتقنتِ السورة بالكامل';}else if(pct>=80){icon='✨';title='أحسنتِ!';msg='نتيجة رائعة، استمري في المراجعة';}else if(pct>=60){icon='📖';title='جيد';msg='راجعي السورة مرة أخرى وأعيدي الاختبار';}else{icon='🌱';title='تحتاج مراجعة';msg='لا تيأسي، المراجعة المستمرة هي المفتاح';}document.getElementById('result-icon').textContent=icon;document.getElementById('result-title').textContent=title;document.getElementById('result-msg').textContent=msg;document.getElementById('progress-fill').style.width='100%';updateBadges();try{localStorage.removeItem(RESUME_KEY);}catch(e){}const rb=document.getElementById('review-mistakes-btn');if(rb)rb.style.display=(wrongIndices.length>0?'inline-block':'none');if(pct===100)spawnConfetti();}
+function returnToLevels(){document.getElementById('quiz-area').style.display='none';document.getElementById('level-card').style.display='block';currentLevel=null;document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));document.getElementById('start-btn').classList.remove('ready');document.getElementById('total-q').textContent='-';document.getElementById('wrong-badge').innerHTML='&#x6F0; &#x2717;<br>&#x62E;&#x637;&#x623;';document.getElementById('correct-badge').innerHTML='&#x6F0; &#x2713;<br>&#x635;&#x62D;&#x64A;&#x62D;';document.getElementById('qnum-badge').innerHTML='&#x627;&#x644;&#x633;&#x624;&#x627;&#x644; &#x6F1; /<br>-';document.getElementById('progress-fill').style.width='0%';}
 function retryQuiz(){document.getElementById('result-area').style.display='none';document.getElementById('level-card').style.display='block';currentLevel=null;document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));document.getElementById('start-btn').classList.remove('ready');document.getElementById('total-q').textContent='-';document.getElementById('wrong-badge').innerHTML='٠ ✗<br>خطأ';document.getElementById('correct-badge').innerHTML='٠ ✓<br>صحيح';document.getElementById('qnum-badge').innerHTML='السؤال ١ /<br>-';document.getElementById('progress-fill').style.width='0%';}
 function applyTheme(mode){document.documentElement.setAttribute('data-theme',mode);document.getElementById('theme-toggle').textContent=mode==='dark'?'☀️':'🌙';}
 function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme');const next=cur==='dark'?'light':'dark';applyTheme(next);try{localStorage.setItem('quranTheme',next);}catch(e){}}

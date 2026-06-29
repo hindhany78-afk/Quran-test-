@@ -382,6 +382,8 @@
   .q-dot.wrong   { background: var(--wrong-border); }
   .confetti-piece { position: absolute; top: -20px; width: 9px; height: 14px; opacity: 0.9; animation: confetti-fall linear forwards; }
   @keyframes confetti-fall { to { transform: translateY(110vh) rotate(540deg); opacity: 0.3; } }
+.level-return-btn{display:block;width:100%;margin-top:14px;padding:11px;background:var(--surface2);color:var(--text-soft);border:1.5px solid var(--border);border-radius:12px;font-size:15px;font-family:inherit;cursor:pointer;transition:all .2s;text-align:center;}
+.level-return-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--accent);}
 </style>
 </head>
 <body>
@@ -441,6 +443,7 @@
   <div class="q-text" id="q-text"></div>
   <div id="answer-zone"></div>
   <div class="feedback" id="feedback"></div>
+  <button class="level-return-btn" onclick="returnToLevels()">&#x1F504; &#x627;&#x62E;&#x62A;&#x631; &#x645;&#x633;&#x62A;&#x648;&#x649; &#x622;&#x62E;&#x631;</button>
   <button class="skip-btn" id="skip-btn" onclick="skipQuestion()">⏭ تخطي — أظهر الإجابة</button>
   <div style="display:flex; gap:10px; margin-top:12px;">
     <button class="next-btn" id="prev-btn" onclick="prevQuestion()" style="display:block; background:var(--surface2); color:var(--accent); border:1.5px solid var(--border); margin-top:0;">→ السابق</button>
@@ -882,6 +885,7 @@ function showResult() {
   var __pct = Math.round((correctCount/questions.length)*100); if (__pct === 100) spawnConfetti();
 }
 
+function returnToLevels(){document.getElementById('quiz-area').style.display='none';document.getElementById('level-card').style.display='block';currentLevel=null;document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));document.getElementById('start-btn').classList.remove('ready');document.getElementById('total-q').textContent='-';document.getElementById('wrong-badge').innerHTML='&#x6F0; &#x2717;<br>&#x62E;&#x637;&#x623;';document.getElementById('correct-badge').innerHTML='&#x6F0; &#x2713;<br>&#x635;&#x62D;&#x64A;&#x62D;';document.getElementById('qnum-badge').innerHTML='&#x627;&#x644;&#x633;&#x624;&#x627;&#x644; &#x6F1; /<br>-';document.getElementById('progress-fill').style.width='0%';}
 function retryQuiz() {
   document.getElementById('result-area').style.display = 'none';
   document.getElementById('level-card').style.display  = 'block';
