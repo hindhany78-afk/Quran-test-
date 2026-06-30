@@ -36,6 +36,9 @@ body{font-family:'Amiri','Scheherazade New',serif;background:var(--bg);color:var
 .rec-btn{width:100%;padding:18px;border-radius:14px;font-size:18px;font-family:inherit;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);transition:all .25s;margin-bottom:10px;}
 .rec-btn.recording{background:#e74c3c;color:#fff;border-color:#e74c3c;animation:pulse 1.2s infinite;}
 .rec-btn.paused{background:#e67e22;color:#fff;border-color:#e67e22;}
+.reveal-btn{width:100%;padding:10px;border-radius:10px;font-size:13px;font-family:inherit;cursor:pointer;border:1.5px dashed var(--border);background:transparent;color:var(--accent);margin-bottom:10px;}
+.reveal-btn:hover{background:var(--surface2);}
+.reveal-box{background:var(--surface3);border:1.5px solid var(--border);border-radius:12px;padding:14px;font-family:'Scheherazade New',serif;font-size:19px;line-height:2.6;direction:rtl;text-align:right;margin-bottom:10px;color:var(--text);}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4);}50%{box-shadow:0 0 0 10px rgba(231,76,60,0);}}
 .clear-btn{width:100%;padding:10px;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;border:1.5px solid var(--wrong-border);background:transparent;color:var(--wrong-border);visibility:hidden;margin-bottom:10px;}
 .clear-btn.visible{visibility:visible;}
@@ -150,6 +153,8 @@ body{font-family:'Amiri','Scheherazade New',serif;background:var(--bg);color:var
 <div class="rec-card" id="recCard">
   <div class="rec-desc">اضغط 🎤 وابدأ التلاوة من أي آية<br>توقف متى شئت — سنحدد موضعك تلقائياً<br>🟢 صح &nbsp;|&nbsp; 🔴 غلط &nbsp;|&nbsp; ➖ محذوف</div>
   <button class="rec-btn" id="recBtn" onclick="toggleRec()">اختر سورة أولاً</button>
+  <button class="reveal-btn" id="revealBtn" onclick="toggleReveal()" style="display:none;">👁️ مش فاكرة؟ اعرضي نص السورة</button>
+  <div class="reveal-box" id="revealBox" style="display:none;"></div>
   <div class="transcript-box" id="transcriptBox"></div>
   <button class="clear-btn" id="clearBtn" onclick="clearAll()">🗑️ مسح والبدء من جديد</button>
   <button class="check-btn" id="checkBtn" onclick="checkRecitation()">✓ تحقق من التلاوة</button>
@@ -287,6 +292,7 @@ let currentKey='',refWords=[];
 function norm(s){
   if(!s)return'';
   return s
+    .replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'ا')
     .replace(/ـ/g,'')
     .replace(/وٰ/g,'و')
     .replace(/اٰ/g,'ا')
@@ -296,7 +302,8 @@ function norm(s){
     .replace(/(.)ٰ/g,'$1ا')
     .replace(/هۥ/g,'ه')
     .replace(/هۦ/g,'ه')
-    .replace(/ۦ/g,'ي')
+    .replace(/ۦ(?=\S)/g,'ي')
+    .replace(/ۦ/g,'')
     .replace(/ۥ/g,'')
     .replace(/[ئؤ]/g,'ء')
     .replace(/ء/g,'')
@@ -342,7 +349,22 @@ function onSelectSurah(){
   document.getElementById('recBtn').disabled=false;
   document.getElementById('recBtn').style.opacity='1';
   document.getElementById('recBtn').style.cursor='pointer';
+  document.getElementById('revealBtn').style.display='block';
   clearAll();
+}
+
+function toggleReveal(){
+  const box=document.getElementById('revealBox');
+  const btn=document.getElementById('revealBtn');
+  const showing=box.style.display==='block';
+  if(showing){
+    box.style.display='none';
+    btn.textContent='👁️ مش فاكرة؟ اعرضي نص السورة';
+  }else{
+    box.textContent=refWords.join(' ');
+    box.style.display='block';
+    btn.textContent='🙈 إخفاء النص';
+  }
 }
 
 function findStart(userWords){
