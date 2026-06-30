@@ -254,7 +254,7 @@ function normalize(str){
   if(!str)return'';
   return str
     .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞۢ]/g,'')
-    .replace(/[ىی]ٰ/g,'ي')
+    .replace(/[ىی]ٰ(?=\S)/g,'ا').replace(/[ىی]ٰ/g,'ي')
     .replace(/اٰ/g,'ا')
     .replace(/نٰ/g,'نا')
     .replace(/ٰ/g,'ا')
@@ -281,7 +281,7 @@ function wordDiff(userVal,correctAnswer){
     if(!s)return'';
     return s
       .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞۢ]/g,'')
-      .replace(/[ىی]ٰ/g,'ي').replace(/اٰ/g,'ا').replace(/نٰ/g,'نا').replace(/ٰ/g,'ا')
+      .replace(/[ىی]ٰ(?=\S)/g,'ا').replace(/[ىی]ٰ/g,'ي').replace(/اٰ/g,'ا').replace(/نٰ/g,'نا').replace(/ٰ/g,'ا')
       .replace(/ـ/g,'').replace(/[آأإٱا]/g,'ا').replace(/[ءئؤ]/g,'').replace(/ة/g,'ه')
       .replace(/[ىی]/g,'ي').replace(/ه[ۥۦ]/g,'ه').replace(/ۦ/g,'ي').replace(/ۥ/g,'')
       .replace(/واه(?=\s|$)/g,'اه').replace(/رحمان/g,'رحمن').replace(/مولانا/g,'مولنا').replace(/يا ايها/g,'يايها').replace(/يا ايتها/g,'يايتها').replace(/الاه/g,'اله').replace(/ارايت/g,'اريت')

@@ -209,7 +209,7 @@ function normalize(str){
   if(!str)return'';
   return str
     .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,'')
-    .replace(/[ىی]ٰ/g,'ي')
+    .replace(/[ىی]ٰ(?=\S)/g,'ا').replace(/[ىی]ٰ/g,'ي')
     .replace(/اٰ/g,'ا')
     .replace(/نٰ/g,'نا')
     .replace(/ٰ/g,'ا')
@@ -232,7 +232,7 @@ function wordDiff(userVal,correctAnswer){
     if(!s)return'';
     return s
       .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,'')
-      .replace(/[ىی]ٰ/g,'ي')
+      .replace(/[ىی]ٰ(?=\S)/g,'ا').replace(/[ىی]ٰ/g,'ي')
       .replace(/اٰ/g,'ا')
       .replace(/نٰ/g,'نا')
       .replace(/ٰ/g,'ا')
