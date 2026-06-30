@@ -220,7 +220,7 @@ function normalize(str){
   return str
     .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,'')   // حذف التشكيل
     .replace(/[ىی]ٰ(?=\S)/g,'ا').replace(/[ىی]ٰ/g,'ي')   // ألف خنجرية فوق ى → ألف (مولانا، موسى...)
-    .replace(/اٰ/g,'ا')      // ألف خنجرية فوق ألف → ألف
+    .replace(/وٱ(?!ل)/g,'و').replace(/اٰ/g,'ا')      // ألف خنجرية فوق ألف → ألف
     .replace(/نٰ/g,'نا')     // ألف خنجرية فوق نون → نا
     .replace(/ٰ/g,'ا')       // أي ألف خنجرية → ألف (السماوات: مٰ→ما، كٰ→كا)
     .replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'ا').replace(/ـ/g,'')        // حذف الكشيدة
@@ -280,7 +280,7 @@ function normalizeHurufMuqattaa(str){
   return str;
 }
 
-function toArabicNum(n){return n.toString().replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);}
+function toArabicNum(n){return n;}
 function updateBadges(){
   document.getElementById('qnum-badge').innerHTML=`السؤال ${toArabicNum(qIndex+1)} /<br>${toArabicNum(questions.length)}`;
   document.getElementById('wrong-badge').innerHTML=`${toArabicNum(wrongCount)} ✗<br>خطأ`;

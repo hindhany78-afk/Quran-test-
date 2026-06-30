@@ -264,7 +264,7 @@ function normalize(str){
   return str
     .replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'ا').replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]/g,'')
     .replace(/[ىی]ٰ(?=\S)/g,'ا').replace(/[ىی]ٰ/g,'ي')
-    .replace(/اٰ/g,'ا')
+    .replace(/وٱ(?!ل)/g,'و').replace(/اٰ/g,'ا')
     .replace(/نٰ/g,'نا')
     .replace(/ٰ/g,'ا')
     .replace(/ـ/g,'')
@@ -292,7 +292,7 @@ function wordDiff(userVal,correctAnswer){
     return s
       .replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'ا').replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]/g,'')
       .replace(/[ىی]ٰ(?=\S)/g,'ا').replace(/[ىی]ٰ/g,'ي')
-      .replace(/اٰ/g,'ا')
+      .replace(/وٱ(?!ل)/g,'و').replace(/اٰ/g,'ا')
       .replace(/نٰ/g,'نا')
       .replace(/ٰ/g,'ا')
       .replace(/ـ/g,'')
@@ -337,7 +337,7 @@ function wordDiff(userVal,correctAnswer){
 }
 
 function normalizeHurufMuqattaa(str){return str;}
-function toArabicNum(n){return n.toString().replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);}
+function toArabicNum(n){return n;}
 
 function updateBadges(){
   document.getElementById('qnum-badge').innerHTML=`السؤال ${toArabicNum(qIndex+1)} /<br>${toArabicNum(questions.length)}`;

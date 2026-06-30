@@ -199,13 +199,13 @@ const HARD_Q=[
 ];
 let currentLevel=null,statuses=[],wrongIndices=[],questions=[],qIndex=0,correctCount=0,wrongCount=0;
 
-function toArabicNum(n){return n.toString().replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);}
+function toArabicNum(n){return n;}
 function normalize(str){
   if(!str)return'';
   return str
     .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,'')
     .replace(/[ىی]ٰ(?=\S)/g,'ا').replace(/[ىی]ٰ/g,'ي')
-    .replace(/اٰ/g,'ا')
+    .replace(/وٱ(?!ل)/g,'و').replace(/اٰ/g,'ا')
     .replace(/نٰ/g,'نا')
     .replace(/ٰ/g,'ا')
     .replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'ا').replace(/ـ/g,'')
@@ -228,7 +228,7 @@ function wordDiff(userVal,correctAnswer){
     return s
       .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,'')
       .replace(/[ىی]ٰ(?=\S)/g,'ا').replace(/[ىی]ٰ/g,'ي')
-      .replace(/اٰ/g,'ا')
+      .replace(/وٱ(?!ل)/g,'و').replace(/اٰ/g,'ا')
       .replace(/نٰ/g,'نا')
       .replace(/ٰ/g,'ا')
       .replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'ا').replace(/ـ/g,'')
