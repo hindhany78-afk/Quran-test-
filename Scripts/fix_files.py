@@ -44,6 +44,18 @@ def fix_file(path):
             r".replace(/مولانا/g,'مولنا').replace(/يا ايها/g,'يايها').replace(/يا ايتها/g,'يايتها').replace(/الاه/g,'اله').replace(/ارايت/g,'اريت')"
         )
 
+    # 1ب. نفس الإصلاحات لكن للصيغة الثانية من normalize/nm (زي alnnas.html وrecitation.html)
+    out = out.replace(r".replace(/ىٰ/g,'ا')", r".replace(/ىٰ/g,'ي')")
+    out = out.replace(
+        r".replace(/هۦ/g,'ه').replace(/[ۥۦ]/g,'')",
+        r".replace(/هۦ/g,'ه').replace(/ۦ/g,'ي').replace(/ۥ/g,'')"
+    )
+    if "replace(/الاه/g,'اله')" not in out:
+        out = out.replace(
+            r".replace(/ذالك/g,'ذلك')",
+            r".replace(/ذالك/g,'ذلك').replace(/الاه/g,'اله').replace(/ارايت/g,'اريت')"
+        )
+
     # 2. أضف زر returnToLevels لو مش موجود
     if 'returnToLevels' not in out:
         # CSS
