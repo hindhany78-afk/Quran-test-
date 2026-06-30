@@ -13,7 +13,6 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WFT6TYVB75"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-WFT6TYVB75");</script>
 <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
 <style>
 :root{--bg:#f0f4f0;--text:#2d4a2d;--card:#fff;--border:#c8d9c0;--gold:#c4a84a;--accent:#4a7c4a;--surface2:#f4f8f2;--surface3:#f8fbf6;--surface-hover:#e0edd8;--accent-dark:#3a6a3a;--wrong-border:#c0392b;--teal:#3a7a7c;}
 html[data-theme="dark"]{--bg:#1c2420;--text:#d9ecd9;--card:#232f29;--border:#3a4d40;--gold:#d9b96a;--accent:#5fae5f;--surface2:#2a3830;--surface3:#1f2a24;--surface-hover:#324438;--accent-dark:#7fcf7f;--wrong-border:#e74c3c;--teal:#5fb8ba;}
@@ -65,6 +64,11 @@ body{font-family:'Amiri','Scheherazade New',serif;background:var(--bg);color:var
 .w-err{color:#fff;background:#c0392b;border-radius:4px;padding:1px 4px;margin:1px;}
 .w-missing{color:#999;background:#f0f0f0;border-radius:4px;padding:1px 4px;margin:1px;text-decoration:line-through;}
 .retry-btn{width:100%;padding:11px;border-radius:11px;font-size:15px;font-family:inherit;cursor:pointer;background:var(--surface2);color:var(--accent);border:1.5px solid var(--border);margin-top:10px;}
+.confetti-piece{position:fixed;top:-20px;z-index:9999;pointer-events:none;border-radius:2px;animation:confettiFall linear forwards;}
+@keyframes confettiFall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1;}
+  100%{transform:translateY(110vh) rotate(540deg);opacity:0.9;}
+}
 </style>
 </head>
 <body>
@@ -477,8 +481,8 @@ function checkRecitation(){
   fill.style.background=pct>=80?'#4a7c4a':pct>=60?'#e67e22':'#c0392b';
   document.getElementById('resultTitle').textContent=
     pct===100?'🌟 ممتاز! تلاوة مثالية':pct>=80?'✨ أحسنتِ!':pct>=60?'📖 جيد — راجعي الكلمات الحمراء':'💪 تحتاجين مراجعة';
-  if(pct===100&&typeof confetti==='function'){
-    confetti({particleCount:140,spread:80,origin:{y:0.6},colors:['#4a7c4a','#c4a84a','#5fae5f','#fff']});
+  if(pct===100){
+    launchConfetti();
   }
   const display=document.getElementById('ayahDisplay');
   display.innerHTML='';
@@ -490,6 +494,25 @@ function checkRecitation(){
     display.appendChild(sp);display.appendChild(document.createTextNode(' '));
   });
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+function launchConfetti(){
+  const colors=['#4a7c4a','#c4a84a','#5fae5f','#ffffff','#3a7a7c'];
+  const count=80;
+  for(let i=0;i<count;i++){
+    const piece=document.createElement('div');
+    piece.className='confetti-piece';
+    const size=(Math.random()*8+6);
+    piece.style.left=(Math.random()*100)+'vw';
+    piece.style.width=size+'px';
+    piece.style.height=(size*0.4)+'px';
+    piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+    const duration=(Math.random()*1.5+2);
+    piece.style.animationDuration=duration+'s';
+    piece.style.animationDelay=(Math.random()*0.3)+'s';
+    document.body.appendChild(piece);
+    setTimeout(()=>piece.remove(),(duration+0.5)*1000);
+  }
 }
 
 function applyTheme(m){document.documentElement.setAttribute('data-theme',m);document.getElementById('theme-toggle').textContent=m==='dark'?'☀️':'🌙';}
