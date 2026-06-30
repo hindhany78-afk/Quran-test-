@@ -25,6 +25,15 @@ def fix_file(path):
         src = f.read()
     out = src
 
+    # 0. قائمة التشكيل القديمة في قالب alburuj/altariq كانت ناقصة (مفيهاش حرف السكون
+    #    ۡ المستخدم في خط جزء عمّ العثماني) فيفضل في الكلمة بعد التطبيع ويمنع التطابق
+    #    — استبدلها بمدى يونيكود شامل (نفس قاعدة alnnas/recitation)، وقبلها قاعدة
+    #    الهمزة على كشيدة (ـَٔ) لازم تتنفذ قبل حذف التشكيل عشان متضيعش
+    out = out.replace(
+        "replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞۢ]/g,'')",
+        r"replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'ا').replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]/g,'')"
+    )
+
     # 1. إصلاحات normalize/nm (تتطبق تلقائياً في الموضعين معاً):
     #    - ىٰ: لو جالها حرف بعدها في نفس الكلمة (زي أَدۡرَىٰكَ، أَلۡهَىٰكُمُ) = "ا"
     #      لو في آخر الكلمة (زي عَلَىٰ، أَغۡنَىٰ، سَيَصۡلَىٰ) = "ي" (زي باقي حالات ى)
@@ -33,12 +42,26 @@ def fix_file(path):
                       r"[ىی]ٰ(?=\\S)/g,'ا').replace(/[ىی]ٰ/g,'ي')",
                       out)
 
-    #    - ۦ كانت بتتحذف بالكامل، والمفروض تتحول لـ"ي" (صوت ياء) في كل القرآن
+    #    - الهمزة المكتوبة فوق كشيدة (ـَٔ زي لَتُسۡـَٔلُنَّ) كانت بتتحذف بالكامل
+    #      وتفقد الحرف؛ المفروض تتحول لـ"ا" (زي باقي حالات الهمزة على ألف)
+    if r"[\u0654\u0655]/g,'ا')" not in out:
+        out = out.replace(
+            r".replace(/ـ/g,'')",
+            r".replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'ا').replace(/ـ/g,'')"
+        )
+
+    #    - ۦ في وسط الكلمة (زي إِۦلَٰفِهِمۡ) = صوت ياء حقيقي = "ي"
+    #      ۦ في آخر الكلمة (زي بِهِۦ، لِرَبِّهِۦ) = حرف صامت اختياري، تتقبل "به"/"بهي" الاتنين
     #      (ۥ تفضل تتحذف زي ما هي، دي مش نفس الحرف)
-    out = out.replace(
-        r".replace(/ه[ۥۦ]/g,'ه').replace(/[ۥۦ]/g,'')",
-        r".replace(/ه[ۥۦ]/g,'ه').replace(/ۦ/g,'ي').replace(/ۥ/g,'')"
-    )
+    if r"ۦ(?=\S)" not in out:
+        out = out.replace(
+            r".replace(/ه[ۥۦ]/g,'ه').replace(/[ۥۦ]/g,'')",
+            r".replace(/ه[ۥۦ]/g,'ه').replace(/ۦ(?=\S)/g,'ي').replace(/ۦ/g,'').replace(/ۥ/g,'')"
+        )
+        out = out.replace(
+            r".replace(/ه[ۥۦ]/g,'ه').replace(/ۦ/g,'ي').replace(/ۥ/g,'')",
+            r".replace(/ه[ۥۦ]/g,'ه').replace(/ۦ(?=\S)/g,'ي').replace(/ۦ/g,'').replace(/ۥ/g,'')"
+        )
 
     #    - كلمات خاصة: اله/إله، ارايت/أرءيت، يا أيها (تتكتب كلمتين وتتقبل ككلمة وحدة)
     if "replace(/يا ايها/g,'يايها')" not in out:
@@ -52,10 +75,15 @@ def fix_file(path):
         out = re.sub(r"\.replace\(/ىٰ/g,'[اي]'\)",
                       r".replace(/ىٰ(?=\\S)/g,'ا').replace(/ىٰ/g,'ي')",
                       out)
-    out = out.replace(
-        r".replace(/هۦ/g,'ه').replace(/[ۥۦ]/g,'')",
-        r".replace(/هۦ/g,'ه').replace(/ۦ/g,'ي').replace(/ۥ/g,'')"
-    )
+    if r"ۦ(?=\S)" not in out:
+        out = out.replace(
+            r".replace(/هۦ/g,'ه').replace(/[ۥۦ]/g,'')",
+            r".replace(/هۦ/g,'ه').replace(/ۦ(?=\S)/g,'ي').replace(/ۦ/g,'').replace(/ۥ/g,'')"
+        )
+        out = out.replace(
+            r".replace(/هۦ/g,'ه').replace(/ۦ/g,'ي').replace(/ۥ/g,'')",
+            r".replace(/هۦ/g,'ه').replace(/ۦ(?=\S)/g,'ي').replace(/ۦ/g,'').replace(/ۥ/g,'')"
+        )
     if "replace(/الاه/g,'اله')" not in out:
         out = out.replace(
             r".replace(/ذالك/g,'ذلك')",
