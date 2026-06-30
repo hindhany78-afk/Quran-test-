@@ -77,7 +77,10 @@ body{font-family:'Amiri','Scheherazade New',serif;background:var(--bg);color:var
 <body>
 <div class="top-bar">
   <a href="index.html" class="back-btn">← الرجوع</a>
-  <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button id="share-btn" onclick="shareApp()" title="شارك الموقع" style="background:none;border:none;font-size:20px;cursor:pointer;padding:4px;">🔗</button>
+    <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </div>
 </div>
 <div class="info-card">
   <div class="page-title">🎤 اختبر تلاوتك</div>
@@ -153,7 +156,7 @@ body{font-family:'Amiri','Scheherazade New',serif;background:var(--bg);color:var
 <div class="rec-card" id="recCard">
   <div class="rec-desc">اضغط 🎤 وابدأ التلاوة من أي آية<br>توقف متى شئت — سنحدد موضعك تلقائياً<br>🟢 صح &nbsp;|&nbsp; 🔴 غلط &nbsp;|&nbsp; ➖ محذوف</div>
   <button class="rec-btn" id="recBtn" onclick="toggleRec()">اختر سورة أولاً</button>
-  <button class="reveal-btn" id="revealBtn" onclick="toggleReveal()" style="display:none;">👁️ مش فاكرة؟ اعرضي نص السورة</button>
+  <button class="reveal-btn" id="revealBtn" onclick="toggleReveal()" style="display:none;">📖 اعرض نص السورة</button>
   <div class="reveal-box" id="revealBox" style="display:none;"></div>
   <div class="transcript-box" id="transcriptBox"></div>
   <button class="clear-btn" id="clearBtn" onclick="clearAll()">🗑️ مسح والبدء من جديد</button>
@@ -292,35 +295,36 @@ let currentKey='',refWords=[];
 function norm(s){
   if(!s)return'';
   return s
-    .replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'ا')
+    // همزة على كشيدة: ـَٔ = صوت ألف، غيرها = همزة تتحذف
+    .replace(/ـ\u064E\u0654/g,'ا')
+    .replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'')
     .replace(/ـ/g,'')
-    .replace(/وٰ/g,'و')
+    // حذف التشكيل أولاً لضمان صحة ىٰ وغيرها
+    .replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]/g,'')
+    // ألف وصل بعد واو (وَٱسۡجُدۡ → وسجد) ما عدا ال التعريف
+    .replace(/وٱ(?!ل)/g,'و')
+    // وٰ = صوت ألف (الصلاة، الزكاة)
+    .replace(/وٰ/g,'ا')
     .replace(/اٰ/g,'ا')
     .replace(/يٰ/g,'ي')
+    // ىٰ في وسط الكلمة = ا (أدراك، ألهاكم)، في آخرها = ي (على، ليطغى)
     .replace(/ىٰ(?=\S)/g,'ا')
     .replace(/ىٰ/g,'ي')
     .replace(/(.)ٰ/g,'$1ا')
-    .replace(/هۥ/g,'ه')
-    .replace(/هۦ/g,'ه')
-    .replace(/ۦ(?=\S)/g,'ي')
-    .replace(/ۦ/g,'')
-    .replace(/ۥ/g,'')
-    .replace(/[ئؤ]/g,'ء')
-    .replace(/ء/g,'')
-    .replace(/[آأإٱا]/g,'ا')
-    .replace(/[ىی]/g,'ي')
-    .replace(/ة/g,'ه')
-    .replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]/g,'')
+    .replace(/هۥ/g,'ه').replace(/هۦ/g,'ه')
+    .replace(/ۦ(?=\S)/g,'ي').replace(/ۦ/g,'').replace(/ۥ/g,'')
+    .replace(/[ئؤ]/g,'ء').replace(/ء/g,'')
+    .replace(/[آأإٱا]/g,'ا').replace(/[ىی]/g,'ي').replace(/ة/g,'ه')
     .replace(/(.)\1+/g,'$1')
     .replace(/رحمان/g,'رحمن')
-    .replace(/هاؤلاء/g,'هولا')
-    .replace(/هؤلاء/g,'هولا')
-    .replace(/ياايها/g,'يايها')
-    .replace(/يا ايها/g,'يايها')
-    .replace(/هاذا/g,'هذا')
-    .replace(/ذالك/g,'ذلك')
-    .replace(/الاه/g,'اله')
-    .replace(/ارايت/g,'اريت')
+    .replace(/هاؤلاء/g,'هولا').replace(/هؤلاء/g,'هولا')
+    .replace(/ياايها/g,'يايها').replace(/يا ايها/g,'يايها')
+    .replace(/هاذا/g,'هذا').replace(/ذالك/g,'ذلك')
+    .replace(/الاه/g,'اله').replace(/ارايت/g,'اريت')
+    // أُوْلَٰٓئِكَ: يتقبل اولئك (بدون الألف الخنجرية) = اولائك = اولاك
+    .replace(/اولك/g,'اولاك')
+    // واو الجماعة: يتلوا = يتلو
+    .replace(/وا(?=\s|$)/g,'و')
     .replace(/\s+/g,' ')
     .trim();
 }
@@ -359,7 +363,7 @@ function toggleReveal(){
   const showing=box.style.display==='block';
   if(showing){
     box.style.display='none';
-    btn.textContent='👁️ مش فاكرة؟ اعرضي نص السورة';
+    btn.textContent='📖 اعرض نص السورة';
   }else{
     box.textContent=refWords.join(' ');
     box.style.display='block';
@@ -517,6 +521,20 @@ function checkRecitation(){
     display.appendChild(sp);display.appendChild(document.createTextNode(' '));
   });
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+function shareApp(){
+  const url='https://quran-darbi.github.io/Quran-test-/';
+  const title='دربي لحفظ القرآن';
+  if(navigator.share){
+    navigator.share({title,url}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(url).then(()=>{
+      const btn=document.getElementById('share-btn');
+      btn.textContent='✅';
+      setTimeout(()=>btn.textContent='🔗',2000);
+    }).catch(()=>{});
+  }
 }
 
 function launchConfetti(){
