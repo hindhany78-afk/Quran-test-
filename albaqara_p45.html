@@ -286,7 +286,7 @@ function wordDiff(userVal,correctAnswer){
     const nm=s=>s
     .replace(/[ًٌٍَُِّْٕٖٜٟٓٔٗ٘ٙٚٛٝٞ]/g,'')
     .replace(/ٰ/g,'ا')
-    .replace(/ـ/g,'')
+    .replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'ا').replace(/ـ/g,'')
     .replace(/[آأإٱا]/g,'ا')
     .replace(/[ءئؤ]/g,'')
     .replace(/ة/g,'ه')
