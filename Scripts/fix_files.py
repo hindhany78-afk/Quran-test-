@@ -94,11 +94,11 @@ def fix_file(path):
             r".replace(/ه[ۥۦ]/g,'ه').replace(/ۦ(?=\S)/g,'ي').replace(/ۦ/g,'').replace(/ۥ/g,'')"
         )
 
-    # كلمات خاصة + واو الجماعة
+    # كلمات خاصة + واو الجماعة + الإقلاب
     if "replace(/يا ايها/g,'يايها')" not in out:
         out = out.replace(
             r".replace(/مولانا/g,'مولنا')",
-            r".replace(/مولانا/g,'مولنا').replace(/يا ايها/g,'يايها').replace(/يا ايتها/g,'يايتها').replace(/الاه/g,'اله').replace(/ارايت/g,'اريت').replace(/وا(?=\s|$)/g,'و').replace(/اولك/g,'اولاك')"
+            r".replace(/مولانا/g,'مولنا').replace(/يا ايها/g,'يايها').replace(/يا ايتها/g,'يايتها').replace(/الاه/g,'اله').replace(/ارايت/g,'اريت').replace(/نب/g,'مب').replace(/وا(?=\s|$)/g,'و').replace(/اولك/g,'اولاك')"
         )
 
     # ====================================================
@@ -140,7 +140,7 @@ def fix_file(path):
     if "replace(/الاه/g,'اله')" not in out:
         out = out.replace(
             r".replace(/ذالك/g,'ذلك')",
-            r".replace(/ذالك/g,'ذلك').replace(/الاه/g,'اله').replace(/ارايت/g,'اريت').replace(/وا(?=\s|$)/g,'و').replace(/اولك/g,'اولاك')"
+            r".replace(/ذالك/g,'ذلك').replace(/الاه/g,'اله').replace(/ارايت/g,'اريت').replace(/نب/g,'مب').replace(/وا(?=\s|$)/g,'و').replace(/اولك/g,'اولاك')"
         )
 
     # ====================================================
