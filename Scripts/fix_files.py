@@ -41,23 +41,40 @@ def fix_file(path):
         r"replace(/ـ\u064E\u0654/g,'ا').replace(/ـ[\u064B-\u065F]*[\u0654\u0655]/g,'').replace(/ـ/g,'').replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]/g,'')"
     )
 
-    # ====================================================
-    # 1. قواعد ىٰ وواو الجماعة ووٰ (alburuj/altariq pattern):
+    # 1. قواعد الألف الخنجرية والإصلاحات (alburuj/altariq pattern):
+
+    # يٰ = يا (كان ي خطأ)
+    if r"يٰ/g,'يا'" not in out:
+        out = out.replace(r".replace(/يٰ/g,'ي')", r".replace(/يٰ/g,'يا')")
+
+    # ىٰ: وسط الكلمة = ا، آخرها = ي
     if "[ىی]ٰ(?=" not in out:
         out = re.sub(r"\[ىی\]ٰ/g,'[اي]'\)",
                       r"[ىی]ٰ(?=\\S)/g,'ا').replace(/[ىی]ٰ/g,'ي')",
                       out)
 
-    # وٰ = صوت ألف (الصلاة، الزكاة)
-    if r"وٰ/g,'ا'" not in out:
-        out = out.replace(r".replace(/وٰ/g,'و')", r".replace(/وٰ/g,'ا')")
+    # وٰ: قبل ة = الواو تتحذف (الصلاة)، غيرها = واو + ا (السماوات، أبواب)
+    if r"وٰ(?=ة)" not in out:
+        out = out.replace(r".replace(/وٰ/g,'ا')", r".replace(/وٰ(?=ة)/g,'ا').replace(/وٰ/g,'وا')")
+        out = out.replace(r".replace(/وٰ/g,'و')", r".replace(/وٰ(?=ة)/g,'ا').replace(/وٰ/g,'وا')")
 
     # ألف وصل بعد واو (وَٱسۡجُدۡ → وسجد) ما عدا ال التعريف
+    # + قبول واسجد/واقترب من المستخدم
     if r"وٱ(?!ل)" not in out:
-        out = out.replace(
-            r".replace(/وٰ/g,'ا')",
-            r".replace(/وٱ(?!ل)/g,'و').replace(/وٰ/g,'ا')"
+        out = re.sub(
+            r"(\.replace\(/وٰ\(\?=ة\)/g,'ا'\)\.replace\(/وٰ/g,'وا'\))",
+            r"\1.replace(/وٱ(?!ل)/g,'و').replace(/^وا(?!ل)/g,'و')",
+            out
         )
+
+    # هاؤلاء/هؤلاء قبل حذف ؤ
+    if r"ها[ؤو]لاء" not in out:
+        out = out.replace(
+            r".replace(/[ءئؤ]/g,'')",
+            r".replace(/ها[ؤو]لاء|ها[ؤو]لا(?!\S)/g,'هالا').replace(/ه[ؤو]لاء|ه[ؤو]لا(?!\S)/g,'هالا').replace(/[ءئؤ]/g,'')"
+        )
+        # إزالة الـ rule القديمة الميتة
+        out = out.replace(r".replace(/هاؤلاء/g,'هولا').replace(/هؤلاء/g,'هولا')", "")
 
     # الهمزة على كشيدة (ـَٔ → ا، غيرها تتحذف)
     if r"[\u0654\u0655]/g,'')" not in out and r"[\u0654\u0655]/g,'ا')" not in out:
@@ -86,19 +103,28 @@ def fix_file(path):
 
     # ====================================================
     # 1ب. نفس الإصلاحات للصيغة الثانية (alnnas.html pattern):
-    #     التشكيل يتحذف أولاً هنا كمان
     if ".replace(/ىٰ(?=" not in out:
         out = re.sub(r"\.replace\(/ىٰ/g,'[اي]'\)",
                       r".replace(/ىٰ(?=\\S)/g,'ا').replace(/ىٰ/g,'ي')",
                       out)
 
-    if r"وٰ/g,'ا'" not in out:
-        out = out.replace(r".replace(/وٰ/g,'و')", r".replace(/وٰ/g,'ا')")
+    if r"يٰ/g,'يا'" not in out:
+        out = out.replace(r".replace(/يٰ/g,'ي')", r".replace(/يٰ/g,'يا')")
+
+    if r"وٰ(?=ة)" not in out:
+        out = out.replace(r".replace(/وٰ/g,'ا')", r".replace(/وٰ(?=ة)/g,'ا').replace(/وٰ/g,'وا')")
+        out = out.replace(r".replace(/وٰ/g,'و')", r".replace(/وٰ(?=ة)/g,'ا').replace(/وٰ/g,'وا')")
 
     if r"وٱ(?!ل)" not in out:
         out = out.replace(
             r".replace(/اٰ/g,'ا')",
-            r".replace(/وٱ(?!ل)/g,'و').replace(/اٰ/g,'ا')"
+            r".replace(/وٱ(?!ل)/g,'و').replace(/^وا(?!ل)/g,'و').replace(/اٰ/g,'ا')"
+        )
+
+    if r"ها[ؤو]لاء" not in out:
+        out = out.replace(
+            r".replace(/هاؤلاء/g,'هولا').replace(/هؤلاء/g,'هولا')",
+            r".replace(/ها[ؤو]لاء|ها[ؤو]لا(?!\S)/g,'هالا').replace(/ه[ؤو]لاء|ه[ؤو]لا(?!\S)/g,'هالا')"
         )
 
     if r"ۦ(?=\S)" not in out:
