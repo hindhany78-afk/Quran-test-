@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WFT6TYVB75"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-WFT6TYVB75");</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دربي لحفظ القرآن</title>
+<meta name="description" content="اختبر حفظك للقرآن الكريم">
+<link rel="manifest" href="/Quran-test-/manifest.json">
+<meta name="theme-color" content="#4a7c4a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="دربي">
+<link rel="apple-touch-icon" href="/Quran-test-/icons/icon-192x192.png">
+<meta property="og:title" content="دربي لحفظ القرآن">
+<meta property="og:description" content="اختبر حفظك للقرآن الكريم">
+<meta property="og:url" content="https://quran-darbi.github.io/Quran-test-/">
+<meta property="og:type" content="website">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Amiri',serif;background:#F2F5F0;color:#1A2E1A;min-height:100vh;padding-bottom:60px;transition:background .3s,color .3s;direction:rtl;}
+
+/* ===== VARS ===== */
+:root{
+  --bg:#FAFAFA;--card:#FFFFFF;--nav:#FFFFFF;
+  --green:#2E6B3E;--green2:#3A8C50;--green3:#F0F7F2;
+  --gold:#B8963A;--gold2:#F0E4C0;
+  --text:#1A1A1A;--soft:#6A8A6A;--border:#E4EAE4;
+  --shadow:rgba(45,90,39,0.10);
+}
+html[data-theme="dark"]{
+  --bg:#101810;--card:#182018;--nav:#182018;
+  --green:#6BBF5A;--green2:#4A9E40;--green3:#1A2A18;
+  --gold:#D4A84A;--gold2:#2A2418;
+  --text:#DCF0D8;--soft:#8AB885;--border:#2A4028;
+  --shadow:rgba(0,0,0,0.35);
+}
+
+/* ===== NAV ===== */
+nav{background:var(--nav);border-bottom:1.5px solid var(--border);padding:10px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:200;box-shadow:0 2px 10px var(--shadow);}
+.nav-logo{font-family:'Scheherazade New',serif;font-size:1.1rem;color:var(--green);font-weight:700;display:flex;align-items:center;gap:6px;}
+.nav-logo span{font-size:1.3rem;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.theme-btn{background:var(--green3);border:1px solid var(--border);border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.rec-btn{display:flex;align-items:center;gap:5px;background:var(--green);color:#fff;border:none;border-radius:18px;padding:7px 14px;font-size:0.85rem;font-family:'Amiri',serif;text-decoration:none;transition:opacity .2s;white-space:nowrap;}
+.rec-btn:hover{opacity:.88;}
+
+/* ===== HERO ===== */
+.hero{background:linear-gradient(160deg,#2E6B3E 0%,#3A8C50 60%,#4AA060 100%);padding:30px 20px 36px;text-align:center;position:relative;overflow:hidden;}
+/* زخرفة دوائر خلفية */
+.hero::before{content:'';position:absolute;top:-60px;left:-60px;width:220px;height:220px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.08);pointer-events:none;}
+.hero::after{content:'';position:absolute;bottom:-80px;right:-40px;width:280px;height:280px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.06);pointer-events:none;}
+/* زخرفة نقاط */
+.hero-dots{position:absolute;top:16px;left:16px;color:rgba(255,255,255,0.15);font-size:1.4rem;letter-spacing:6px;pointer-events:none;}
+.hero-dots2{position:absolute;bottom:16px;right:16px;color:rgba(255,255,255,0.15);font-size:1.4rem;letter-spacing:6px;pointer-events:none;}
+.hero-inner{position:relative;z-index:1;}
+.hero-bismillah{font-family:'Scheherazade New',serif;font-size:1.1rem;color:rgba(255,255,255,0.75);margin-bottom:10px;letter-spacing:1px;}
+.hero-title{font-family:'Scheherazade New',serif;font-size:2.2rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:6px;}
+.hero-sub{font-size:0.88rem;color:rgba(255,255,255,0.78);margin-bottom:18px;}
+/* بطاقة الآية */
+.ayah-banner{display:inline-flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.22);border-radius:14px;padding:12px 20px;margin-bottom:18px;backdrop-filter:blur(6px);max-width:340px;}
+.ayah-text{font-family:'Scheherazade New',serif;font-size:1.05rem;color:#fff;line-height:1.9;margin-bottom:4px;}
+.ayah-ref{font-size:0.72rem;color:rgba(255,255,255,0.6);letter-spacing:.5px;}
+/* زر التلاوة */
+.hero-rec-btn{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--green);border:none;border-radius:22px;padding:10px 24px;font-size:0.95rem;font-family:'Scheherazade New',serif;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.15);transition:transform .2s,box-shadow .2s;cursor:pointer;}
+.hero-rec-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,0.2);}
+/* إحصائيات */
+.hero-stats{display:flex;justify-content:center;gap:10px;margin-top:16px;flex-wrap:wrap;}
+.hstat{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:6px 14px;text-align:center;color:rgba(255,255,255,0.9);}
+.hstat b{display:block;font-size:1.05rem;color:#fff;}
+.hstat small{font-size:0.72rem;opacity:.8;}
+
+/* ===== SEARCH ===== */
+.search-wrap{background:var(--bg);padding:12px 16px 8px;position:sticky;top:55px;z-index:150;}
+.search-input{font-family:'Amiri',serif;font-size:1rem;width:100%;max-width:580px;display:block;margin:0 auto;padding:10px 16px 10px 40px;border:1.5px solid var(--border);border-radius:24px;background:var(--card);color:var(--text);outline:none;text-align:right;direction:rtl;transition:border-color .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235A7A55' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 14px center;}
+.search-input:focus{border-color:var(--green);}
+.search-input::placeholder{color:var(--soft);opacity:.7;}
+
+/* ===== MAIN ===== */
+.main{max-width:840px;margin:14px auto 0;padding:0 13px;}
+
+/* ===== ACCORDION ===== */
+.acc{margin-bottom:8px;border-radius:14px;border:1px solid var(--border);overflow:hidden;background:var(--card);box-shadow:0 1px 6px var(--shadow);}
+.acc-btn{width:100%;background:none;border:none;cursor:pointer;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;font-family:inherit;color:var(--text);transition:background .18s;gap:8px;text-align:right;}
+.acc-btn:hover{background:var(--green3);}
+.acc-left{display:flex;align-items:center;gap:8px;}
+.acc-right{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.juz-badge{background:var(--green);color:#fff;font-family:'Scheherazade New',serif;font-size:0.82rem;padding:3px 11px;border-radius:10px;white-space:nowrap;}
+.juz-badge.amma{background:#1A6A1A;}
+.juz-title{font-family:'Scheherazade New',serif;font-size:1rem;color:var(--green);font-weight:700;}
+.juz-prog{font-size:0.7rem;color:var(--soft);background:var(--green3);border:1px solid var(--border);border-radius:8px;padding:2px 8px;white-space:nowrap;}
+.acc-arrow{font-size:0.85rem;color:var(--gold);transition:transform .22s;display:inline-block;line-height:1;}
+.acc-arrow.open{transform:rotate(180deg);}
+.acc-body{display:none;padding:10px 10px 12px;border-top:1px solid var(--border);background:var(--bg);}
+.acc-body.open{display:block;}
+
+/* ===== CARDS ===== */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:7px;}
+.quiz-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:10px 9px 9px;text-decoration:none;color:var(--text);display:flex;flex-direction:column;gap:3px;position:relative;overflow:hidden;transition:all .18s;}
+.quiz-card:not(.soon):hover{transform:translateY(-2px);box-shadow:0 4px 14px var(--shadow);border-color:var(--green);}
+.quiz-card.soon{opacity:.45;cursor:default;pointer-events:none;}
+.card-bar{position:absolute;right:0;top:0;width:3px;height:100%;background:linear-gradient(180deg,var(--green),var(--green2));border-radius:0 11px 11px 0;}
+.quiz-card.soon .card-bar{background:var(--border);}
+.card-name{font-family:'Scheherazade New',serif;font-size:0.95rem;color:var(--green);font-weight:700;padding-right:5px;}
+.card-meta{font-size:0.7rem;color:var(--soft);padding-right:5px;}
+.card-badge{display:inline-block;font-size:0.66rem;padding:2px 7px;border-radius:7px;margin-top:2px;}
+.badge-ok{background:#E4F4DE;color:#2D5A27;border:1px solid #B0D8A8;}
+.badge-soon{background:var(--green3);color:var(--soft);border:1px solid var(--border);}
+
+/* ===== FOOTER ===== */
+footer{text-align:center;margin-top:44px;padding:24px 16px;border-top:1px solid var(--border);}
+.footer-ayah{font-family:'Scheherazade New',serif;font-size:1rem;color:var(--green);margin-bottom:4px;}
+.footer-ref{font-size:0.75rem;color:var(--soft);margin-bottom:14px;}
+.footer-copy{font-size:0.8rem;color:var(--soft);}
+
+@media(max-width:480px){
+  .hero-title{font-size:1.75rem;}
+  .cards-grid{grid-template-columns:repeat(3,1fr);}
+  .quiz-card{padding:8px 7px;}
+  .ayah-banner{padding:10px 14px;}
+  .ayah-text{font-size:0.95rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span>📖</span> دربي لحفظ القرآن</div>
+  <div class="nav-right">
+    <a href="#about" class="rec-btn" style="background:var(--green3);color:var(--green);border:1px solid var(--border);">عن المشروع</a>
+    <button onclick="shareApp()" title="شارك الموقع" style="background:var(--green3);border:1px solid var(--border);border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;">🔗</button>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-dots">✦ ✦ ✦</div>
+  <div class="hero-dots2">✦ ✦ ✦</div>
+  <div class="hero-inner">
+    <div class="hero-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+    <div class="hero-title">دربي لحفظ القرآن</div>
+    <div class="hero-sub">اختبر حفظك صفحةً بصفحة — 3 مستويات لكل اختبار</div>
+    <div class="ayah-banner">
+      <div class="ayah-text">﴿ وَرَتِّلِ الْقُرْآنَ تَرْتِيلاً ﴾</div>
+      <div class="ayah-ref">سورة المزمل — آية 4</div>
+    </div>
+    <div>
+      <a href="recitation.html" class="hero-rec-btn">🎤 اختبر تلاوتك</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><b>89</b><small>اختباراً متاحاً</small></div>
+      <div class="hstat"><b>30</b><small>جزءاً</small></div>
+      <div class="hstat"><b>604</b><small>صفحة</small></div>
+    </div>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input class="search-input" type="text" placeholder="ابحثي عن سورة أو صفحة..." oninput="doSearch(this.value)" />
+</div>
+
+<div class="main" id="main">
+
+<!-- الفاتحة -->
+<div class="acc" id="acc-fatiha">
+  <button class="acc-btn" onclick="toggleAcc(this)">
+    <div class="acc-left">
+      <div class="juz-badge" style="background:var(--gold);color:#fff;">الفاتحة</div>
+      <div class="juz-title">أم الكتاب</div>
+    </div>
+    <div class="acc-right">
+      <div class="juz-prog">1 متاح</div>
+      <span class="acc-arrow">▾</span>
+    </div>
+  </button>
+  <div class="acc-body">
+    <div class="cards-grid">
+      <a href="alfatiha_p1.html" class="quiz-card" data-s="الفاتحة أم الكتاب"><div class="card-bar"></div><div class="card-name">الفاتحة</div><div class="card-meta">الآيات 1–7</div><span class="card-badge badge-ok">✓ متاح</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- البقرة -->
+<div class="acc" id="acc-baqara">
+  <button class="acc-btn" onclick="toggleAcc(this)">
+    <div class="acc-left">
+      <div class="juz-badge">الجزء 1–3</div>
+      <div class="juz-title">سورة البقرة</div>
+    </div>
+    <div class="acc-right">
+      <div class="juz-prog">48 متاح</div>
+      <span class="acc-arrow">▾</span>
+    </div>
+  </button>
+  <div class="acc-body">
+    <div class="cards-grid" id="baqara-grid"></div>
+  </div>
+</div>
+
+<!-- جزء عمّ -->
+<div class="acc" id="acc-amma">
+  <button class="acc-btn" onclick="toggleAcc(this)">
+    <div class="acc-left">
+      <div class="juz-badge amma">الجزء 30</div>
+      <div class="juz-title">جزء عمّ</div>
+    </div>
+    <div class="acc-right">
+      <div class="juz-prog">37 / 37 مكتمل ✓</div>
+      <span class="acc-arrow">▾</span>
+    </div>
+  </button>
+  <div class="acc-body">
+    <div class="cards-grid" id="amma-grid"></div>
+  </div>
+</div>
+
+<!-- الأجزاء القادمة -->
+<div id="remaining"></div>
+
+</div>
+
+<!-- عن المشروع -->
+<div id="about"></div>
+<div style="max-width:840px;margin:28px auto 0;padding:0 13px;">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 20px;box-shadow:0 2px 10px var(--shadow);border-right:4px solid var(--green);">
+    <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+      <div style="font-size:2.8rem;flex-shrink:0;">📖</div>
+      <div style="flex:1;min-width:220px;">
+        <div style="font-family:'Scheherazade New',serif;font-size:1.35rem;color:var(--green);font-weight:700;margin-bottom:8px;">عن المشروع</div>
+        <div style="font-size:0.93rem;color:var(--soft);line-height:2;">
+          موقع "دربي لحفظ القرآن" مشروع شخصي هدفه مساعدة الجميع على حفظ كتاب الله ومراجعته بطريقة تفاعلية وممتعة.<br>
+          كل اختبار مصمم بعناية لاختبار الحفظ الدقيق للآيات من خلال ثلاثة مستويات — سهل ومتوسط وصعب — مع التركيز على متشابهات القرآن الكريم.
+        </div>
+        <div style="margin-top:12px;font-family:'Scheherazade New',serif;font-size:0.88rem;color:var(--soft);">✦ هند هاني أبوبكر</div>
+        <div style="margin-top:14px;background:var(--green3);border-radius:12px;padding:12px 14px;text-align:center;">
+          <div style="font-family:'Scheherazade New',serif;font-size:1rem;color:var(--green);line-height:1.9;">﴿ وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ ﴾</div>
+          <div style="font-size:0.72rem;color:var(--soft);margin-top:3px;">سورة القمر — آية 17</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-ayah">﴿ إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ ﴾</div>
+  <div class="footer-ref">سورة الحجر — آية 9</div>
+  <div class="footer-copy">جميع الحقوق محفوظة © هند هاني أبوبكر — دربي لحفظ القرآن</div>
+</footer>
+
+<script>
+const baqaraPages=[
+  ['albaqara_p2.html','ص 2','1–5'],['albaqara_p3.html','ص 3','6–16'],
+  ['albaqara_p4.html','ص 4','17–24'],['albaqara_p5.html','ص 5','25–29'],
+  ['albaqara_p6.html','ص 6','30–38'],['albaqara_p7.html','ص 7','39–46'],
+  ['albaqara_p8.html','ص 8','47–57'],['albaqara_p9.html','ص 9','58–61'],
+  ['albaqara_p10.html','ص 10','62–68'],['albaqara_p11.html','ص 11','69–76'],
+  ['albaqara_p12.html','ص 12','77–85'],['albaqara_p13.html','ص 13','86–92'],
+  ['albaqara_p14.html','ص 14','93–101'],['albaqara_p15.html','ص 15','102–107'],
+  ['albaqara_p16.html','ص 16','108–113'],['albaqara_p17.html','ص 17','114–123'],
+  ['albaqara_p18.html','ص 18','124–129'],['albaqara_p19.html','ص 19','130–141'],
+  ['albaqara_p20.html','ص 20','142–150'],['albaqara_p21.html','ص 21','151–159'],
+  ['albaqara_p22.html','ص 22','160–167'],['albaqara_p23.html','ص 23','168–176'],
+  ['albaqara_p24.html','ص 24','177–182'],['albaqara_p25.html','ص 25','183–187'],
+  ['albaqara_p26.html','ص 26','188–196'],['albaqara_p27.html','ص 27','197–202'],
+  ['albaqara_p28.html','ص 28','203–209'],['albaqara_p29.html','ص 29','210–216'],
+  ['albaqara_p30.html','ص 30','217–221'],['albaqara_p31.html','ص 31','222–227'],
+  ['albaqara_p32.html','ص 32','228–231'],['albaqara_p33.html','ص 33','232–233'],
+  ['albaqara_p34.html','ص 34','233–234'],['albaqara_p35.html','ص 35','234–236'],
+  ['albaqara_p36.html','ص 36','236–239'],['albaqara_p37.html','ص 37','239–242'],
+  ['albaqara_p38.html','ص 38','242–245'],['albaqara_p39.html','ص 39','245–248'],
+  ['albaqara_p40.html','ص 40','248–252'],['albaqara_p41.html','ص 41','252–253'],
+  ['albaqara_p42.html','ص 42','آية الكرسي'],['albaqara_p43.html','ص 43','257–259'],
+  ['albaqara_p44.html','ص 44','260–264'],['albaqara_p45.html','ص 45','265–269'],
+  ['albaqara_p46.html','ص 46','270–274'],['albaqara_p47.html','ص 47','275–281'],
+  ['albaqara_p48.html','ص 48','آية الدَّين'],['albaqara_p49.html','ص 49','283–286'],
+];
+
+const ammaData=[
+  ['annaba.html','النبأ','40 آية',true],['annaziat.html','النازعات','46 آية',true],
+  ['abasa.html','عبس','42 آية',true],['attakwir.html','التكوير','29 آية',true],
+  ['al-infitar.html','الانفطار','19 آية',true],['almutaffifin.html','المطففين','36 آية',true],
+  ['alinshiqaq.html','الانشقاق','25 آية',true],['alburuj.html','البروج','22 آية',true],
+  ['altariq.html','الطارق','17 آية',true],['alaala.html','الأعلى','19 آية',true],
+  ['alghasiya.html','الغاشية','26 آية',true],['alfajr.html','الفجر','30 آية',true],
+  ['albalad.html','البلد','20 آية',true],['alshams.html','الشمس','15 آية',true],
+  ['allayl.html','الليل','21 آية',true],['alduha.html','الضحى','11 آية',true],
+  ['alsharh.html','الشرح','8 آيات',true],
+  ['atteen.html','التين','8 آيات',true],
+  ['alalaq.html','العلق','19 آية',true],
+  ['alqadr.html','القدر','5 آيات',true],
+  ['albayyina.html','البيِّنة','8 آيات',true],
+  ['alzalzala.html','الزلزلة','8 آيات',true],
+  ['alaadiyat.html','العاديات','11 آية',true],
+  ['alqaria.html','القارعة','11 آية',true],
+  ['altakathur.html','التكاثر','8 آيات',true],
+  ['alasr.html','العصر','3 آيات',true],
+  ['alhumaza.html','الهمزة','9 آيات',true],
+  ['alfiyl.html','الفيل','5 آيات',true],
+  ['aquraysh.html','قريش','4 آيات',true],
+  ['almaoon.html','الماعون','7 آيات',true],
+  ['alkawthur.html','الكوثر','3 آيات',true],
+  ['alkafirun.html','الكافرون','6 آيات',true],
+  ['alnnasr.html','النصر','3 آيات',true],
+  ['almasad.html','المسد','5 آيات',true],
+  ['alikhlas.html','الإخلاص','4 آيات',true],
+  ['alfalaq.html','الفلق','5 آيات',true],
+  ['alnnas.html','الناس','6 آيات',true],
+];
+
+const remainingJuz=[
+  ['4','آل عمران — النساء','ص 63'],['5','النساء (تابع)','ص 83'],
+  ['6','النساء — المائدة','ص 102'],['7','المائدة — الأنعام','ص 121'],
+  ['8','الأنعام — الأعراف','ص 142'],['9','الأعراف — الأنفال','ص 163'],
+  ['10','الأنفال — التوبة','ص 182'],['11','التوبة — هود','ص 201'],
+  ['12','هود — يوسف','ص 221'],['13','يوسف — إبراهيم','ص 241'],
+  ['14','الحجر — النحل','ص 262'],['15','الإسراء — الكهف','ص 282'],
+  ['16','الكهف — طه','ص 301'],['17','الأنبياء — الحج','ص 322'],
+  ['18','المؤمنون — الفرقان','ص 342'],['19','الفرقان — النمل','ص 362'],
+  ['20','النمل — العنكبوت','ص 382'],['21','العنكبوت — الأحزاب','ص 402'],
+  ['22','الأحزاب — يس','ص 421'],['23','يس — الزمر','ص 442'],
+  ['24','الزمر — فصلت','ص 462'],['25','فصلت — الجاثية','ص 482'],
+  ['26','الأحقاف — الذاريات','ص 502'],['27','الذاريات — الحديد','ص 522'],
+  ['28','المجادلة — التحريم','ص 542'],['29','الملك — المرسلات','ص 562'],
+];
+
+function card(href,name,meta,ok){
+  return ok
+    ? `<a href="${href}" class="quiz-card" data-s="${name} ${meta}"><div class="card-bar"></div><div class="card-name">${name}</div><div class="card-meta">${meta}</div><span class="card-badge badge-ok">✓</span></a>`
+    : `<div class="quiz-card soon" data-s="${name}"><div class="card-bar"></div><div class="card-name">${name}</div><div class="card-meta">${meta}</div><span class="card-badge badge-soon">قريباً</span></div>`;
+}
+
+document.getElementById('baqara-grid').innerHTML =
+  baqaraPages.map(p=>card(p[0],p[1],p[2],true)).join('') + card('','آل عمران','ص 50',false);
+
+document.getElementById('amma-grid').innerHTML =
+  ammaData.map(p=>card(p[0],p[1],p[2],p[3])).join('');
+
+document.getElementById('remaining').innerHTML = remainingJuz.map(j=>`
+<div class="acc">
+  <button class="acc-btn" onclick="toggleAcc(this)">
+    <div class="acc-left"><div class="juz-badge">الجزء ${j[0]}</div><div class="juz-title">${j[1]}</div></div>
+    <div class="acc-right"><div class="juz-prog">${j[2]}</div><span class="acc-arrow">▾</span></div>
+  </button>
+  <div class="acc-body"><div class="cards-grid">${card('',j[1].split('—')[0].trim(),j[2],false)}</div></div>
+</div>`).join('');
+
+function toggleAcc(btn){
+  const body=btn.nextElementSibling;
+  const arrow=btn.querySelector('.acc-arrow');
+  const open=!body.classList.contains('open');
+  body.classList.toggle('open',open);
+  arrow.classList.toggle('open',open);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  // كل الأجزاء مغلقة بالوضع الافتراضي
+});
+
+function doSearch(val){
+  const q=val.trim();
+  document.querySelectorAll('.acc').forEach(acc=>{
+    const cards=acc.querySelectorAll('.quiz-card');
+    let any=false;
+    cards.forEach(c=>{const m=!q||(c.dataset.s||c.innerText).includes(q);c.style.display=m?'':'none';if(m)any=true;});
+    acc.style.display=any||!q?'':'none';
+    if(q&&any){acc.querySelector('.acc-body').classList.add('open');acc.querySelector('.acc-arrow').classList.add('open');}
+  });
+}
+
+function shareApp(){var url='https://quran-darbi.github.io/Quran-test-/';if(navigator.share){navigator.share({title:'دربي لحفظ القرآن',url:url}).catch(function(){});}else{navigator.clipboard.writeText(url).then(function(){var b=document.querySelector('[onclick="shareApp()"]');if(b){b.textContent='✅';setTimeout(function(){b.textContent='🔗';},2000);}}).catch(function(){});}}
+function applyTheme(m){document.documentElement.setAttribute('data-theme',m);document.getElementById('theme-btn').textContent=m==='dark'?'☀️':'🌙';}
+function toggleTheme(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';applyTheme(n);try{localStorage.setItem('quranTheme',n);}catch(e){}}
+(function(){let s;try{s=localStorage.getItem('quranTheme');}catch(e){}if(!s)s=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';applyTheme(s);})();
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/Quran-test-/service-worker.js')
+      .then(r=>console.log('SW:',r.scope))
+      .catch(e=>console.log('SW err:',e));
+  });
+}
+</script>
+</body>
+</html>
