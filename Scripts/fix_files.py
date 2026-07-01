@@ -120,7 +120,20 @@ def fix_file(path):
             out
         )
 
-    # 2. أضف زر returnToLevels لو مش موجود
+    # ====================================================
+    # 3. زر المشاركة في top-bar (كل صفحات السور)
+    SHARE_BTN = '<button onclick="shareApp()" title="شارك الموقع" style="background:none;border:none;font-size:20px;cursor:pointer;padding:4px;margin-right:auto;">🔗</button>'
+    SHARE_FN = """function shareApp(){var url='https://quran-darbi.github.io/Quran-test-/';if(navigator.share){navigator.share({title:'دربي لحفظ القرآن',url:url}).catch(function(){});}else{navigator.clipboard.writeText(url).then(function(){var b=document.querySelector('[onclick=\"shareApp()\"]');if(b){b.textContent='✅';setTimeout(function(){b.textContent='🔗';},2000);}}).catch(function(){});}}"""
+    if 'shareApp' not in out:
+        # أضف الزر في top-bar بعد زر الرجوع مباشرة
+        out = out.replace(
+            '<a href="index.html" class="back-btn">← الرجوع</a>',
+            '<a href="index.html" class="back-btn">← الرجوع</a>\n  ' + SHARE_BTN
+        )
+        # أضف الدالة قبل applyTheme
+        out = out.replace('function applyTheme', SHARE_FN + '\nfunction applyTheme', 1)
+
+    # 4. أضف زر returnToLevels لو مش موجود
     if 'returnToLevels' not in out:
         # CSS
         if 'level-return-btn' not in out:
@@ -134,11 +147,11 @@ def fix_file(path):
         fn = """function returnToLevels(){document.getElementById('quiz-area').style.display='none';document.getElementById('level-card').style.display='block';currentLevel=null;document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));document.getElementById('start-btn').classList.remove('ready');document.getElementById('total-q').textContent='-';document.getElementById('wrong-badge').innerHTML='&#x6F0; &#x2717;<br>&#x62E;&#x637;&#x623;';document.getElementById('correct-badge').innerHTML='&#x6F0; &#x2713;<br>&#x635;&#x62D;&#x64A;&#x62D;';document.getElementById('qnum-badge').innerHTML='&#x627;&#x644;&#x633;&#x624;&#x627;&#x644; &#x6F1; /<br>-';document.getElementById('progress-fill').style.width='0%';}"""
         out = out.replace('function retryQuiz', fn + '\nfunction retryQuiz', 1)
 
-    # 3. أضف PWA head لو مش موجود
+    # 5. أضف PWA head لو مش موجود
     if 'manifest.json' not in out:
         out = out.replace('</head>', PWA_HEAD + '\n</head>', 1)
 
-    # 4. أضف Service Worker لو مش موجود
+    # 6. أضف Service Worker لو مش موجود
     if 'service-worker.js' not in out:
         out = out.replace('</body>', PWA_SW + '\n</body>', 1)
 
@@ -149,10 +162,30 @@ def fix_file(path):
     return False
 
 def fix_index_recitation(path):
-    """index.html و recitation.html — PWA فقط"""
+    """index.html و recitation.html — PWA + زر مشاركة"""
     with open(path, encoding='utf-8') as f:
         src = f.read()
     out = src
+
+    SHARE_FN = """function shareApp(){var url='https://quran-darbi.github.io/Quran-test-/';if(navigator.share){navigator.share({title:'دربي لحفظ القرآن',url:url}).catch(function(){});}else{navigator.clipboard.writeText(url).then(function(){var b=document.querySelector('[onclick=\"shareApp()\"]');if(b){b.textContent='✅';setTimeout(function(){b.textContent='🔗';},2000);}}).catch(function(){});}}"""
+    SHARE_BTN = '<button onclick="shareApp()" title="شارك الموقع" style="background:none;border:none;font-size:20px;cursor:pointer;padding:4px;">🔗</button>'
+
+    if 'shareApp' not in out:
+        # أضف الزر في top-bar
+        out = out.replace(
+            '<a href="index.html" class="back-btn">← الرجوع</a>',
+            '<a href="index.html" class="back-btn">← الرجوع</a>\n  ' + SHARE_BTN
+        )
+        # index.html ممكن ما فيهاش back-btn، نضيف الزر قبل theme-toggle
+        if 'shareApp' not in out:
+            out = out.replace(
+                'id="theme-toggle"',
+                'id="share-btn" onclick="shareApp()" title="شارك الموقع" style="background:none;border:none;font-size:20px;cursor:pointer;padding:4px;">🔗</button>\n  <button id="theme-toggle"',
+                1
+            )
+        # أضف الدالة قبل </script> الأخير
+        if 'shareApp' in out and SHARE_FN not in out:
+            out = out.replace('</script>', SHARE_FN + '\n</script>', 1)
 
     if 'manifest.json' not in out:
         out = out.replace('</head>', PWA_HEAD + '\n</head>', 1)
